@@ -1,0 +1,28 @@
+FROM ubuntu:mantic
+
+# Add China Mirror to speed up local build process
+COPY sources.cn /etc/apt/sources.list
+
+# Install necessary dependencies
+RUN apt-get update && apt-get upgrade -y
+RUN apt-get install -y cmake git curl zip unzip tar
+RUN apt-get install -y gcc-12 g++-12
+RUN apt-get install -y gdb
+
+# Mark g++-12 as default C++ compiler
+WORKDIR /usr/bin
+RUN ln -s g++-12 g++
+
+# Install vcpkg as C++ package manager
+WORKDIR /usr/local
+RUN git clone --depth=1 https://github.com/Microsoft/vcpkg.git && \
+    ./vcpkg/bootstrap-vcpkg.sh
+ENV VCPKG_ROOT /usr/local/vcpkg
+ENV PATH $VCPKG_ROOT:$PATH
+
+# Install packages needed
+RUN apt-get install -y pkg-config 
+RUN apt-get install -y python3
+RUN vcpkg install catch2
+RUN vcpkg install pistache
+RUN vcpkg install boost
