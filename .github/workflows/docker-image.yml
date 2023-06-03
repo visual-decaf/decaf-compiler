@@ -24,7 +24,9 @@ jobs:
       id: meta
       uses: docker/metadata-action@v4.4.0
       with:
-        images: distinctwind/visual-decaf:latest
+        images: distinctwind/visual-decaf
+        tags:
+          type=raw, value=latest
     - name: build and push docker images
       uses: docker/build-push-action@v4.0.0
       with:
