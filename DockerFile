@@ -23,8 +23,8 @@ ENV VCPKG_ROOT /usr/local/vcpkg
 ENV PATH $VCPKG_ROOT:$PATH
 
 # Install packages needed
-RUN apt-get install -y pkg-config 
-RUN apt-get install -y python3
-RUN vcpkg install catch2
-RUN vcpkg install pistache
-RUN vcpkg install boost
+# RUN apt-get install -y pkg-config 
+# RUN apt-get install -y python3
+# RUN vcpkg install catch2
+# RUN vcpkg install pistache
+# RUN vcpkg install boost
