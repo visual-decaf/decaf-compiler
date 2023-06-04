@@ -1,4 +1,4 @@
-name: CI
+name: C++ Build and Unit Test
 
 on:
   push:
