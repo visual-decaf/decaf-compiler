@@ -1,0 +1,9 @@
+# Ignore devcontainer workspace settings
+.devcontainer.json
+.devcontainer
+
+# Ignore vscode specific workspace settings
+.vscode
+
+# ignore idea specific workspace settings
+.idea
