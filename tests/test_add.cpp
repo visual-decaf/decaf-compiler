@@ -22,3 +22,19 @@ TEST_CASE("Use Sections", "[add]")
         REQUIRE(y == 0);
     }
 }
+
+TEST_CASE("Test Sections", "[add]")
+{
+    int a = 0, b = 0;
+    SECTION("Use a and b")
+    {
+        a = b = 1;
+        REQUIRE(a == 1);
+        REQUIRE(b == 1);
+    }
+    SECTION("Reuse a and b")
+    {
+        REQUIRE_FALSE(a == 1);
+        REQUIRE_FALSE(b == 1);
+    }
+}
