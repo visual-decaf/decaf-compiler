@@ -23,9 +23,6 @@ jobs:
       - name: Build All Targets
         run: cmake --build build
       
-      - name: Test Current Working Directory
-        run: pwd
-      
-      - name: Test Current Working Directory(with work-directory)
-        run: pwd
+      - name: Run Unit Tests
+        run: ctest
         working-directory: ./build
