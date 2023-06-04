@@ -27,3 +27,26 @@ docker pull distinctwind/visual-decaf:latest
 ```bash
 docker run --rm distinctwind/visual-decaf:latest cat /var/version
 ```
+
+### 推荐开发环境
+
+推荐使用VSCode进行开发，在工作区根目录创建文件`.devcontainer.json`：
+
+```json
+{
+    "name": "GCC 12.3",
+    "image": "distinctwind/visual-decaf:latest",
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "editor.formatOnSave": true
+            },
+            "extensions": [
+                "ms-vscode.cpptools-extension-pack",
+                "ms-vscode.cmake-tools",
+                "matepek.vscode-catch2-test-adapter"
+            ]
+        }
+    }
+}
+```
