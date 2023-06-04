@@ -1,6 +1,6 @@
 FROM ubuntu:mantic
 
-RUN echo "VERSION 0.0.2" > /var/version
+RUN echo "VERSION 0.0.3" > /var/version
 
 # Add China Mirror to speed up local build process
 COPY sources.cn /etc/apt/sources.list
@@ -23,8 +23,18 @@ ENV VCPKG_ROOT /usr/local/vcpkg
 ENV PATH $VCPKG_ROOT:$PATH
 
 # Install packages needed
-# RUN apt-get install -y pkg-config 
-# RUN apt-get install -y python3
-# RUN vcpkg install catch2
-# RUN vcpkg install pistache
-# RUN vcpkg install boost
+RUN apt-get install -y pkg-config 
+RUN vcpkg install catch2
+
+# Install wfrest RESTFUL framework
+# ENV DEBIAN_FRONTEND=noninteractive
+# RUN apt-get update \
+#     && apt-get install -y vim make libssl-dev libgtest-dev zlib1g-dev \
+#     && apt-get clean && rm -rf /var/lib/apt/lists/* \
+#     && git clone https://github.com/sogou/workflow.git \ 
+#     && cd workflow && make -j && make install \
+#     && cd .. && rm -rf workflow \ 
+#     && git clone https://github.com/wfrest/wfrest.git \
+#     && cd wfrest && mkdir build && cd build \
+#     && cmake .. && make -j && make install 
+# ENV LD_LIBRARY_PATH /usr/local/lib
