@@ -42,9 +42,10 @@ docker run --rm distinctwind/visual-decaf:latest cat /var/version
                 "editor.formatOnSave": true
             },
             "extensions": [
-                "ms-vscode.cpptools-extension-pack",
-                "ms-vscode.cmake-tools"
-            ]
+				"ms-vscode.cpptools-extension-pack",
+				"ms-vscode.cmake-tools",
+				"matepek.vscode-catch2-test-adapter"
+			]
         }
     }
 }
