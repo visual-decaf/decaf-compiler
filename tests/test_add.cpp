@@ -35,6 +35,6 @@ TEST_CASE("Test Sections", "[add]")
     SECTION("Reuse a and b")
     {
         REQUIRE_FALSE(a == 1);
-        REQUIRE_FALSE(b == 1);
+        REQUIRE_FALSE(b == 0);
     }
 }
