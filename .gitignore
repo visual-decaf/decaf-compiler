@@ -1,6 +1,6 @@
 # Ignore devcontainer workspace settings
 .devcontainer.json
-.devcontainer/devcontainer.json
+.devcontainer
 
 # Ignore vscode specific workspace settings
 .vscode
