@@ -17,6 +17,6 @@ jobs:
       - name: Checkout this Repo
         uses: actions/checkout@v3
 
-      - name: Find all C++ code
+      - name: Find all C++ code and run format test
         run: find . -name "*.cpp" -or -name "*.h" |
              xargs clang-format --dry-run --Werror
