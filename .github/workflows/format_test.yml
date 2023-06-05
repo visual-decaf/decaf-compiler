@@ -1,0 +1,22 @@
+name: Code Format Test
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main", "dev" ]
+  workflow_dispatch:
+
+jobs:
+  format_test:
+    runs-on: ubuntu-latest
+    # using latest development file
+    container: 
+      image: distinctwind/visual-decaf:latest
+    steps:
+      - name: Checkout this Repo
+        uses: actions/checkout@v3
+
+      - name: Find all C++ code and run format test
+        run: find . -name "*.cpp" -or -name "*.h" |
+             xargs clang-format --dry-run --Werror
