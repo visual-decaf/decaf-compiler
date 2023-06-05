@@ -38,3 +38,5 @@ TEST_CASE("Test Sections", "[add]")
         REQUIRE_FALSE(b == 1);
     }
 }
+
+// Trigger
