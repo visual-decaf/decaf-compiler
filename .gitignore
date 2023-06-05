@@ -5,5 +5,11 @@
 # Ignore vscode specific workspace settings
 .vscode
 
-# ignore idea specific workspace settings
+# Ignore idea specific workspace settings
 .idea
+
+# Ignore build files
+build
+out
+debug
+cmake-*
