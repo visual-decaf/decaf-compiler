@@ -32,4 +32,8 @@ TEST_CASE("Test Sections", "[add]") {
     }
 }
 
+TEST_CASE("Test test", "[add]") {
+    REQUIRE(add(5, 5) == 10);
+}
+
 // Trigger
