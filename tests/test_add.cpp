@@ -1,13 +1,8 @@
 #include <add.h>
 #include <catch2/catch_test_macros.hpp>
-#include <sub.h>
 
 TEST_CASE("Use Required", "[add]") {
     REQUIRE(add(1, 2) == 3);
-}
-
-TEST_CASE("Use Required", "[sub]") {
-    REQUIRE(sub(2, 1) == 1);
 }
 
 TEST_CASE("Use Sections", "[add]") {

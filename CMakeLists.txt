@@ -3,7 +3,6 @@ project(decaf_compiler VERSION 0.0.1)
 set(CMAKE_CXX_STANDARD 23)
 
 add_subdirectory(add_lib)
-add_subdirectory(sub_lib)
 add_subdirectory(factorial_lib)
 find_package(Catch2 3 REQUIRED)
 include(CTest)
