@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.24)
 project(decaf_compiler VERSION 0.0.1)
-set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD 17)
 
 find_package(FLEX)
 find_package(BISON)
@@ -19,4 +19,9 @@ include_directories(${CMAKE_BINARY_DIR})
 
 add_subdirectory(token)
 add_subdirectory(scanner)
+
+find_package(Catch2 3 REQUIRED)
+include(CTest)
+include(Catch)
+
 add_subdirectory(tests)

@@ -8,7 +8,7 @@
     #include <iostream>
 %}
 
-%option yyclass="decaf::scanner"
+%option yyclass="decaf::Scanner"
 
 DIGIT [0-9]
 INTEGER ("+"|"-")?{DIGIT}+
@@ -26,7 +26,7 @@ INTEGER ("+"|"-")?{DIGIT}+
 [ \t] {}
 "\n" { emit({token_type::EOL, YYText()}); }
 <<EOF>> {
-    emit({token_type::YYEOF, YYText()});
+    emit({token_type::YYEOF});
     return token_type::YYEOF;
 }
 

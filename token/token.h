@@ -12,6 +12,10 @@ class token {
 public:
     token_type type;
     std::string lexeme;
+
+    bool operator==(const token& rhs) const {
+        return this->type == rhs.type && this->lexeme == rhs.lexeme;
+    }
 };
 
 

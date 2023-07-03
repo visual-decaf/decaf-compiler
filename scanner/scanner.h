@@ -3,12 +3,18 @@
 #include "parser_impl.h"
 #include "token.h"
 #include <FlexLexer.h>
+#include <string>
 #include <vector>
 
 namespace decaf {
-class scanner: yyFlexLexer {
+class Scanner: yyFlexLexer {
 public:
     using token_stream = std::vector<token>;
+    using yyFlexLexer::yyFlexLexer;
+
+    explicit Scanner(std::istream& is):
+        yyFlexLexer(is, std::cerr) {
+    }
 
     int yylex() override;
     token_stream get_tokens();
