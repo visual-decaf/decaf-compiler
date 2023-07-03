@@ -1,6 +1,7 @@
 #pragma once
 
 #include "parser_impl.h"
+#include <iostream>
 #include <map>
 #include <string>
 
@@ -22,3 +23,5 @@ public:
 extern std::map<token_type, std::string> token_name_of;
 
 } // namespace decaf
+
+std::ostream& operator<<(std::ostream& os, const decaf::token& tok);

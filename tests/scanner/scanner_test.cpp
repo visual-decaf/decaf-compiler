@@ -4,16 +4,37 @@
 #include <string>
 #include <vector>
 
-TEST_CASE("scanner_test_main", "[scanner]") {
-    std::istringstream input{"12 34 56"};
+decaf::Scanner::token_stream scan_for(const std::string& str) {
+    std::istringstream input{str};
     decaf::Scanner scanner{input};
     scanner.scan();
-    auto result_token = scanner.get_tokens();
+    return scanner.get_tokens();
+}
+
+TEST_CASE("scanner_main", "[scanner]") {
+    auto result_token = scan_for("12 34 56");
+    using decaf::token_type;
     decaf::Scanner::token_stream expected_token = {
-            {decaf::token_type::INTEGER, "12"},
-            {decaf::token_type::INTEGER, "34"},
-            {decaf::token_type::INTEGER, "56"},
-            {decaf::token_type::YYEOF}};
+            {token_type::INTEGER, "12"},
+            {token_type::INTEGER, "34"},
+            {token_type::INTEGER, "56"},
+            {token_type::YYEOF}};
+
+    REQUIRE(result_token.size() == expected_token.size());
+    for (int i = 0; i < result_token.size(); i++) {
+        REQUIRE(result_token[i] == expected_token[i]);
+    }
+}
+
+TEST_CASE("scanner_plus_minus_star_slash", "[scanner]") {
+    auto result_token = scan_for("+ - * /");
+    using decaf::token_type;
+    decaf::Scanner::token_stream expected_token = {
+            {token_type ::PLUS, "+"},
+            {token_type ::MINUS, "-"},
+            {token_type ::STAR, "*"},
+            {token_type ::SLASH, "/"},
+            {token_type ::YYEOF}};
 
     REQUIRE(result_token.size() == expected_token.size());
     for (int i = 0; i < result_token.size(); i++) {
