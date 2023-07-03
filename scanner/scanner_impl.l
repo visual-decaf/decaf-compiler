@@ -1,11 +1,14 @@
+%option noyywrap
+%option c++
+
 %{
-    #include "parser_impl.h"
-    #define YY_DECL int yylex(yy::parser::value_type* yylval)
+    #undef yyFlexLexer
+    #include "scanner.h"
     #include <cstring>
     #include <iostream>
 %}
 
-%option noyywrap
+%option yyclass="decaf::scanner"
 
 DIGIT [0-9]
 INTEGER ("+"|"-")?{DIGIT}+
@@ -13,16 +16,18 @@ INTEGER ("+"|"-")?{DIGIT}+
 %%
 
 {INTEGER} {
-    yylval->emplace<int>(atoi(yytext));
-    return yy::parser::token::INTEGER;
+    emit({token_type::INTEGER, YYText()});
 }
 
-"+" { return yy::parser::token::PLUS; }
-"-" { return yy::parser::token::MINUS; }
-"*" { return yy::parser::token::STAR; }
-"/" { return yy::parser::token::SLASH; }
+"+" { emit({token_type::PLUS, YYText()}); }
+"-" { emit({token_type::MINUS, YYText()}); }
+"*" { emit({token_type::STAR, YYText()}); }
+"/" { emit({token_type::SLASH, YYText()}); }
 [ \t] {}
-"\n" { return yy::parser::token::EOL; }
-<<EOF>> { return yy::parser::token::YYEOF; }
+"\n" { emit({token_type::EOL, YYText()}); }
+<<EOF>> {
+    emit({token_type::YYEOF, YYText()});
+    return token_type::YYEOF;
+}
 
 %%
