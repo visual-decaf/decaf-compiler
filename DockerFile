@@ -1,6 +1,6 @@
 FROM ubuntu:mantic
 
-RUN echo "VERSION 0.0.5" > /var/version
+RUN echo "VERSION 0.0.6" > /var/version
 
 # Add China Mirror to speed up local build process
 COPY sources.cn /etc/apt/sources.list
