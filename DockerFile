@@ -11,11 +11,8 @@ RUN apt-get install -y cmake git curl zip unzip tar \
     gcc-12 g++-12 gdb \
     clang-format \
     pkg-config \ 
-    flex bison
-
-# Mark g++-12 as default C++ compiler
-WORKDIR /usr/bin
-RUN ln -s g++-12 g++
+    flex bison \
+    golang
 
 # Install vcpkg as C++ package manager
 WORKDIR /usr/local
@@ -26,3 +23,4 @@ ENV PATH $VCPKG_ROOT:$PATH
 
 # Install packages needed
 RUN vcpkg install catch2
+RUN vcpkg install boost-json
