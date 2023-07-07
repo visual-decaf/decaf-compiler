@@ -46,6 +46,10 @@ struct ArithmeticBinary: Expr, public std::enable_shared_from_this<ArithmeticBin
 struct IntConstant: Expr, public std::enable_shared_from_this<IntConstant> {
     int value;
 
+    explicit IntConstant(int val):
+        value{val} {
+    }
+
     std::any accept(ExprVisitor& visitor) override {
         return visitor.visitIntConstant(shared_from_this());
     }
