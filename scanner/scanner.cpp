@@ -11,6 +11,6 @@ void Scanner::scan() {
         ;
 }
 
-Scanner::token_stream Scanner::get_tokens() {
+token_stream Scanner::get_tokens() {
     return tokens;
 }

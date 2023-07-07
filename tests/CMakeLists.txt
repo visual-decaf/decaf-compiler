@@ -1,3 +1,3 @@
 add_subdirectory(scanner)
 add_executable(simple_driver simple_driver.cpp)
-target_link_libraries(simple_driver PUBLIC token)
+target_link_libraries(simple_driver PUBLIC token scanner)
