@@ -27,7 +27,7 @@ struct ArithmeticBinary: Expr, public std::enable_shared_from_this<ArithmeticBin
     std::shared_ptr<Expr> right;
 
     std::any accept(ExprVisitor& visitor) override {
-        visitor.visitArithmeticBinary(shared_from_this());
+        return visitor.visitArithmeticBinary(shared_from_this());
     }
 };
 
@@ -35,7 +35,7 @@ struct IntConstant: Expr, public std::enable_shared_from_this<IntConstant> {
     int value;
 
     std::any accept(ExprVisitor& visitor) override {
-        visitor.visitIntConstant(shared_from_this());
+        return visitor.visitIntConstant(shared_from_this());
     }
 };
 } // namespace decaf::ast
