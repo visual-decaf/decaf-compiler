@@ -1,0 +1,3 @@
+add_executable(scanner_test scanner_test.cpp)
+target_link_libraries(scanner_test PRIVATE scanner Catch2::Catch2WithMain)
+catch_discover_tests(scanner_test)

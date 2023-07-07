@@ -1,0 +1,2 @@
+add_subdirectory(scanner)
+add_executable(simple_driver simple_driver.cpp)
