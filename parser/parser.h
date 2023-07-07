@@ -16,8 +16,8 @@ public:
     void parse();
     ast_ptr get_ast();
 
-    explicit Parser(decaf::Scanner::token_stream token_stream):
-        token_stream{std::move(token_stream)},
+    explicit Parser(decaf::Scanner::token_stream _token_stream):
+        token_stream{std::move(_token_stream)},
         next_token{token_stream.begin()} {
     }
 
