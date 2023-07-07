@@ -18,6 +18,7 @@ add_custom_target(run_flex_bison
 include_directories(${CMAKE_BINARY_DIR})
 
 add_subdirectory(token)
+add_subdirectory(ast)
 add_subdirectory(scanner)
 
 find_package(Catch2 3 REQUIRED)
