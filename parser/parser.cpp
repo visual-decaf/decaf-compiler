@@ -25,3 +25,13 @@ int yylex(yy::parser::value_type* yylval, decaf::Parser& driver) {
 
     return (next_token++)->type;
 }
+
+
+void decaf::Parser::parse() {
+    // TODO: handle errors, for now ignore return value
+    parser_impl.parse();
+}
+
+decaf::Parser::ast_ptr decaf::Parser::get_ast() {
+    return ast_root;
+}

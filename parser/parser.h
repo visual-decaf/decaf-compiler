@@ -16,9 +16,15 @@ public:
     void parse();
     ast_ptr get_ast();
 
+    explicit Parser(decaf::Scanner::token_stream token_stream):
+        token_stream{std::move(token_stream)},
+        next_token{token_stream.begin()} {
+    }
+
 private:
-    yy::parser parser_impl;
+    yy::parser parser_impl{*this};
     decaf::Scanner::token_stream token_stream;
     decaf::Scanner::token_stream::iterator next_token;
+    ast_ptr ast_root{};
 };
 } // namespace decaf
