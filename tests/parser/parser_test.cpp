@@ -23,3 +23,51 @@ TEST_CASE("parser_main", "[parser]") {
 
     REQUIRE(expect->equals(result));
 }
+
+TEST_CASE("parser_plus_left_associative", "[parser]") {
+    token_stream tokenStream{
+            {token_type ::INTEGER, "1"},
+            {token_type ::PLUS, "+"},
+            {token_type ::INTEGER, "2"},
+            {token_type ::PLUS, "+"},
+            {token_type ::INTEGER, "3"},
+            {token_type ::EOL}};
+
+    decaf::Parser parser{tokenStream};
+    parser.parse();
+
+    auto result = parser.get_ast();
+    auto expect = make_shared<ast::ArithmeticBinary>(
+            make_shared<ast::ArithmeticBinary>(
+                    make_shared<ast::IntConstant>(1),
+                    ast::ArithmeticBinary::Operation::PLUS,
+                    make_shared<ast::IntConstant>(2)),
+            ast::ArithmeticBinary::Operation::PLUS,
+            make_shared<ast::IntConstant>(3));
+
+    REQUIRE(expect->equals(result));
+}
+
+TEST_CASE("parser_plus_multiply_precedence", "[parser]") {
+    token_stream tokenStream{
+            {token_type ::INTEGER, "1"},
+            {token_type ::PLUS, "+"},
+            {token_type ::INTEGER, "2"},
+            {token_type ::STAR, "*"},
+            {token_type ::INTEGER, "3"},
+            {token_type ::EOL}};
+
+    decaf::Parser parser{tokenStream};
+    parser.parse();
+
+    auto result = parser.get_ast();
+    auto expect = make_shared<ast::ArithmeticBinary>(
+            make_shared<ast::IntConstant>(1),
+            ast::ArithmeticBinary::Operation::PLUS,
+            make_shared<ast::ArithmeticBinary>(
+                    make_shared<ast::IntConstant>(2),
+                    ast::ArithmeticBinary::Operation::MULTIPLY,
+                    make_shared<ast::IntConstant>(3)));
+
+    REQUIRE(expect->equals(result));
+}
