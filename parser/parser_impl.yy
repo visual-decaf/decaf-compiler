@@ -74,10 +74,10 @@ arithmeticBinaryExpr:
 
 intConstant:
     INTEGER {
-        $$->value = $1;
+        $$ = make_shared<IntConstant>($1);
     } |
     HEX_INTEGER {
-        $$->value = $1;
+        $$ = make_shared<IntConstant>($1);
     }
 
 %%
