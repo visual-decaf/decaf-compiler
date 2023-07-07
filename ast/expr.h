@@ -1,6 +1,5 @@
 #pragma once
 
-#include "token.h"
 #include <any>
 #include <memory>
 
@@ -23,7 +22,13 @@ struct Expr {
 
 struct ArithmeticBinary: Expr, public std::enable_shared_from_this<ArithmeticBinary> {
     std::shared_ptr<Expr> left;
-    decaf::token op;
+    enum class Operation {
+        PLUS,
+        MINUS,
+        MULTIPLY,
+        DIVIDE
+    };
+    Operation op;
     std::shared_ptr<Expr> right;
 
     std::any accept(ExprVisitor& visitor) override {

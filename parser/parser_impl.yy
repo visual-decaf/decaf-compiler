@@ -4,14 +4,30 @@
 %define parse.error verbose
 %define parse.trace
 
+%param{decaf::Parser& driver}
+
+%code requires {
+    #include <memory>
+    #include "ast_basic.h"
+    #include "parser_basic.h"
+}
+
+%code top {
+    #include "expr.h"
+    #include "parser.h"
+    using namespace std;
+    using namespace decaf::ast;
+}
+
 %code {
     int yylex(yy::parser::value_type* yylval);
 }
 
-%nterm <int> expr
+%nterm <std::shared_ptr<decaf::ast::Expr>> expr
+%nterm <std::shared_ptr<decaf::ast::IntConstant>> intConstant
 
 %token <int> INTEGER
-%token HEX_INTEGER
+%token <int> HEX_INTEGER
 %token PLUS '+' MINUS '-'
 %token STAR '*' SLASH '/'
 %token EOL
@@ -24,18 +40,42 @@
 
 input: 
     %empty
-    | input expr EOL {
-        std::cout << $2 << std::endl;
-    }
+    | input expr EOL
     ;
 
-expr:
-    expr PLUS expr { $$ = $1 + $3; }
-    | expr MINUS expr { $$ = $1 - $3; }
-    | expr STAR expr { $$ = $1 * $3; }
-    | expr SLASH expr { $$ = $1 / $3; }
-    | INTEGER
-    ;
+expr: 
+    intConstant {
+        $$ = $1;
+    }
+    | expr PLUS expr {
+        $$.left = $1;
+        $$.op = ArithmeticBinary::Operation::PLUS;
+        $$.right = $3;
+    }
+    | expr MINUS expr {
+        $$.left = $1;
+        $$.op = ArithmeticBinary::Operation::MINUS;
+        $$.right = $3;
+    }
+    | expr STAR expr {
+        $$.left = $1;
+        $$.op = ArithmeticBinary::Operation::MULTIPLY;
+        $$.right = $3;
+    }
+    | expr SLASH expr {
+        $$.left = $1;
+        $$.op = ArithmeticBinary::Operation::DIVIDE ;
+        $$.right = $3;
+    }
+
+intConstant:
+    INTEGER {
+        $$.value = $1;
+    } |
+    HEX_INTEGER {
+        $$.value = $1;
+    }
+
 %%
 
 void yy::parser::error(const std::string& msg) {
