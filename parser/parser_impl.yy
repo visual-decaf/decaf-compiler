@@ -36,7 +36,9 @@
 
 input: 
     %empty
-    | input arithmeticBinaryExpr EOL
+    | input arithmeticBinaryExpr EOL {
+        driver.ast_root = $2;
+    }
     ;
 
 arithmeticBinaryExpr: 

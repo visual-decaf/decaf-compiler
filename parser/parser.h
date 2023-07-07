@@ -10,6 +10,7 @@ int yylex(yy::parser::value_type* yylval, decaf::Parser& driver);
 namespace decaf {
 class Parser {
     friend int ::yylex(yy::parser::value_type* yylval, decaf::Parser& driver);
+    friend class yy::parser;
 
 public:
     using ast_ptr = std::shared_ptr<decaf::ast::Expr>;
