@@ -16,6 +16,7 @@ namespace decaf::ast {
 struct Expr {
     virtual std::any accept(ExprVisitor&) = 0;
     virtual bool equals(std::shared_ptr<Expr>) = 0;
+    virtual ~Expr() = default;
 };
 
 struct ArithmeticBinary: Expr, public std::enable_shared_from_this<ArithmeticBinary> {
