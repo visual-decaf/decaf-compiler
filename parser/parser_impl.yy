@@ -19,10 +19,6 @@
     using namespace decaf::ast;
 }
 
-%code {
-    int yylex(yy::parser::value_type* yylval);
-}
-
 %nterm <std::shared_ptr<decaf::ast::Expr>> expr
 %nterm <std::shared_ptr<decaf::ast::IntConstant>> intConstant
 
