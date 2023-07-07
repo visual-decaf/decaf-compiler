@@ -3,8 +3,8 @@
 #include <vector>
 using namespace std;
 int main() {
-    yy::parser parser;
-    parser.parse();
+    // yy::parser parser;
+    // parser.parse();
     // auto tok = yylex();
     // cout << tok << endl;
 }
