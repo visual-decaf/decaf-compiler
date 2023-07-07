@@ -1,12 +1,8 @@
 #pragma once
 
+#include "ast_basic.h"
 #include <any>
 #include <memory>
-
-namespace decaf::ast {
-struct ArithmeticBinary;
-struct IntConstant;
-} // namespace decaf::ast
 
 namespace decaf {
 struct ExprVisitor {
