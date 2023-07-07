@@ -2,7 +2,7 @@
 #include <catch2/catch_test_macros.hpp>
 
 using namespace decaf;
-using token_stream = decaf::Scanner::token_stream;
+using decaf::token_stream;
 using std::make_shared;
 
 TEST_CASE("parser_main", "[parser]") {
