@@ -11,6 +11,7 @@
 %nterm <int> expr
 
 %token <int> INTEGER
+%token HEX_INTEGER
 %token PLUS '+' MINUS '-'
 %token STAR '*' SLASH '/'
 %token EOL

@@ -7,6 +7,7 @@ std::ostream& operator<<(std::ostream& os, const decaf::token& tok) {
 
 std::map<decaf::token_type, std::string> decaf::token_name_of{
         {token_type ::INTEGER, "INTEGER"},
+        {token_type ::HEX_INTEGER, "HEX_INTEGER"},
         {token_type ::PLUS, "PLUS"},
         {token_type ::MINUS, "MINUS"},
         {token_type ::STAR, "STAR"},

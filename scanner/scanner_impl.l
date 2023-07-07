@@ -11,12 +11,17 @@
 %option yyclass="decaf::Scanner"
 
 DIGIT [0-9]
-INTEGER ("+"|"-")?{DIGIT}+
+HEX_DIGIT [0-9a-fA-F]
+INTEGER {DIGIT}+
+HEX_INTEGER ("0x"|"0X"){HEX_DIGIT}+
 
 %%
 
 {INTEGER} {
     emit({token_type::INTEGER, YYText()});
+}
+{HEX_INTEGER} {
+    emit({token_type::HEX_INTEGER, YYText()});
 }
 
 "+" { emit({token_type::PLUS, YYText()}); }
