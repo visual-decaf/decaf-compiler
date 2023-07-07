@@ -31,6 +31,13 @@ struct ArithmeticBinary: Expr, public std::enable_shared_from_this<ArithmeticBin
     Operation op;
     std::shared_ptr<Expr> right;
 
+    ArithmeticBinary(std::shared_ptr<Expr> left,
+                     Operation op,
+                     std::shared_ptr<Expr> right):
+        left{std::move(left)},
+        op{op}, right{std::move(right)} {
+    }
+
     std::any accept(ExprVisitor& visitor) override {
         return visitor.visitArithmeticBinary(shared_from_this());
     }

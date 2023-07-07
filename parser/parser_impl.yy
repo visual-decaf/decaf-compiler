@@ -19,7 +19,7 @@
     using namespace decaf::ast;
 }
 
-%nterm <std::shared_ptr<decaf::ast::Expr>> expr
+%nterm <std::shared_ptr<decaf::ast::Expr>> arithmeticBinaryExpr
 %nterm <std::shared_ptr<decaf::ast::IntConstant>> intConstant
 
 %token <int> INTEGER
@@ -36,40 +36,48 @@
 
 input: 
     %empty
-    | input expr EOL
+    | input arithmeticBinaryExpr EOL
     ;
 
-expr: 
+arithmeticBinaryExpr: 
     intConstant {
         $$ = $1;
     }
-    | expr PLUS expr {
-        $$.left = $1;
-        $$.op = ArithmeticBinary::Operation::PLUS;
-        $$.right = $3;
+    | arithmeticBinaryExpr PLUS arithmeticBinaryExpr {
+        $$ = make_shared<ArithmeticBinary> (
+            $1,
+            ArithmeticBinary::Operation::PLUS,
+            $3
+        );
     }
-    | expr MINUS expr {
-        $$.left = $1;
-        $$.op = ArithmeticBinary::Operation::MINUS;
-        $$.right = $3;
+    | arithmeticBinaryExpr MINUS arithmeticBinaryExpr {
+        $$ = make_shared<ArithmeticBinary> (
+            $1,
+            ArithmeticBinary::Operation::MINUS,
+            $3
+        );
     }
-    | expr STAR expr {
-        $$.left = $1;
-        $$.op = ArithmeticBinary::Operation::MULTIPLY;
-        $$.right = $3;
+    | arithmeticBinaryExpr STAR arithmeticBinaryExpr {
+        $$ = make_shared<ArithmeticBinary> (
+            $1,
+            ArithmeticBinary::Operation::MULTIPLY,
+            $3
+        );
     }
-    | expr SLASH expr {
-        $$.left = $1;
-        $$.op = ArithmeticBinary::Operation::DIVIDE ;
-        $$.right = $3;
+    | arithmeticBinaryExpr SLASH arithmeticBinaryExpr {
+        $$ = make_shared<ArithmeticBinary> (
+            $1,
+            ArithmeticBinary::Operation::DIVIDE,
+            $3
+        );
     }
 
 intConstant:
     INTEGER {
-        $$.value = $1;
+        $$->value = $1;
     } |
     HEX_INTEGER {
-        $$.value = $1;
+        $$->value = $1;
     }
 
 %%
