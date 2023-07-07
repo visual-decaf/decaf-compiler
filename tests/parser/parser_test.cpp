@@ -16,10 +16,10 @@ TEST_CASE("parser_main", "[parser]") {
     parser.parse();
 
     auto result = parser.get_ast();
-    auto expect = make_shared<ast::ArithmeticBinary>(
-            make_shared<ast::IntConstant>(12),
+    auto expect = new ast::ArithmeticBinary(
+            new ast::IntConstant(12),
             ast::ArithmeticBinary::Operation::PLUS,
-            make_shared<ast::IntConstant>(34));
+            new ast::IntConstant(34));
 
     REQUIRE(expect->equals(result));
 }
@@ -37,13 +37,13 @@ TEST_CASE("parser_plus_left_associative", "[parser]") {
     parser.parse();
 
     auto result = parser.get_ast();
-    auto expect = make_shared<ast::ArithmeticBinary>(
-            make_shared<ast::ArithmeticBinary>(
-                    make_shared<ast::IntConstant>(1),
+    auto expect = new ast::ArithmeticBinary(
+            new ast::ArithmeticBinary(
+                    new ast::IntConstant(1),
                     ast::ArithmeticBinary::Operation::PLUS,
-                    make_shared<ast::IntConstant>(2)),
+                    new ast::IntConstant(2)),
             ast::ArithmeticBinary::Operation::PLUS,
-            make_shared<ast::IntConstant>(3));
+            new ast::IntConstant(3));
 
     REQUIRE(expect->equals(result));
 }
@@ -61,13 +61,13 @@ TEST_CASE("parser_plus_multiply_precedence", "[parser]") {
     parser.parse();
 
     auto result = parser.get_ast();
-    auto expect = make_shared<ast::ArithmeticBinary>(
-            make_shared<ast::IntConstant>(1),
+    auto expect = new ast::ArithmeticBinary(
+            new ast::IntConstant(1),
             ast::ArithmeticBinary::Operation::PLUS,
-            make_shared<ast::ArithmeticBinary>(
-                    make_shared<ast::IntConstant>(2),
+            new ast::ArithmeticBinary(
+                    new ast::IntConstant(2),
                     ast::ArithmeticBinary::Operation::MULTIPLY,
-                    make_shared<ast::IntConstant>(3)));
+                    new ast::IntConstant(3)));
 
     REQUIRE(expect->equals(result));
 }

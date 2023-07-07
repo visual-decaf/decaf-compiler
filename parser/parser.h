@@ -13,7 +13,7 @@ class Parser {
     friend class yy::parser;
 
 public:
-    using ast_ptr = std::shared_ptr<decaf::ast::Expr>;
+    using ast_ptr = decaf::ast::Expr*;
     void parse();
     ast_ptr get_ast();
 
@@ -26,6 +26,6 @@ private:
     yy::parser parser_impl{*this};
     decaf::Scanner::token_stream token_stream;
     decaf::Scanner::token_stream::iterator next_token;
-    ast_ptr ast_root{};
+    ast_ptr ast_root{nullptr};
 };
 } // namespace decaf

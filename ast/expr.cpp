@@ -1,20 +1,20 @@
 #include "expr.h"
 
-bool decaf::ast::ArithmeticBinary::equals(std::shared_ptr<Expr> ptr) {
-    auto arith = std::dynamic_pointer_cast<ArithmeticBinary>(ptr);
+bool decaf::ast::ArithmeticBinary::equals(Expr* ptr) {
+    auto arith = dynamic_cast<ArithmeticBinary*>(ptr);
 
     // Not the same type
-    if (!arith) {
+    if (arith == nullptr) {
         return false;
     }
 
     return this->op == arith->op && this->left->equals(arith->left) && this->right->equals(arith->right);
 }
 
-bool decaf::ast::IntConstant::equals(std::shared_ptr<Expr> ptr) {
-    auto val = std::dynamic_pointer_cast<IntConstant>(ptr);
+bool decaf::ast::IntConstant::equals(Expr* ptr) {
+    auto val = dynamic_cast<IntConstant*>(ptr);
 
-    if (!val) {
+    if (val == nullptr) {
         return false;
     }
 

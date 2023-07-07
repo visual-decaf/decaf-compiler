@@ -19,8 +19,8 @@
     using namespace decaf::ast;
 }
 
-%nterm <std::shared_ptr<decaf::ast::Expr>> arithmeticBinaryExpr
-%nterm <std::shared_ptr<decaf::ast::IntConstant>> intConstant
+%nterm <decaf::ast::Expr*> arithmeticBinaryExpr
+%nterm <decaf::ast::IntConstant*> intConstant
 
 %token <int> INTEGER
 %token <int> HEX_INTEGER
@@ -46,28 +46,28 @@ arithmeticBinaryExpr:
         $$ = $1;
     }
     | arithmeticBinaryExpr PLUS arithmeticBinaryExpr {
-        $$ = make_shared<ArithmeticBinary> (
+        $$ = new ArithmeticBinary (
             $1,
             ArithmeticBinary::Operation::PLUS,
             $3
         );
     }
     | arithmeticBinaryExpr MINUS arithmeticBinaryExpr {
-        $$ = make_shared<ArithmeticBinary> (
+        $$ = new ArithmeticBinary (
             $1,
             ArithmeticBinary::Operation::MINUS,
             $3
         );
     }
     | arithmeticBinaryExpr STAR arithmeticBinaryExpr {
-        $$ = make_shared<ArithmeticBinary> (
+        $$ = new ArithmeticBinary (
             $1,
             ArithmeticBinary::Operation::MULTIPLY,
             $3
         );
     }
     | arithmeticBinaryExpr SLASH arithmeticBinaryExpr {
-        $$ = make_shared<ArithmeticBinary> (
+        $$ = new ArithmeticBinary (
             $1,
             ArithmeticBinary::Operation::DIVIDE,
             $3
@@ -76,10 +76,10 @@ arithmeticBinaryExpr:
 
 intConstant:
     INTEGER {
-        $$ = make_shared<IntConstant>($1);
+        $$ = new IntConstant($1);
     } |
     HEX_INTEGER {
-        $$ = make_shared<IntConstant>($1);
+        $$ = new IntConstant($1);
     }
 
 %%
