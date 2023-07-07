@@ -1,4 +1,5 @@
 #include "token.h"
+#include <boost/json.hpp>
 
 std::ostream& operator<<(std::ostream& os, const decaf::token& tok) {
     os << '[' << decaf::token_name_of[tok.type] << ", " << tok.lexeme << ']';
@@ -12,3 +13,19 @@ std::map<decaf::token_type, std::string> decaf::token_name_of{
         {token_type ::MINUS, "MINUS"},
         {token_type ::STAR, "STAR"},
         {token_type ::SLASH, "SLASH"}};
+
+decaf::token::token(token_type _type, const std::string& lexeme) {
+    this->type = _type;
+    this->lexeme = lexeme;
+}
+
+bool decaf::token::operator==(const token& rhs) const {
+    return this->type == rhs.type && this->lexeme == rhs.lexeme;
+}
+
+boost::json::value decaf::token::to_json() {
+    boost::json::value result = {
+            {"type", decaf::token_name_of.at(type)},
+            {"lexeme", lexeme}};
+    return result;
+}

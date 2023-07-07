@@ -25,3 +25,4 @@ include(CTest)
 include(Catch)
 
 add_subdirectory(tests)
+add_subdirectory(apis)
