@@ -2,6 +2,7 @@
 
 #include "parser_impl.h"
 #include "token.h"
+#include "token_stream.h"
 #include <FlexLexer.h>
 #include <string>
 #include <vector>
@@ -9,7 +10,7 @@
 namespace decaf {
 class Scanner: yyFlexLexer {
 public:
-    using token_stream = std::vector<token>;
+    // using token_stream = std::vector<token>;
     using yyFlexLexer::yyFlexLexer;
 
     explicit Scanner(std::istream& is):

@@ -28,3 +28,10 @@ include(CTest)
 include(Catch)
 
 add_subdirectory(tests)
+add_subdirectory(apis)
+
+add_custom_target(graphviz
+        COMMAND ${CMAKE_COMMAND} "--graphviz=dependency.dot" .
+        COMMAND dot -Tpng dependency.dot -o dependency.png
+        WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+        )
