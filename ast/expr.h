@@ -3,6 +3,7 @@
 #include "ast_basic.h"
 #include <any>
 #include <memory>
+#include <utility>
 
 namespace decaf {
 struct ExprVisitor {
@@ -14,6 +15,7 @@ struct ExprVisitor {
 namespace decaf::ast {
 struct Expr {
     virtual std::any accept(ExprVisitor&) = 0;
+    virtual bool equals(std::shared_ptr<Expr>) = 0;
 };
 
 struct ArithmeticBinary: Expr, public std::enable_shared_from_this<ArithmeticBinary> {
@@ -37,6 +39,7 @@ struct ArithmeticBinary: Expr, public std::enable_shared_from_this<ArithmeticBin
     std::any accept(ExprVisitor& visitor) override {
         return visitor.visitArithmeticBinary(shared_from_this());
     }
+    bool equals(std::shared_ptr<Expr> ptr) override;
 };
 
 struct IntConstant: Expr, public std::enable_shared_from_this<IntConstant> {
@@ -45,5 +48,6 @@ struct IntConstant: Expr, public std::enable_shared_from_this<IntConstant> {
     std::any accept(ExprVisitor& visitor) override {
         return visitor.visitIntConstant(shared_from_this());
     }
+    bool equals(std::shared_ptr<Expr> ptr) override;
 };
 } // namespace decaf::ast
