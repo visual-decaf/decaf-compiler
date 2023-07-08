@@ -8,8 +8,8 @@ namespace decaf {
 
 class ByteCodeVisitor {
 public:
-    explicit ByteCodeVisitor(ByteCode code):
-        code{std::move(code)} {
+    explicit ByteCodeVisitor(ByteCode& code):
+        code{code} {
     }
 
     virtual void produce();
@@ -27,7 +27,7 @@ private:
     void produce_instruction();
     bool check_expected_byte(int count);
 
-    ByteCode code;
+    ByteCode& code;
     code_stream_type& code_stream = code.code_stream;
     iterator_type current_byte = code_stream.begin();
 };
