@@ -5,6 +5,7 @@ using namespace decaf;
 TEST_CASE("intconstant_json", "[ast]") {
     auto ast_root = new ast::IntConstant(3);
     boost::json::value expect = {
+            {"type", "int_constant"},
             {"value", 3}};
     REQUIRE(expect == ast_root->to_json());
     delete ast_root;
@@ -19,9 +20,10 @@ TEST_CASE("arithmetic_binary_json", "[ast]") {
             ast::ArithmeticBinary::Operation::DIVIDE,
             new ast::IntConstant(3));
     boost::json::value expect_json = {
+            {"type", "arithmetic_binary"},
             {"operation", "DIVIDE"},
-            {"left", {{"operation", "MULTIPLY"}, {"left", {{"value", 1}}}, {"right", {{"value", 2}}}}},
-            {"right", {{"value", 3}}}};
+            {"left", {{"type", "arithmetic_binary"}, {"operation", "MULTIPLY"}, {"left", {{"type", "int_constant"}, {"value", 1}}}, {"right", {{"node_type", "int_constant"}, {"value", 2}}}}},
+            {"right", {{"type", "int_constant"}, {"value", 3}}}};
     REQUIRE(expect_json == ast_root->to_json());
     delete ast_root;
 }
