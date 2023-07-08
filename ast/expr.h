@@ -52,7 +52,7 @@ struct ArithmeticBinary: public Expr {
     bool equals(Expr* ptr) override;
 };
 
-struct IntConstant: Expr, public std::enable_shared_from_this<IntConstant> {
+struct IntConstant: Expr {
     int value;
 
     explicit IntConstant(int val):
