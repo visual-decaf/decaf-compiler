@@ -4,14 +4,26 @@
 %define parse.error verbose
 %define parse.trace
 
-%code {
-    int yylex(yy::parser::value_type* yylval);
+%param{decaf::Parser& driver}
+
+%code requires {
+    #include <memory>
+    #include "ast_basic.h"
+    #include "parser_basic.h"
 }
 
-%nterm <int> expr
+%code top {
+    #include "expr.h"
+    #include "parser.h"
+    using namespace std;
+    using namespace decaf::ast;
+}
+
+%nterm <decaf::ast::Expr*> arithmeticBinaryExpr
+%nterm <decaf::ast::IntConstant*> intConstant
 
 %token <int> INTEGER
-%token HEX_INTEGER
+%token <int> HEX_INTEGER
 %token PLUS '+' MINUS '-'
 %token STAR '*' SLASH '/'
 %token EOL
@@ -24,18 +36,52 @@
 
 input: 
     %empty
-    | input expr EOL {
-        std::cout << $2 << std::endl;
+    | input arithmeticBinaryExpr EOL {
+        driver.ast_root = $2;
     }
     ;
 
-expr:
-    expr PLUS expr { $$ = $1 + $3; }
-    | expr MINUS expr { $$ = $1 - $3; }
-    | expr STAR expr { $$ = $1 * $3; }
-    | expr SLASH expr { $$ = $1 / $3; }
-    | INTEGER
-    ;
+arithmeticBinaryExpr: 
+    intConstant {
+        $$ = $1;
+    }
+    | arithmeticBinaryExpr PLUS arithmeticBinaryExpr {
+        $$ = new ArithmeticBinary (
+            $1,
+            ArithmeticBinary::Operation::PLUS,
+            $3
+        );
+    }
+    | arithmeticBinaryExpr MINUS arithmeticBinaryExpr {
+        $$ = new ArithmeticBinary (
+            $1,
+            ArithmeticBinary::Operation::MINUS,
+            $3
+        );
+    }
+    | arithmeticBinaryExpr STAR arithmeticBinaryExpr {
+        $$ = new ArithmeticBinary (
+            $1,
+            ArithmeticBinary::Operation::MULTIPLY,
+            $3
+        );
+    }
+    | arithmeticBinaryExpr SLASH arithmeticBinaryExpr {
+        $$ = new ArithmeticBinary (
+            $1,
+            ArithmeticBinary::Operation::DIVIDE,
+            $3
+        );
+    }
+
+intConstant:
+    INTEGER {
+        $$ = new IntConstant($1);
+    } |
+    HEX_INTEGER {
+        $$ = new IntConstant($1);
+    }
+
 %%
 
 void yy::parser::error(const std::string& msg) {
