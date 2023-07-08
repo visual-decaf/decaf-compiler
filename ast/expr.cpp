@@ -1,10 +1,10 @@
 #include "expr.h"
 
-std::map<decaf::ast::ArithmeticBinary::Operation, std::string> decaf::ast::operation_name{
-        {decaf::ast::ArithmeticBinary::Operation::PLUS, "PLUS"},
-        {decaf::ast::ArithmeticBinary::Operation::MINUS, "MINUS"},
-        {decaf::ast::ArithmeticBinary::Operation::MULTIPLY, "MULTIPLY"},
-        {decaf::ast::ArithmeticBinary::Operation::DIVIDE, "DIVIDE"}};
+const std::map<decaf::ast::ArithmeticBinary::Operation, std::string> decaf::ast::ArithmeticBinary::operation_name_of = {
+        {Operation::PLUS, "PLUS"},
+        {Operation::MINUS, "MINUS"},
+        {Operation::MULTIPLY, "MULTIPLY"},
+        {Operation::DIVIDE, "DIVIDE"}};
 
 bool decaf::ast::ArithmeticBinary::equals(Expr* ptr) {
     auto arith = dynamic_cast<ArithmeticBinary*>(ptr);
@@ -19,7 +19,7 @@ bool decaf::ast::ArithmeticBinary::equals(Expr* ptr) {
 
 boost::json::value decaf::ast::ArithmeticBinary::to_json() {
     boost::json::object result;
-    result["operation"] = decaf::ast::operation_name.at(this->op);
+    result["operation"] = operation_name_of.at(this->op);
     result["left"] = this->left->to_json();
     result["right"] = this->right->to_json();
     return result;

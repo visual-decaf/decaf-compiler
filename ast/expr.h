@@ -34,6 +34,8 @@ struct ArithmeticBinary: public Expr {
     Operation op;
     Expr* right;
 
+    static const std::map<Operation, std::string> operation_name_of;
+
     ArithmeticBinary(Expr* left, Operation op, Expr* right):
         left{left}, op{op}, right{right} {
     }
@@ -56,8 +58,6 @@ struct ArithmeticBinary: public Expr {
     bool equals(Expr* ptr) override;
     boost::json::value to_json() override;
 };
-
-extern std::map<decaf::ast::ArithmeticBinary::Operation, std::string> operation_name;
 
 struct IntConstant: Expr, public std::enable_shared_from_this<IntConstant> {
     int value;
