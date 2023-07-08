@@ -7,14 +7,14 @@ std::ostream& operator<<(std::ostream& os, const decaf::token& tok) {
 }
 
 std::map<decaf::token_type, std::string> decaf::token_name_of{
-        {token_type ::INTEGER, "INTEGER"},
-        {token_type ::HEX_INTEGER, "HEX_INTEGER"},
-        {token_type ::PLUS, "PLUS"},
-        {token_type ::MINUS, "MINUS"},
-        {token_type ::STAR, "STAR"},
-        {token_type ::SLASH, "SLASH"},
-        {token_type ::EOL, "EOL"},
-        {token_type ::YYEOF, "EOF"}};
+    {token_type ::INTEGER, "INTEGER"},
+    {token_type ::HEX_INTEGER, "HEX_INTEGER"},
+    {token_type ::PLUS, "PLUS"},
+    {token_type ::MINUS, "MINUS"},
+    {token_type ::STAR, "STAR"},
+    {token_type ::SLASH, "SLASH"},
+    {token_type ::EOL, "EOL"},
+    {token_type ::YYEOF, "EOF"}};
 
 decaf::token::token(token_type _type, const std::string& lexeme) {
     this->type = _type;
@@ -27,7 +27,7 @@ bool decaf::token::operator==(const token& rhs) const {
 
 boost::json::value decaf::token::to_json() {
     boost::json::value result = {
-            {"type", decaf::token_name_of.at(type)},
-            {"lexeme", lexeme}};
+        {"type", decaf::token_name_of.at(type)},
+        {"lexeme", lexeme}};
     return result;
 }
