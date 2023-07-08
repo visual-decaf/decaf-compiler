@@ -7,6 +7,12 @@ namespace decaf {
 // TODO: Add constant table later here
 class Program {
 public:
+    Program() = default;
+
+    explicit Program(ByteCode _code):
+        code{std::move(_code)} {
+    }
+
     void emit(ByteCode::code_type b) {
         code.emit(b);
     }

@@ -22,7 +22,7 @@ public:
 
 private:
     ast::Expr* ast_root;
-    Program prog;
+    Program prog{};
 };
 
 } // namespace decaf

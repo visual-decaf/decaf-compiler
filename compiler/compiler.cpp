@@ -30,3 +30,11 @@ std::any decaf::Compiler::visitIntConstant(decaf::ast::IntConstant* constant) {
             constant->value);
     return {};
 }
+
+void decaf::Compiler::compile() {
+    ast_root->accept(*this);
+}
+
+decaf::Program decaf::Compiler::get_program() {
+    return prog;
+}
