@@ -12,10 +12,10 @@ std::ostream& operator<<(std::ostream& os, const decaf::ByteCode&);
 
 namespace decaf {
 
-class ByteCodeVisitor;
+class ByteCodeDriver;
 
 class ByteCode {
-    friend class ByteCodeVisitor;
+    friend class ByteCodeDriver;
     friend std::ostream& ::operator<<(std::ostream& os, const decaf::ByteCode&);
 
 public:
