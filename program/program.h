@@ -11,9 +11,12 @@ std::ostream& operator<<(std::ostream& os, const decaf::Program&);
 
 namespace decaf {
 
+class VirtualMachine;
+
 // TODO: Add constant table later here
 class Program {
     friend std::ostream& ::operator<<(std::ostream& os, const decaf::Program&);
+    friend class VirtualMachine;
 
 public:
     Program() = default;
