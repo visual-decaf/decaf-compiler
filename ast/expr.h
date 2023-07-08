@@ -59,7 +59,7 @@ struct ArithmeticBinary: public Expr {
     boost::json::value to_json() override;
 };
 
-struct IntConstant: Expr, public std::enable_shared_from_this<IntConstant> {
+struct IntConstant: Expr {
     int value;
 
     explicit IntConstant(int val):
