@@ -22,7 +22,11 @@ TEST_CASE("arithmetic_binary_json", "[ast]") {
     boost::json::value expect_json = {
             {"type", "arithmetic_binary"},
             {"operation", "DIVIDE"},
-            {"left", {{"type", "arithmetic_binary"}, {"operation", "MULTIPLY"}, {"left", {{"type", "int_constant"}, {"value", 1}}}, {"right", {{"node_type", "int_constant"}, {"value", 2}}}}},
+            {"left", boost::json::object{
+                             {"type", "arithmetic_binary"},
+                             {"operation", "MULTIPLY"},
+                             {"left", {{"type", "int_constant"}, {"value", 1}}},
+                             {"right", {{"type", "int_constant"}, {"value", 2}}}}},
             {"right", {{"type", "int_constant"}, {"value", 3}}}};
     REQUIRE(expect_json == ast_root->to_json());
     delete ast_root;
