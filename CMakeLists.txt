@@ -33,6 +33,7 @@ include(Catch)
 
 add_subdirectory(tests)
 add_subdirectory(apis)
+add_subdirectory(cli)
 
 add_custom_target(graphviz
         COMMAND ${CMAKE_COMMAND} "--graphviz=dependency.dot" .
