@@ -22,6 +22,7 @@ add_subdirectory(token)
 add_subdirectory(ast)
 add_subdirectory(scanner)
 add_subdirectory(parser)
+add_subdirectory(byte_code)
 
 find_package(Catch2 3 REQUIRED)
 include(CTest)
