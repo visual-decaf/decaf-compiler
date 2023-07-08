@@ -120,7 +120,7 @@ TEST_CASE("compiler_plus_minus", "[compiler]") {
     delete input_ast;
 }
 
-TEST_CASE("parser_multiply_divide", "[parser]") {
+TEST_CASE("compiler_multiply_divide", "[compiler]") {
     using namespace decaf;
     auto input_ast = new ast::ArithmeticBinary(
             new ast::ArithmeticBinary(
