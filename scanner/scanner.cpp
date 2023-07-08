@@ -12,7 +12,8 @@ void Scanner::scan() {
 }
 
 void Scanner::scan_line() {
-    while (yylex() != token_type::EOL)
+    int result;
+    while ((result = yylex()), result != token_type::YYEOF && result != token_type::EOL)
         ;
 }
 
