@@ -1,11 +1,20 @@
 #pragma once
 
 #include "byte_code.h"
+#include <iostream>
+
+namespace decaf {
+class Program;
+}
+
+std::ostream& operator<<(std::ostream& os, const decaf::Program&);
 
 namespace decaf {
 
 // TODO: Add constant table later here
 class Program {
+    friend std::ostream& ::operator<<(std::ostream& os, const decaf::Program&);
+
 public:
     Program() = default;
 

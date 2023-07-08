@@ -1,8 +1,14 @@
 #pragma once
 
 #include <cstdint>
+#include <iostream>
 #include <utility>
 #include <vector>
+
+namespace decaf {
+class ByteCode;
+}
+std::ostream& operator<<(std::ostream& os, const decaf::ByteCode&);
 
 namespace decaf {
 
@@ -10,6 +16,7 @@ class ByteCodeVisitor;
 
 class ByteCode {
     friend class ByteCodeVisitor;
+    friend std::ostream& ::operator<<(std::ostream& os, const decaf::ByteCode&);
 
 public:
     using code_type = uint8_t;
