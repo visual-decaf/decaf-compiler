@@ -11,6 +11,11 @@ void Scanner::scan() {
         ;
 }
 
+void Scanner::scan_line() {
+    while (yylex() != token_type::EOL)
+        ;
+}
+
 token_stream Scanner::get_tokens() {
     return tokens;
 }

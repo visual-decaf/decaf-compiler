@@ -20,6 +20,7 @@ public:
     int yylex() override;
     token_stream get_tokens();
     void scan();
+    void scan_line();
 
 private:
     // add token into token stream
