@@ -25,6 +25,7 @@ add_subdirectory(parser)
 add_subdirectory(byte_code)
 add_subdirectory(program)
 add_subdirectory(compiler)
+add_subdirectory(vm)
 
 find_package(Catch2 3 REQUIRED)
 include(CTest)
