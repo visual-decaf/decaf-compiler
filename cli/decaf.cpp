@@ -1,6 +1,7 @@
 #include "compiler.h"
 #include "parser.h"
 #include "scanner.h"
+#include "version.h"
 #include "vm.h"
 
 #include <iostream>
@@ -32,7 +33,7 @@ void run_repl() {
 }
 
 int main(int argc, char* argv[]) {
-    std::cout << "Visual Decaf 0.0.1" << std::endl;
+    std::cout << "Visual Decaf " PROJECT_VERSION << std::endl;
     run_repl();
     return 0;
 }
