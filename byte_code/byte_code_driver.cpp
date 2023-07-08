@@ -30,7 +30,7 @@ void decaf::ByteCodeDriver::produce_instruction() {
             // 0 Operand
         case Instruction ::GET_INSTANT:
             check_expected_byte(1);
-            visitor.op_GET_INSTANT(*(current_byte++));
+            visitor.op_GET_INSTANT(*(++current_byte));
             break;
     }
 }
