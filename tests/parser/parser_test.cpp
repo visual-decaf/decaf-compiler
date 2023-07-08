@@ -22,6 +22,8 @@ TEST_CASE("parser_main", "[parser]") {
             new ast::IntConstant(34));
 
     REQUIRE(expect->equals(result));
+    delete result;
+    delete expect;
 }
 
 TEST_CASE("parser_plus_left_associative", "[parser]") {
@@ -46,6 +48,8 @@ TEST_CASE("parser_plus_left_associative", "[parser]") {
             new ast::IntConstant(3));
 
     REQUIRE(expect->equals(result));
+    delete result;
+    delete expect;
 }
 
 TEST_CASE("parser_plus_multiply_precedence", "[parser]") {
@@ -70,6 +74,8 @@ TEST_CASE("parser_plus_multiply_precedence", "[parser]") {
                     new ast::IntConstant(3)));
 
     REQUIRE(expect->equals(result));
+    delete result;
+    delete expect;
 }
 
 TEST_CASE("parser_plus_minus", "[parser]") {
@@ -94,6 +100,8 @@ TEST_CASE("parser_plus_minus", "[parser]") {
             new ast::IntConstant(3));
 
     REQUIRE(expect->equals(result));
+    delete result;
+    delete expect;
 }
 
 TEST_CASE("parser_multiply_divide", "[parser]") {
@@ -118,4 +126,6 @@ TEST_CASE("parser_multiply_divide", "[parser]") {
             new ast::IntConstant(3));
 
     REQUIRE(expect->equals(result));
+    delete result;
+    delete expect;
 }
