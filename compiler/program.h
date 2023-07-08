@@ -23,6 +23,10 @@ public:
         code.emit(b2);
     }
 
+    bool operator==(const Program& rhs) {
+        return this->code == rhs.code;
+    }
+
 private:
     ByteCode code;
 };

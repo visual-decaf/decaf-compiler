@@ -33,7 +33,15 @@ public:
         code_stream{std::move(_code_stream)} {
     }
 
+    ByteCode(std::initializer_list<code_type> _code_stream):
+        code_stream{_code_stream} {
+    }
+
     void emit(code_type b);
+
+    bool operator==(const ByteCode& rhs) {
+        return this->code_stream == rhs.code_stream;
+    }
 
 private:
     code_stream_type code_stream;
