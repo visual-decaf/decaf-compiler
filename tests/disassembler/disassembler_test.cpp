@@ -1,10 +1,10 @@
 #include "byte_code_driver.h"
-#include "deassembler.h"
+#include "disassembler.h"
 #include <catch2/catch_test_macros.hpp>
 
 using namespace decaf;
 
-TEST_CASE("deasm_main", "[deasm]") {
+TEST_CASE("disassembler_main", "[disassembler]") {
     ByteCode byte_code = {
         ByteCode::Instruction ::GET_INSTANT,
         1,
@@ -12,6 +12,6 @@ TEST_CASE("deasm_main", "[deasm]") {
         2,
         ByteCode::Instruction ::PLUS,
     };
-    Deassembler deassembler;
-    ByteCodeDriver byte_code_driver{byte_code, deassembler};
+    Disassembler disassembler;
+    ByteCodeDriver byte_code_driver{byte_code, disassembler};
 }

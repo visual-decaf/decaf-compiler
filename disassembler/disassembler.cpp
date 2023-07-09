@@ -1,31 +1,31 @@
-#include "deassembler.h"
+#include "disassembler.h"
 
 using namespace decaf;
 
-void Deassembler::op_PLUS() {
+void Disassembler::op_PLUS() {
     this->assembly_code.emplace_back("PLUS");
 }
 
-void Deassembler::op_MINUS() {
+void Disassembler::op_MINUS() {
     this->assembly_code.emplace_back("MINUS");
 }
 
-void Deassembler::op_MULTIPLY() {
+void Disassembler::op_MULTIPLY() {
     this->assembly_code.emplace_back("MULTIPLY");
 }
 
-void Deassembler::op_DIVIDE() {
+void Disassembler::op_DIVIDE() {
     this->assembly_code.emplace_back("DIVIDE");
 }
 
-void Deassembler::op_MOD() {
+void Disassembler::op_MOD() {
     this->assembly_code.emplace_back("MOD");
 }
 
-void Deassembler::op_GET_INSTANT(uint8_t instant) {
+void Disassembler::op_GET_INSTANT(uint8_t instant) {
     this->assembly_code.emplace_back("GET_INSTANT " + instant);
 }
 
-Deassembler::assembly_code_type Deassembler::get_code() {
+Disassembler::assembly_code_type Disassembler::get_code() {
     return this->assembly_code;
 }

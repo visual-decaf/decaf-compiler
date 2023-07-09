@@ -6,12 +6,12 @@
 
 namespace decaf {
 
-class Deassembler:
+class Disassembler:
     public ByteCodeVisitor {
 public:
     using assembly_code_type = std::vector<std::string>;
 
-    Deassembler() = default;
+    Disassembler() = default;
 
     void op_PLUS() override;
     void op_MINUS() override;
