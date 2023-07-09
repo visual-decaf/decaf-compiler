@@ -1,8 +1,11 @@
 #pragma once
 
 #include "ast_basic.h"
+#include "serializable.h"
 #include <any>
+#include <map>
 #include <memory>
+#include <string>
 #include <utility>
 
 namespace decaf {
@@ -13,9 +16,10 @@ struct ExprVisitor {
 } // namespace decaf
 
 namespace decaf::ast {
-struct Expr {
+struct Expr: public serializable {
     virtual std::any accept(ExprVisitor&) = 0;
     virtual bool equals(Expr* ptr) = 0;
+    virtual boost::json::value to_json() = 0;
     virtual ~Expr() = default;
 };
 
@@ -30,6 +34,8 @@ struct ArithmeticBinary: public Expr {
     };
     Operation op;
     Expr* right;
+
+    static const std::map<Operation, std::string> operation_name_of;
 
     ArithmeticBinary(Expr* left, Operation op, Expr* right):
         left{left}, op{op}, right{right} {
@@ -51,6 +57,7 @@ struct ArithmeticBinary: public Expr {
         return visitor.visitArithmeticBinary(this);
     }
     bool equals(Expr* ptr) override;
+    boost::json::value to_json() override;
 };
 
 struct IntConstant: Expr {
@@ -69,5 +76,6 @@ struct IntConstant: Expr {
         return visitor.visitIntConstant(this);
     }
     bool equals(Expr* ptr) override;
+    boost::json::value to_json() override;
 };
 } // namespace decaf::ast
