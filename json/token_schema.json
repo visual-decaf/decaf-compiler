@@ -1,0 +1,24 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "title": "Visual Decaf Token Schema",
+    "type": "object",
+    "properties": {
+        "type": {
+            "type": "string",
+            "enum": [
+                "INTEGER",
+                "PLUS",
+                "MINUS",
+                "MULTIPLY",
+                "DIVIDE"
+            ]
+        },
+        "lexeme": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "type",
+        "lexeme"
+    ]
+}

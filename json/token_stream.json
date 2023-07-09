@@ -1,0 +1,14 @@
+[
+    {
+        "lexeme": "123",
+        "type": "INTEGER"
+    },
+    {
+        "lexeme": "+",
+        "type": "PLUS"
+    },
+    {
+        "lexeme": "456",
+        "type": "INTEGER"
+    }
+]
