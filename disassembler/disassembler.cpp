@@ -23,7 +23,7 @@ void Disassembler::op_MOD() {
 }
 
 void Disassembler::op_GET_INSTANT(uint8_t instant) {
-    this->assembly_code.emplace_back("GET_INSTANT " + instant);
+    this->assembly_code.emplace_back("GET_INSTANT " + std::to_string(static_cast<int>(instant)));
 }
 
 Disassembler::assembly_code_type Disassembler::get_code() {
