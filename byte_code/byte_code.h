@@ -1,5 +1,6 @@
 #pragma once
 
+#include "serializable.h"
 #include <cstdint>
 #include <iostream>
 #include <utility>
@@ -14,7 +15,7 @@ namespace decaf {
 
 class ByteCodeDriver;
 
-class ByteCode {
+class ByteCode: public serializable {
     friend class ByteCodeDriver;
     friend std::ostream& ::operator<<(std::ostream& os, const decaf::ByteCode&);
 
@@ -50,6 +51,8 @@ public:
     bool operator==(const ByteCode& rhs) {
         return this->code_stream == rhs.code_stream;
     }
+
+    boost::json::value to_json() override;
 
 private:
     code_stream_type code_stream;
