@@ -6,10 +6,10 @@
 using namespace std;
 int main() {
     decaf::token_stream tokens = {
-            {decaf::token_type ::PLUS, "+"},
-            {decaf::token_type ::MINUS, "-"},
-            {decaf::token_type ::STAR, "*"},
-            {decaf::token_type ::SLASH, "/"}};
+        {decaf::token_type ::PLUS, "+"},
+        {decaf::token_type ::MINUS, "-"},
+        {decaf::token_type ::STAR, "*"},
+        {decaf::token_type ::SLASH, "/"}};
 
     auto result = tokens.to_json();
     auto result_str = serialize(result);
