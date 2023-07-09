@@ -10,5 +10,13 @@
     {
         "lexeme": "456",
         "type": "INTEGER"
+    },
+    {
+        "lexeme": "/",
+        "type": "DIVIDE"
+    },
+    {
+        "lexeme": "/",
+        "type": "DIVIDE"
     }
 ]

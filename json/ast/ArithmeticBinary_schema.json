@@ -1,0 +1,48 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "title": "Visual Decaf ArithmeticBinary Schema",
+    "type": "object",
+    "properties": {
+        "type": {
+            "type": "string",
+            "enum": [
+                "ArithmeticBinary"
+            ]
+        },
+        "operation": {
+            "type": "string",
+            "enum": [
+                "PLUS",
+                "MINUS",
+                "MULTIPLY",
+                "DIVIDE"
+            ]
+        },
+        "left": {
+            "oneOf": [
+                {
+                    "$ref": "#"
+                },
+                {
+                    "$ref": "./IntConstant_schema.json"
+                }
+            ]
+        },
+        "right": {
+            "oneOf": [
+                {
+                    "$ref": "#"
+                },
+                {
+                    "$ref": "./IntConstant_schema.json"
+                }
+            ]
+        }
+    },
+    "required": [
+        "type",
+        "operation",
+        "left",
+        "right"
+    ]
+}

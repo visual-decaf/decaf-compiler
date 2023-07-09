@@ -1,0 +1,20 @@
+{
+    "type": "ArithmeticBinary",
+    "operation": "DIVIDE",
+    "left": {
+        "type": "ArithmeticBinary",
+        "operation": "MULTIPLY",
+        "left": {
+            "type": "IntConstant",
+            "value": 1
+        },
+        "right": {
+            "type": "IntConstant",
+            "value": 2
+        }
+    },
+    "right": {
+        "type": "IntConstant",
+        "value": 3
+    }
+}

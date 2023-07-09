@@ -1,0 +1,13 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "title": "Visual Decaf Expression Schema",
+    "type": "object",
+    "oneOf": [
+        {
+            "$ref": "./ArithmeticBinary_schema.json"
+        },
+        {
+            "$ref": "./IntConstant_schema.json"
+        }
+    ]
+}
