@@ -28,6 +28,7 @@ HEX_INTEGER ("0x"|"0X"){HEX_DIGIT}+
 "-" { emit({token_type::MINUS, YYText()}); }
 "*" { emit({token_type::STAR, YYText()}); }
 "/" { emit({token_type::SLASH, YYText()}); }
+"%" { emit({token_type::PERCENT, YYText()}); }
 [ \t] {}
 "\n" { emit({token_type::EOL, YYText()}); }
 <<EOF>> {
