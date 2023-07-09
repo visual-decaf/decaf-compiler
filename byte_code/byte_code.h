@@ -30,7 +30,8 @@ public:
             MINUS,
             MULTIPLY,
             DIVIDE,
-            GET_INSTANT
+            GET_INSTANT,
+            GET_INT_CONSTANT,
         };
     };
 

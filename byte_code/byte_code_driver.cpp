@@ -32,6 +32,10 @@ void decaf::ByteCodeDriver::produce_instruction() {
             check_expected_byte(1);
             visitor.op_GET_INSTANT(*(++current_byte));
             break;
+        case Instruction ::GET_INT_CONSTANT:
+            check_expected_byte(1);
+            visitor.op_GET_INT_CONSTANT(*(++current_byte));
+            break;
     }
 }
 bool decaf::ByteCodeDriver::check_expected_byte(int count) {
