@@ -8,6 +8,8 @@ std::any decaf::Compiler::visitArithmeticBinary(decaf::ast::ArithmeticBinary* bi
     binary->left->accept(*this);
     binary->right->accept(*this);
 
+    // TODO: Add type check here
+
     // Finally put instruction for this operation
     using Operation = ast::ArithmeticBinary::Operation;
     using Instruction = ByteCode::Instruction;
