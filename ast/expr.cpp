@@ -1,10 +1,10 @@
 #include "expr.h"
 
 const std::map<decaf::ast::ArithmeticBinary::Operation, std::string> decaf::ast::ArithmeticBinary::operation_name_of = {
-        {Operation::PLUS, "PLUS"},
-        {Operation::MINUS, "MINUS"},
-        {Operation::MULTIPLY, "MULTIPLY"},
-        {Operation::DIVIDE, "DIVIDE"}};
+    {Operation::PLUS, "PLUS"},
+    {Operation::MINUS, "MINUS"},
+    {Operation::MULTIPLY, "MULTIPLY"},
+    {Operation::DIVIDE, "DIVIDE"}};
 
 bool decaf::ast::ArithmeticBinary::equals(Expr* ptr) {
     auto arith = dynamic_cast<ArithmeticBinary*>(ptr);
@@ -19,7 +19,7 @@ bool decaf::ast::ArithmeticBinary::equals(Expr* ptr) {
 
 boost::json::value decaf::ast::ArithmeticBinary::to_json() {
     boost::json::object result;
-    result["type"] = "arithmetic_binary";
+    result["type"] = "ArithmeticBinary";
     result["operation"] = operation_name_of.at(this->op);
     result["left"] = this->left->to_json();
     result["right"] = this->right->to_json();
@@ -38,7 +38,7 @@ bool decaf::ast::IntConstant::equals(Expr* ptr) {
 
 boost::json::value decaf::ast::IntConstant::to_json() {
     boost::json::value result = {
-            {"type", "int_constant"},
-            {"value", this->value}};
+        {"type", "IntConstant"},
+        {"value", this->value}};
     return result;
 }
