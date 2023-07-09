@@ -1,6 +1,7 @@
 #pragma once
 
 #include "byte_code.h"
+#include "constant_pool.h"
 #include <iostream>
 
 namespace decaf {
@@ -13,7 +14,6 @@ namespace decaf {
 
 class VirtualMachine;
 
-// TODO: Add constant table later here
 class Program {
     friend std::ostream& ::operator<<(std::ostream& os, const decaf::Program&);
     friend class VirtualMachine;
@@ -35,12 +35,15 @@ public:
         code.emit(b2);
     }
 
+    IntConstantPool::index_type add_int_constant(const int& val);
+
     bool operator==(const Program& rhs) {
         return this->code == rhs.code;
     }
 
 private:
     ByteCode code;
+    IntConstantPool i_pool;
 };
 
 } // namespace decaf
