@@ -29,7 +29,12 @@ HEX_INTEGER ("0x"|"0X"){HEX_DIGIT}+
 "*" { emit({token_type::STAR, YYText()}); }
 "/" { emit({token_type::SLASH, YYText()}); }
 [ \t] {}
-"\n" { emit({token_type::EOL, YYText()}); }
+
+"\n" {
+    emit({token_type::EOL, YYText()});
+    return token_type::EOL;
+ }
+
 <<EOF>> {
     emit({token_type::YYEOF});
     return token_type::YYEOF;
