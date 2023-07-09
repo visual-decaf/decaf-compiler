@@ -4,7 +4,8 @@ const std::map<decaf::ast::ArithmeticBinary::Operation, std::string> decaf::ast:
     {Operation::PLUS, "PLUS"},
     {Operation::MINUS, "MINUS"},
     {Operation::MULTIPLY, "MULTIPLY"},
-    {Operation::DIVIDE, "DIVIDE"}};
+    {Operation::DIVIDE, "DIVIDE"},
+    {Operation::MOD, "MOD"}};
 
 bool decaf::ast::ArithmeticBinary::equals(Expr* ptr) {
     auto arith = dynamic_cast<ArithmeticBinary*>(ptr);
