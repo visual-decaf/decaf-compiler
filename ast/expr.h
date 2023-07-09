@@ -29,7 +29,8 @@ struct ArithmeticBinary: public Expr {
         PLUS,
         MINUS,
         MULTIPLY,
-        DIVIDE
+        DIVIDE,
+        MOD
     };
     Operation op;
     Expr* right;

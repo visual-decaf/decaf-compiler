@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.24)
-project(decaf_compiler VERSION 0.0.1)
+project(decaf_compiler VERSION 0.0.2)
 set(CMAKE_CXX_STANDARD 17)
+
+configure_file(meta/version.h.in ${CMAKE_BINARY_DIR}/version.h)
 
 find_package(FLEX)
 find_package(BISON)
@@ -33,6 +35,7 @@ include(Catch)
 
 add_subdirectory(tests)
 add_subdirectory(apis)
+add_subdirectory(cli)
 
 add_custom_target(graphviz
         COMMAND ${CMAKE_COMMAND} "--graphviz=dependency.dot" .

@@ -25,12 +25,12 @@
 %token <int> INTEGER
 %token <int> HEX_INTEGER
 %token PLUS '+' MINUS '-'
-%token STAR '*' SLASH '/'
+%token STAR '*' SLASH '/' PERCENT '%'
 %token EOL
 
 /* Expressions */
 %left PLUS MINUS
-%left STAR SLASH
+%left STAR SLASH PERCENT
 
 %%
 
@@ -70,6 +70,13 @@ arithmeticBinaryExpr:
         $$ = new ArithmeticBinary (
             $1,
             ArithmeticBinary::Operation::DIVIDE,
+            $3
+        );
+    }
+    | arithmeticBinaryExpr PERCENT arithmeticBinaryExpr {
+        $$ = new ArithmeticBinary (
+            $1,
+            ArithmeticBinary::Operation::MOD,
             $3
         );
     }
