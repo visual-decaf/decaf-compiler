@@ -11,7 +11,7 @@ decaf::IntConstantPool::index_type decaf::IntConstantPool::add_constant(const in
     }
 
     pool.push_back(val);
-    return pool.size();
+    return pool.size() - 1;
 }
 
 int decaf::IntConstantPool::get_constant(decaf::IntConstantPool::index_type index) {
