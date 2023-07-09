@@ -1,7 +1,14 @@
 #pragma once
 
 #include <cstddef>
+#include <iostream>
 #include <vector>
+
+namespace decaf {
+class IntConstantPool;
+}
+
+std::ostream& operator<<(std::ostream& os, const decaf::IntConstantPool&);
 
 namespace decaf {
 
@@ -15,6 +22,8 @@ public:
 
 class IntConstantPool:
     public BasicConstantPool<int> {
+    friend std::ostream& ::operator<<(std::ostream& os, const decaf::IntConstantPool&);
+
 public:
     index_type add_constant(const int& val) override;
     int get_constant(index_type index) override;

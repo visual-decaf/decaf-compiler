@@ -17,3 +17,10 @@ decaf::IntConstantPool::index_type decaf::IntConstantPool::add_constant(const in
 int decaf::IntConstantPool::get_constant(decaf::IntConstantPool::index_type index) {
     return pool[index];
 }
+
+std::ostream& operator<<(std::ostream& os, const decaf::IntConstantPool& i_pool) {
+    for (decaf::IntConstantPool::index_type i = 0; i < i_pool.pool.size(); i++) {
+        os << "[" << i << "] = " << i_pool.pool[i] << ',';
+    }
+    return os;
+}
