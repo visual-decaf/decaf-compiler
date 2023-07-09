@@ -1,0 +1,3 @@
+add_executable(deasm_test deasm_test.cpp)
+target_link_libraries(deasm_test PRIVATE deassembler Catch2::Catch2WithMain)
+catch_discover_tests(deasm_test)
