@@ -26,6 +26,9 @@ void decaf::ByteCodeDriver::produce_instruction() {
         case Instruction ::DIVIDE:
             visitor.op_DIVIDE();
             break;
+        case Instruction ::MOD:
+            visitor.op_MOD();
+            break;
 
             // 0 Operand
         case Instruction ::GET_INSTANT:

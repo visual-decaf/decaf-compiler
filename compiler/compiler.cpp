@@ -8,6 +8,8 @@ std::any decaf::Compiler::visitArithmeticBinary(decaf::ast::ArithmeticBinary* bi
     binary->left->accept(*this);
     binary->right->accept(*this);
 
+    // TODO: Add type check here
+
     // Finally put instruction for this operation
     using Operation = ast::ArithmeticBinary::Operation;
     using Instruction = ByteCode::Instruction;
@@ -15,7 +17,8 @@ std::any decaf::Compiler::visitArithmeticBinary(decaf::ast::ArithmeticBinary* bi
         {Operation ::PLUS, Instruction ::PLUS},
         {Operation ::MINUS, Instruction ::MINUS},
         {Operation ::MULTIPLY, Instruction ::MULTIPLY},
-        {Operation ::DIVIDE, Instruction ::DIVIDE}};
+        {Operation ::DIVIDE, Instruction ::DIVIDE},
+        {Operation ::MOD, Instruction ::MOD}};
 
     prog.emit(code_for[binary->op]);
     return {};

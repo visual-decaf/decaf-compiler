@@ -26,14 +26,15 @@ TEST_CASE("scanner_main", "[scanner]") {
     }
 }
 
-TEST_CASE("scanner_plus_minus_star_slash", "[scanner]") {
-    auto result_token = scan_for("+ - * /");
+TEST_CASE("scanner_plus_minus_star_slash_percent", "[scanner]") {
+    auto result_token = scan_for("+ - * / %");
     using decaf::token_type;
     decaf::token_stream expected_token = {
         {token_type ::PLUS, "+"},
         {token_type ::MINUS, "-"},
         {token_type ::STAR, "*"},
         {token_type ::SLASH, "/"},
+        {token_type ::PERCENT, "%"},
         {token_type ::YYEOF}};
 
     REQUIRE(result_token.size() == expected_token.size());

@@ -30,6 +30,7 @@ public:
             MINUS,
             MULTIPLY,
             DIVIDE,
+            MOD,
             GET_INSTANT
         };
     };
