@@ -1,3 +1,4 @@
+#include "byte_code_driver.h"
 #include "deassembler.h"
 #include <catch2/catch_test_macros.hpp>
 
@@ -12,5 +13,5 @@ TEST_CASE("deasm_main", "[deasm]") {
         ByteCode::Instruction ::PLUS,
     };
     Deassembler deassembler;
-    ByteCodeDriver byte_code_driver;
+    ByteCodeDriver byte_code_driver{byte_code, deassembler};
 }
