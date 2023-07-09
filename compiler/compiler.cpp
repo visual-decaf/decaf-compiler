@@ -12,10 +12,10 @@ std::any decaf::Compiler::visitArithmeticBinary(decaf::ast::ArithmeticBinary* bi
     using Operation = ast::ArithmeticBinary::Operation;
     using Instruction = ByteCode::Instruction;
     static std::map<Operation, ByteCode::code_type> code_for{
-            {Operation ::PLUS, Instruction ::PLUS},
-            {Operation ::MINUS, Instruction ::MINUS},
-            {Operation ::MULTIPLY, Instruction ::MULTIPLY},
-            {Operation ::DIVIDE, Instruction ::DIVIDE}};
+        {Operation ::PLUS, Instruction ::PLUS},
+        {Operation ::MINUS, Instruction ::MINUS},
+        {Operation ::MULTIPLY, Instruction ::MULTIPLY},
+        {Operation ::DIVIDE, Instruction ::DIVIDE}};
 
     prog.emit(code_for[binary->op]);
     return {};
@@ -26,8 +26,8 @@ std::any decaf::Compiler::visitIntConstant(decaf::ast::IntConstant* constant) {
         throw std::runtime_error{"Int too large for IntConstant"};
     }
     prog.emit_bytes(
-            ByteCode::Instruction::GET_INSTANT,
-            constant->value);
+        ByteCode::Instruction::GET_INSTANT,
+        constant->value);
     return {};
 }
 
