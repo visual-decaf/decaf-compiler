@@ -73,6 +73,13 @@ arithmeticBinaryExpr:
             $3
         );
     }
+    | arithmeticBinaryExpr PERCENT arithmeticBinaryExpr {
+        $$ = new ArithmeticBinary (
+            $1,
+            ArithmeticBinary::Operation::MOD,
+            $3
+        );
+    }
 
 intConstant:
     INTEGER {
