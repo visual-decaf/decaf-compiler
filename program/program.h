@@ -20,9 +20,11 @@ class Program {
 
 public:
     Program() = default;
-
     explicit Program(ByteCode _code):
-        code{std::move(_code)} {
+        Program(std::move(_code), {}) {
+    }
+    Program(ByteCode _code, IntConstantPool _i_pool):
+        code{std::move(_code)}, i_pool{std::move(_i_pool)} {
     }
 
     void emit(ByteCode::code_type b) {

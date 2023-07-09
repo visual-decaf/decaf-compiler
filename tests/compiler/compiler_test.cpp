@@ -150,3 +150,32 @@ TEST_CASE("compiler_multiply_divide", "[compiler]") {
     REQUIRE(expect == result);
     delete input_ast;
 }
+
+TEST_CASE("compiler_int_constant_pool", "[compiler]") {
+    using namespace decaf;
+    auto input_ast = new ast::ArithmeticBinary(
+        new ast::IntConstant(10000),
+        ast::ArithmeticBinary::Operation::PLUS,
+        new ast::IntConstant(2345));
+
+    decaf::Compiler compiler{input_ast};
+    compiler.compile();
+
+    using Instruction = ByteCode::Instruction;
+    auto result = compiler.get_program();
+    auto expect = Program{
+        ByteCode{
+            Instruction ::GET_INT_CONSTANT,
+            0,
+            Instruction ::GET_INT_CONSTANT,
+            1,
+            Instruction ::PLUS,
+        },
+        IntConstantPool{
+            10000,
+            2345,
+        }};
+
+    REQUIRE(expect == result);
+    delete input_ast;
+}

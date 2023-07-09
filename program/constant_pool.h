@@ -25,6 +25,11 @@ class IntConstantPool:
     friend std::ostream& ::operator<<(std::ostream& os, const decaf::IntConstantPool&);
 
 public:
+    IntConstantPool() = default;
+    IntConstantPool(std::initializer_list<int> list):
+        pool(list) {
+    }
+
     index_type add_constant(const int& val) override;
     int get_constant(index_type index) override;
 
