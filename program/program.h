@@ -38,7 +38,7 @@ public:
     IntConstantPool::index_type add_int_constant(const int& val);
 
     bool operator==(const Program& rhs) {
-        return this->code == rhs.code;
+        return this->code == rhs.code && this->i_pool == rhs.i_pool;
     }
 
 private:

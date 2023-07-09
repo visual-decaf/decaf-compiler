@@ -28,6 +28,10 @@ public:
     index_type add_constant(const int& val) override;
     int get_constant(index_type index) override;
 
+    bool operator==(const IntConstantPool& rhs) {
+        return pool == rhs.pool;
+    }
+
 private:
     std::vector<int> pool;
 };
