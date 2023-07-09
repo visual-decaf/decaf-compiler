@@ -37,6 +37,14 @@ void decaf::VirtualMachine::op_DIVIDE() {
     stk.emplace(lhs / rhs);
 }
 
+void decaf::VirtualMachine::op_MOD() {
+    int rhs = std::any_cast<int>(stk.top());
+    stk.pop();
+    int lhs = std::any_cast<int>(stk.top());
+    stk.pop();
+    stk.emplace(lhs % rhs);
+}
+
 void decaf::VirtualMachine::op_GET_INSTANT(uint8_t instant) {
     stk.emplace(static_cast<int>(instant));
 }

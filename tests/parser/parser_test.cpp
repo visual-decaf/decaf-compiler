@@ -129,3 +129,25 @@ TEST_CASE("parser_multiply_divide", "[parser]") {
     delete result;
     delete expect;
 }
+
+TEST_CASE("parser_mod", "[parser]") {
+    token_stream tokenStream{
+        {token_type ::INTEGER, "15"},
+        {token_type ::PERCENT, "%"},
+        {token_type ::INTEGER, "7"},
+        {token_type ::EOL}};
+
+    decaf::Parser parser{tokenStream};
+    parser.parse();
+
+    auto result = parser.get_ast();
+    auto expect = new ast::ArithmeticBinary{
+        new ast::IntConstant(15),
+        ast::ArithmeticBinary::Operation::MOD,
+        new ast::IntConstant(7),
+    };
+
+    REQUIRE(expect->equals(result));
+    delete result;
+    delete expect;
+}
