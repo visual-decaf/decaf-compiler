@@ -11,6 +11,8 @@ class Deassembler:
 public:
     using assembly_code_type = std::vector<std::string>;
 
+    Deassembler() = default;
+
     void op_PLUS() override;
     void op_MINUS() override;
     void op_MULTIPLY() override;
