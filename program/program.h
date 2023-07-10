@@ -39,7 +39,7 @@ public:
 
     IntConstantPool::index_type add_int_constant(const int& val);
 
-    std::vector<int> IntConstantDetector(){
+    std::vector<int> IntConstantDetector() {
         logic_prog_instant.clear();
         code_stream = code.get_code_stream();
         current_byte = code_stream.begin();
@@ -48,7 +48,7 @@ public:
             switch (*current_byte) {
                     // No Operands
                 case Instruction ::PLUS:
-                    logic_prog_instant.push_back(int(*current_byte));
+                    logic_prog_instant.push_back(*current_byte);
                     break;
                 case Instruction ::MINUS:
                     logic_prog_instant.push_back(*current_byte);
@@ -72,14 +72,14 @@ public:
                     logic_prog_instant.push_back(*current_byte);
                     logic_prog_instant.push_back(i_pool.get_constant(*(++current_byte)));
                     break;
-                }
+            }
             current_byte++;
         }
         return logic_prog_instant;
     }
 
     bool operator==(Program& rhs) {
-        return IntConstantDetector()==rhs.IntConstantDetector();
+        return IntConstantDetector() == rhs.IntConstantDetector();
     }
 
     using code_stream_type = ByteCode::code_stream_type;

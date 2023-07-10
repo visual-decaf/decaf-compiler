@@ -204,3 +204,64 @@ TEST_CASE("compiler_int_constant_pool", "[compiler]") {
     REQUIRE(expect == result);
     delete input_ast;
 }
+
+TEST_CASE("compiler_int_constant_pool_2", "[compiler]") {
+    using namespace decaf;
+    auto input_ast = new ast::ArithmeticBinary(
+        new ast::IntConstant(10000),
+        ast::ArithmeticBinary::Operation::PLUS,
+        new ast::IntConstant(2345));
+
+    decaf::Compiler compiler{input_ast};
+    compiler.compile();
+
+    using Instruction = ByteCode::Instruction;
+    auto result = compiler.get_program();
+    auto expect = Program{
+        ByteCode{
+            Instruction ::GET_INT_CONSTANT,
+            1,
+            Instruction ::GET_INT_CONSTANT,
+            0,
+            Instruction ::PLUS,
+        },
+        IntConstantPool{
+            2345,
+            10000,
+        }};
+
+    REQUIRE(expect == result);
+    delete input_ast;
+}
+
+TEST_CASE("compiler_int_constant_pool_3", "[compiler]") {
+    using namespace decaf;
+    using Instruction = ByteCode::Instruction;
+    auto expect1 = Program{
+        ByteCode{
+            Instruction ::GET_INT_CONSTANT,
+            1,
+            Instruction ::GET_INT_CONSTANT,
+            0,
+            Instruction ::PLUS,
+        },
+        IntConstantPool{
+            2345,
+            10000,
+        }};
+
+    auto expect2 = Program{
+        ByteCode{
+            Instruction ::GET_INT_CONSTANT,
+            0,
+            Instruction ::GET_INT_CONSTANT,
+            1,
+            Instruction ::PLUS,
+        },
+        IntConstantPool{
+            10000,
+            2345,
+        }};
+
+    REQUIRE(expect1 == expect2);
+}

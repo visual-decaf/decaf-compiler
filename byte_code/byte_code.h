@@ -52,7 +52,7 @@ public:
         return this->code_stream == rhs.code_stream;
     }
 
-    code_stream_type get_code_stream(){
+    code_stream_type get_code_stream() {
         return code_stream;
     }
 
