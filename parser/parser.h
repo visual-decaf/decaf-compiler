@@ -13,7 +13,7 @@ class Parser {
     friend class yy::parser;
 
 public:
-    using ast_ptr = decaf::ast::Expr*;
+    using ast_ptr = std::shared_ptr<ast::Expr>;
     void parse();
     ast_ptr get_ast();
 

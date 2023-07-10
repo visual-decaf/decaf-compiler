@@ -16,14 +16,12 @@ TEST_CASE("parser_main", "[parser]") {
     parser.parse();
 
     auto result = parser.get_ast();
-    auto expect = new ast::ArithmeticBinary(
-        new ast::IntConstant(12),
+    auto expect = std::make_shared<ast::ArithmeticBinary>(
+        std::make_shared<ast::IntConstant>(12),
         ast::ArithmeticBinary::Operation::PLUS,
-        new ast::IntConstant(34));
+        std::make_shared<ast::IntConstant>(34));
 
     REQUIRE(expect->equals(result));
-    delete result;
-    delete expect;
 }
 
 TEST_CASE("parser_plus_left_associative", "[parser]") {
@@ -39,17 +37,15 @@ TEST_CASE("parser_plus_left_associative", "[parser]") {
     parser.parse();
 
     auto result = parser.get_ast();
-    auto expect = new ast::ArithmeticBinary(
-        new ast::ArithmeticBinary(
-            new ast::IntConstant(1),
+    auto expect = std::make_shared<ast::ArithmeticBinary>(
+        std::make_shared<ast::ArithmeticBinary>(
+            std::make_shared<ast::IntConstant>(1),
             ast::ArithmeticBinary::Operation::PLUS,
-            new ast::IntConstant(2)),
+            std::make_shared<ast::IntConstant>(2)),
         ast::ArithmeticBinary::Operation::PLUS,
-        new ast::IntConstant(3));
+        std::make_shared<ast::IntConstant>(3));
 
     REQUIRE(expect->equals(result));
-    delete result;
-    delete expect;
 }
 
 TEST_CASE("parser_plus_multiply_precedence", "[parser]") {
@@ -65,17 +61,15 @@ TEST_CASE("parser_plus_multiply_precedence", "[parser]") {
     parser.parse();
 
     auto result = parser.get_ast();
-    auto expect = new ast::ArithmeticBinary(
-        new ast::IntConstant(1),
+    auto expect = std::make_shared<ast::ArithmeticBinary>(
+        std::make_shared<ast::IntConstant>(1),
         ast::ArithmeticBinary::Operation::PLUS,
-        new ast::ArithmeticBinary(
-            new ast::IntConstant(2),
+        std::make_shared<ast::ArithmeticBinary>(
+            std::make_shared<ast::IntConstant>(2),
             ast::ArithmeticBinary::Operation::MULTIPLY,
-            new ast::IntConstant(3)));
+            std::make_shared<ast::IntConstant>(3)));
 
     REQUIRE(expect->equals(result));
-    delete result;
-    delete expect;
 }
 
 TEST_CASE("parser_plus_minus", "[parser]") {
@@ -91,17 +85,15 @@ TEST_CASE("parser_plus_minus", "[parser]") {
     parser.parse();
 
     auto result = parser.get_ast();
-    auto expect = new ast::ArithmeticBinary(
-        new ast::ArithmeticBinary(
-            new ast::IntConstant(1),
+    auto expect = std::make_shared<ast::ArithmeticBinary>(
+        std::make_shared<ast::ArithmeticBinary>(
+            std::make_shared<ast::IntConstant>(1),
             ast::ArithmeticBinary::Operation::PLUS,
-            new ast::IntConstant(2)),
+            std::make_shared<ast::IntConstant>(2)),
         ast::ArithmeticBinary::Operation::MINUS,
-        new ast::IntConstant(3));
+        std::make_shared<ast::IntConstant>(3));
 
     REQUIRE(expect->equals(result));
-    delete result;
-    delete expect;
 }
 
 TEST_CASE("parser_multiply_divide", "[parser]") {
@@ -117,17 +109,15 @@ TEST_CASE("parser_multiply_divide", "[parser]") {
     parser.parse();
 
     auto result = parser.get_ast();
-    auto expect = new ast::ArithmeticBinary(
-        new ast::ArithmeticBinary(
-            new ast::IntConstant(1),
+    auto expect = std::make_shared<ast::ArithmeticBinary>(
+        std::make_shared<ast::ArithmeticBinary>(
+            std::make_shared<ast::IntConstant>(1),
             ast::ArithmeticBinary::Operation::MULTIPLY,
-            new ast::IntConstant(2)),
+            std::make_shared<ast::IntConstant>(2)),
         ast::ArithmeticBinary::Operation::DIVIDE,
-        new ast::IntConstant(3));
+        std::make_shared<ast::IntConstant>(3));
 
     REQUIRE(expect->equals(result));
-    delete result;
-    delete expect;
 }
 
 TEST_CASE("parser_mod", "[parser]") {
@@ -142,12 +132,27 @@ TEST_CASE("parser_mod", "[parser]") {
 
     auto result = parser.get_ast();
     auto expect = new ast::ArithmeticBinary{
-        new ast::IntConstant(15),
+        std::make_shared<ast::IntConstant>(15),
         ast::ArithmeticBinary::Operation::MOD,
-        new ast::IntConstant(7),
+        std::make_shared<ast::IntConstant>(7),
     };
 
     REQUIRE(expect->equals(result));
-    delete result;
-    delete expect;
+}
+
+TEST_CASE("parser_group", "[parser]") {
+    token_stream tokenStream{
+        {token_type ::LEFT_PAREN, "("},
+        {token_type ::INTEGER, "1"},
+        {token_type ::RIGHT_PAREN, ")"},
+        {token_type ::EOL}};
+
+    decaf::Parser parser{tokenStream};
+    parser.parse();
+
+    auto result = parser.get_ast();
+    auto expect = new ast::Group{
+        std::make_shared<ast::IntConstant>(1)};
+
+    REQUIRE(expect->equals(result));
 }

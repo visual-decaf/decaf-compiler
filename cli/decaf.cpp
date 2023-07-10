@@ -24,7 +24,6 @@ void run_repl() {
         decaf::Compiler compiler{ast_root};
         compiler.compile();
         auto program = compiler.get_program();
-        delete ast_root;
 
         decaf::VirtualMachine vm{program};
         vm.run();

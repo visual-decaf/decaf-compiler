@@ -31,7 +31,8 @@ public:
             MULTIPLY,
             DIVIDE,
             MOD,
-            GET_INSTANT
+            GET_INSTANT,
+            GET_INT_CONSTANT,
         };
     };
 

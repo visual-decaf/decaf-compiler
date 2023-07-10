@@ -3,7 +3,7 @@
 using namespace decaf;
 
 TEST_CASE("intconstant_json", "[ast]") {
-    auto ast_root = new ast::IntConstant(3);
+    auto ast_root = std::make_shared<ast::IntConstant>(3);
     boost::json::value expect_json = boost::json::parse(R"(
 {
     "type": "IntConstant",
@@ -11,17 +11,16 @@ TEST_CASE("intconstant_json", "[ast]") {
 }
 )");
     REQUIRE(expect_json == ast_root->to_json());
-    delete ast_root;
 }
 
 TEST_CASE("arithmetic_binary_json", "[ast]") {
-    auto ast_root = new ast::ArithmeticBinary(
-        new ast::ArithmeticBinary(
-            new ast::IntConstant(1),
+    auto ast_root = std::make_shared<ast::ArithmeticBinary>(
+        std::make_shared<ast::ArithmeticBinary>(
+            std::make_shared<ast::IntConstant>(1),
             ast::ArithmeticBinary::Operation::MULTIPLY,
-            new ast::IntConstant(2)),
+            std::make_shared<ast::IntConstant>(2)),
         ast::ArithmeticBinary::Operation::DIVIDE,
-        new ast::IntConstant(3));
+        std::make_shared<ast::IntConstant>(3));
     boost::json::value expect_json = boost::json::parse(R"(
 {
     "type": "ArithmeticBinary",
@@ -45,5 +44,4 @@ TEST_CASE("arithmetic_binary_json", "[ast]") {
 }
 )");
     REQUIRE(expect_json == ast_root->to_json());
-    delete ast_root;
 }

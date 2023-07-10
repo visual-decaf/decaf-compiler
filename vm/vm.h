@@ -23,6 +23,7 @@ public:
     void op_DIVIDE() override;
     void op_MOD() override;
     void op_GET_INSTANT(uint8_t instant) override;
+    void op_GET_INT_CONSTANT(uint8_t index) override;
 
     std::any top();
     void run();

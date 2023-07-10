@@ -29,6 +29,8 @@ HEX_INTEGER ("0x"|"0X"){HEX_DIGIT}+
 "*" { emit({token_type::STAR, YYText()}); }
 "/" { emit({token_type::SLASH, YYText()}); }
 "%" { emit({token_type::PERCENT, YYText()}); }
+"(" { emit({token_type::LEFT_PAREN, YYText()}); }
+")" { emit({token_type::RIGHT_PAREN, YYText()}); }
 [ \t] {}
 
 "\n" {

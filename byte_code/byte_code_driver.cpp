@@ -13,7 +13,7 @@ void decaf::ByteCodeDriver::produce() {
 void decaf::ByteCodeDriver::produce_instruction() {
     using Instruction = ByteCode::Instruction;
     switch (*current_byte) {
-        // No Operands
+            // No Operands
         case Instruction ::PLUS:
             visitor.op_PLUS();
             break;
@@ -30,10 +30,14 @@ void decaf::ByteCodeDriver::produce_instruction() {
             visitor.op_MOD();
             break;
 
-            // 0 Operand
+            // 1 Operand
         case Instruction ::GET_INSTANT:
             check_expected_byte(1);
             visitor.op_GET_INSTANT(*(++current_byte));
+            break;
+        case Instruction ::GET_INT_CONSTANT:
+            check_expected_byte(1);
+            visitor.op_GET_INT_CONSTANT(*(++current_byte));
             break;
     }
 }

@@ -4,10 +4,10 @@
 
 TEST_CASE("compiler_main", "[compiler]") {
     using namespace decaf;
-    auto input_ast = new ast::ArithmeticBinary{
-        new ast::IntConstant{1},
+    auto input_ast = std::make_shared<ast::ArithmeticBinary>(
+        std::make_shared<ast::IntConstant>(1),
         ast::ArithmeticBinary::Operation::PLUS,
-        new ast::IntConstant{2}};
+        std::make_shared<ast::IntConstant>(2));
 
     decaf::Compiler compiler{input_ast};
     compiler.compile();
@@ -24,18 +24,17 @@ TEST_CASE("compiler_main", "[compiler]") {
         }};
 
     REQUIRE(expect == result);
-    delete input_ast;
 }
 
 TEST_CASE("compiler_plus_deep", "[compiler]") {
     using namespace decaf;
-    auto input_ast = new ast::ArithmeticBinary(
-        new ast::ArithmeticBinary(
-            new ast::IntConstant(1),
+    auto input_ast = std::make_shared<ast::ArithmeticBinary>(
+        std::make_shared<ast::ArithmeticBinary>(
+            std::make_shared<ast::IntConstant>(1),
             ast::ArithmeticBinary::Operation::PLUS,
-            new ast::IntConstant(2)),
+            std::make_shared<ast::IntConstant>(2)),
         ast::ArithmeticBinary::Operation::PLUS,
-        new ast::IntConstant(3));
+        std::make_shared<ast::IntConstant>(3));
 
     decaf::Compiler compiler{input_ast};
     compiler.compile();
@@ -55,18 +54,17 @@ TEST_CASE("compiler_plus_deep", "[compiler]") {
         }};
 
     REQUIRE(expect == result);
-    delete input_ast;
 }
 
 TEST_CASE("compiler_plus_multiply", "[compiler]") {
     using namespace decaf;
-    auto input_ast = new ast::ArithmeticBinary(
-        new ast::IntConstant(1),
+    auto input_ast = std::make_shared<ast::ArithmeticBinary>(
+        std::make_shared<ast::IntConstant>(1),
         ast::ArithmeticBinary::Operation::PLUS,
-        new ast::ArithmeticBinary(
-            new ast::IntConstant(2),
+        std::make_shared<ast::ArithmeticBinary>(
+            std::make_shared<ast::IntConstant>(2),
             ast::ArithmeticBinary::Operation::MULTIPLY,
-            new ast::IntConstant(3)));
+            std::make_shared<ast::IntConstant>(3)));
 
     decaf::Compiler compiler{input_ast};
     compiler.compile();
@@ -86,18 +84,17 @@ TEST_CASE("compiler_plus_multiply", "[compiler]") {
         }};
 
     REQUIRE(expect == result);
-    delete input_ast;
 }
 
 TEST_CASE("compiler_plus_minus", "[compiler]") {
     using namespace decaf;
-    auto input_ast = new ast::ArithmeticBinary(
-        new ast::ArithmeticBinary(
-            new ast::IntConstant(1),
+    auto input_ast = std::make_shared<ast::ArithmeticBinary>(
+        std::make_shared<ast::ArithmeticBinary>(
+            std::make_shared<ast::IntConstant>(1),
             ast::ArithmeticBinary::Operation::PLUS,
-            new ast::IntConstant(2)),
+            std::make_shared<ast::IntConstant>(2)),
         ast::ArithmeticBinary::Operation::MINUS,
-        new ast::IntConstant(3));
+        std::make_shared<ast::IntConstant>(3));
 
     decaf::Compiler compiler{input_ast};
     compiler.compile();
@@ -117,18 +114,17 @@ TEST_CASE("compiler_plus_minus", "[compiler]") {
         }};
 
     REQUIRE(expect == result);
-    delete input_ast;
 }
 
 TEST_CASE("compiler_multiply_divide", "[compiler]") {
     using namespace decaf;
-    auto input_ast = new ast::ArithmeticBinary(
-        new ast::ArithmeticBinary(
-            new ast::IntConstant(1),
+    auto input_ast = std::make_shared<ast::ArithmeticBinary>(
+        std::make_shared<ast::ArithmeticBinary>(
+            std::make_shared<ast::IntConstant>(1),
             ast::ArithmeticBinary::Operation::MULTIPLY,
-            new ast::IntConstant(2)),
+            std::make_shared<ast::IntConstant>(2)),
         ast::ArithmeticBinary::Operation::DIVIDE,
-        new ast::IntConstant(3));
+        std::make_shared<ast::IntConstant>(3));
 
     decaf::Compiler compiler{input_ast};
     compiler.compile();
@@ -148,16 +144,14 @@ TEST_CASE("compiler_multiply_divide", "[compiler]") {
         }};
 
     REQUIRE(expect == result);
-    delete input_ast;
 }
 
 TEST_CASE("compiler_mod", "[compiler]") {
     using namespace decaf;
-    auto input_ast = new ast::ArithmeticBinary{
-        new ast::IntConstant(15),
+    auto input_ast = std::make_shared<ast::ArithmeticBinary>(
+        std::make_shared<ast::IntConstant>(15),
         ast::ArithmeticBinary::Operation::MOD,
-        new ast::IntConstant(7),
-    };
+        std::make_shared<ast::IntConstant>(7));
 
     decaf::Compiler compiler{input_ast};
     compiler.compile();
@@ -173,5 +167,48 @@ TEST_CASE("compiler_mod", "[compiler]") {
             Instruction ::MOD,
         }};
     REQUIRE(expect == result);
-    delete input_ast;
+}
+
+TEST_CASE("compiler_int_constant_pool", "[compiler]") {
+    using namespace decaf;
+    auto input_ast = std::make_shared<ast::ArithmeticBinary>(
+        std::make_shared<ast::IntConstant>(10000),
+        ast::ArithmeticBinary::Operation::PLUS,
+        std::make_shared<ast::IntConstant>(2345));
+    decaf::Compiler compiler{input_ast};
+    compiler.compile();
+
+    using Instruction = ByteCode::Instruction;
+    auto result = compiler.get_program();
+    auto expect = Program{
+        ByteCode{
+            Instruction ::GET_INT_CONSTANT,
+            0,
+            Instruction ::GET_INT_CONSTANT,
+            1,
+            Instruction ::PLUS,
+        },
+        IntConstantPool{
+            10000,
+            2345,
+        }};
+    REQUIRE(expect == result);
+}
+
+TEST_CASE("compiler_group", "[compiler]") {
+    using namespace decaf;
+    auto input_ast = std::make_shared<ast::Group>(
+        std::make_shared<ast::IntConstant>(1));
+
+    decaf::Compiler compiler{input_ast};
+    compiler.compile();
+
+    using Instruction = ByteCode::Instruction;
+    auto result = compiler.get_program();
+    auto expect = Program{
+        ByteCode{
+            Instruction ::GET_INSTANT,
+            1,
+        }};
+    REQUIRE(expect == result);
 }
