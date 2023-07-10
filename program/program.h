@@ -2,11 +2,8 @@
 
 #include "byte_code.h"
 #include "constant_pool.h"
+#include "byte_code_separate.h"
 #include <iostream>
-
-namespace decaf {
-class Program;
-}
 
 std::ostream& operator<<(std::ostream& os, const decaf::Program&);
 
@@ -39,58 +36,20 @@ public:
 
     IntConstantPool::index_type add_int_constant(const int& val);
 
-    std::vector<int> IntConstantDetector() {
-        logic_prog_instant.clear();
-        code_stream = code.get_code_stream();
-        current_byte = code_stream.begin();
-        while (current_byte != code_stream.end()) {
-            using Instruction = ByteCode::Instruction;
-            switch (*current_byte) {
-                    // No Operands
-                case Instruction ::PLUS:
-                    logic_prog_instant.push_back(*current_byte);
-                    break;
-                case Instruction ::MINUS:
-                    logic_prog_instant.push_back(*current_byte);
-                    break;
-                case Instruction ::MULTIPLY:
-                    logic_prog_instant.push_back(*current_byte);
-                    break;
-                case Instruction ::DIVIDE:
-                    logic_prog_instant.push_back(*current_byte);
-                    break;
-                case Instruction ::MOD:
-                    logic_prog_instant.push_back(*current_byte);
-                    break;
-
-                    // 1 Operand
-                case Instruction ::GET_INSTANT:
-                    logic_prog_instant.push_back(*current_byte);
-                    logic_prog_instant.push_back(*(++current_byte));
-                    break;
-                case Instruction ::GET_INT_CONSTANT:
-                    logic_prog_instant.push_back(*current_byte);
-                    logic_prog_instant.push_back(i_pool.get_constant(*(++current_byte)));
-                    break;
-            }
-            current_byte++;
-        }
-        return logic_prog_instant;
+    void Separate() {
+        //待实现
     }
 
     bool operator==(Program& rhs) {
-        return IntConstantDetector() == rhs.IntConstantDetector();
+        return code_separate.op_stream == rhs.code_separate.op_stream && separated_constant == rhs.separated_constant;
     }
 
-    using code_stream_type = ByteCode::code_stream_type;
-    using iterator_type = code_stream_type::iterator;
 
 private:
     ByteCode code;
     IntConstantPool i_pool;
-    std::vector<int> logic_prog_instant;
-    code_stream_type code_stream;
-    iterator_type current_byte;
+    ByteCodeSeparate code_separate;
+    std::vector<int> separated_constant;
 };
 
 } // namespace decaf
