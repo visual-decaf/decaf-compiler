@@ -12,6 +12,7 @@ namespace decaf {
 struct ExprVisitor {
     virtual std::any visitArithmeticBinary(ast::ArithmeticBinary*) = 0;
     virtual std::any visitIntConstant(ast::IntConstant*) = 0;
+    virtual std::any visitGroup(ast::Group*) = 0;
 };
 } // namespace decaf
 
@@ -74,6 +75,25 @@ struct IntConstant: Expr {
 
     std::any accept(ExprVisitor& visitor) override {
         return visitor.visitIntConstant(this);
+    }
+    bool equals(Expr* ptr) override;
+    boost::json::value to_json() override;
+};
+
+struct Group: Expr {
+    Expr* content;
+
+    explicit Group(Expr* cont):
+        content{cont} {
+    }
+
+    Group(const Group&) = delete;
+    Group(Group&&) = delete;
+    Group& operator=(const Group&) = delete;
+    Group& operator=(Group&&) = delete;
+
+    std::any accept(ExprVisitor& visitor) override {
+        return visitor.visitGroup(this);
     }
     bool equals(Expr* ptr) override;
     boost::json::value to_json() override;

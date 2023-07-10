@@ -38,6 +38,11 @@ std::any decaf::Compiler::visitIntConstant(decaf::ast::IntConstant* constant) {
     return {};
 }
 
+std::any decaf::Compiler::visitGroup(ast::Group* group) {
+    group->content->accept(*this);
+    return {};
+}
+
 void decaf::Compiler::compile() {
     ast_root->accept(*this);
 }

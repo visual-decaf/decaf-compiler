@@ -151,3 +151,22 @@ TEST_CASE("parser_mod", "[parser]") {
     delete result;
     delete expect;
 }
+
+TEST_CASE("parser_group", "[parser]") {
+    token_stream tokenStream{
+        {token_type ::LEFT_PAREN, "("},
+        {token_type ::INTEGER, "1"},
+        {token_type ::RIGHT_PAREN, ")"},
+        {token_type ::EOL}};
+
+    decaf::Parser parser{tokenStream};
+    parser.parse();
+
+    auto result = parser.get_ast();
+    auto expect = new ast::Group{
+        new ast::IntConstant(1)};
+
+    REQUIRE(expect->equals(result));
+    delete result;
+    delete expect;
+}

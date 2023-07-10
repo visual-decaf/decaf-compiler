@@ -19,6 +19,7 @@ public:
 
     std::any visitArithmeticBinary(ast::ArithmeticBinary* binary) override;
     std::any visitIntConstant(ast::IntConstant* constant) override;
+    std::any visitGroup(ast::Group* group) override;
 
 private:
     ast::Expr* ast_root;
