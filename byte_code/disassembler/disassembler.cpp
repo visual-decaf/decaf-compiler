@@ -26,6 +26,10 @@ void Disassembler::op_GET_INSTANT(uint8_t instant) {
     this->assembly_code.emplace_back("GET_INSTANT " + std::to_string(static_cast<int>(instant)));
 }
 
+void decaf::Disassembler::op_GET_INT_CONSTANT(uint8_t index) {
+    this->assembly_code.emplace_back("GET_INT_CONSTANT " + std::to_string(static_cast<int>(index)));
+}
+
 Disassembler::assembly_code_type Disassembler::get_code() {
     return this->assembly_code;
 }
