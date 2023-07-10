@@ -49,6 +49,11 @@ void decaf::VirtualMachine::op_GET_INSTANT(uint8_t instant) {
     stk.emplace(static_cast<int>(instant));
 }
 
+void decaf::VirtualMachine::op_GET_INT_CONSTANT(uint8_t index) {
+    stk.emplace(prog.i_pool.get_constant(index));
+}
+
+
 void decaf::VirtualMachine::run() {
     ByteCodeDriver driver{prog.code, *this};
     driver.produce();

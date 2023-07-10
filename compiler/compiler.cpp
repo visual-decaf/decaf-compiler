@@ -26,7 +26,11 @@ std::any decaf::Compiler::visitArithmeticBinary(decaf::ast::ArithmeticBinary* bi
 
 std::any decaf::Compiler::visitIntConstant(decaf::ast::IntConstant* constant) {
     if (constant->value > UINT8_MAX) {
-        throw std::runtime_error{"Int too large for IntConstant"};
+        IntConstantPool::index_type index = prog.add_int_constant(constant->value);
+        prog.emit_bytes(
+            ByteCode::Instruction::GET_INT_CONSTANT,
+            index);
+        return {};
     }
     prog.emit_bytes(
         ByteCode::Instruction::GET_INSTANT,
