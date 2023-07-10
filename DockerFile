@@ -1,6 +1,6 @@
 FROM ubuntu:mantic
 
-RUN echo "VERSION 0.0.7" > /var/version
+RUN echo "VERSION 0.0.8" > /var/version
 
 # Add China Mirror to speed up local build process
 COPY sources.cn /etc/apt/sources.list
@@ -24,4 +24,4 @@ ENV PATH $VCPKG_ROOT:$PATH
 
 # Install packages needed
 RUN vcpkg install catch2
-RUN vcpkg install boost-json
+RUN vcpkg install boost-json boost-log
