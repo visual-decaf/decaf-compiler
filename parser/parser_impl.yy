@@ -19,8 +19,9 @@
     using namespace decaf::ast;
 }
 
+%nterm <decaf::ast::Expr*> expression
 %nterm <decaf::ast::Expr*> arithmeticBinaryExpr
-%nterm <decaf::ast::IntConstant*> intConstant
+%nterm <decaf::ast::Expr*> intConstant
 %nterm <decaf::ast::Expr*> group
 
 %token <int> INTEGER
@@ -38,47 +39,47 @@
 
 input: 
     %empty
-    | input arithmeticBinaryExpr EOL {
+    | input expression EOL {
         driver.ast_root = $2;
     }
     ;
 
+expression:
+    arithmeticBinaryExpr
+    | group
+    | intConstant
+    ;
+
 arithmeticBinaryExpr: 
-    intConstant {
-        $$ = $1;
-    }
-    | group {
-        $$ = $1;
-    }
-    | arithmeticBinaryExpr PLUS arithmeticBinaryExpr {
+    expression PLUS expression {
         $$ = new ArithmeticBinary (
             $1,
             ArithmeticBinary::Operation::PLUS,
             $3
         );
     }
-    | arithmeticBinaryExpr MINUS arithmeticBinaryExpr {
+    | expression MINUS expression {
         $$ = new ArithmeticBinary (
             $1,
             ArithmeticBinary::Operation::MINUS,
             $3
         );
     }
-    | arithmeticBinaryExpr STAR arithmeticBinaryExpr {
+    | expression STAR expression {
         $$ = new ArithmeticBinary (
             $1,
             ArithmeticBinary::Operation::MULTIPLY,
             $3
         );
     }
-    | arithmeticBinaryExpr SLASH arithmeticBinaryExpr {
+    | expression SLASH expression {
         $$ = new ArithmeticBinary (
             $1,
             ArithmeticBinary::Operation::DIVIDE,
             $3
         );
     }
-    | arithmeticBinaryExpr PERCENT arithmeticBinaryExpr {
+    | expression PERCENT expression {
         $$ = new ArithmeticBinary (
             $1,
             ArithmeticBinary::Operation::MOD,
@@ -87,7 +88,7 @@ arithmeticBinaryExpr:
     }
 
 group:
-    LEFT_PAREN arithmeticBinaryExpr RIGHT_PAREN {
+    LEFT_PAREN expression RIGHT_PAREN {
         $$ = new Group {
             $2
         };
