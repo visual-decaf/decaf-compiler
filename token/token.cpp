@@ -13,6 +13,8 @@ std::map<decaf::token_type, std::string> decaf::token_name_of{
     {token_type ::MINUS, "MINUS"},
     {token_type ::STAR, "STAR"},
     {token_type ::SLASH, "SLASH"},
+    {token_type ::LEFT_PAREN, "LEFT_PAREN"},
+    {token_type ::RIGHT_PAREN, "RIGHT_PAREN"},
     {token_type ::EOL, "EOL"},
     {token_type ::YYEOF, "YYEOF"}};
 
