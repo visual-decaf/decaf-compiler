@@ -43,3 +43,20 @@ boost::json::value decaf::ast::IntConstant::to_json() {
         {"value", this->value}};
     return result;
 }
+
+bool decaf::ast::Group::equals(decaf::ast::Expr* ptr) {
+    auto group = dynamic_cast<Group*>(ptr);
+
+    if (group == nullptr) {
+        return false;
+    }
+
+    return this->content->equals(group->content);
+}
+
+boost::json::value decaf::ast::Group::to_json() {
+    boost::json::value result = {
+        {"type", "Group"},
+        {"content", this->content->to_json()}};
+    return result;
+}

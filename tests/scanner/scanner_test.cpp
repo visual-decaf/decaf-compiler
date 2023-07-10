@@ -71,3 +71,18 @@ TEST_CASE("scanner_hex_integer", "[scanner]") {
         REQUIRE(result_token[i] == expected_token[i]);
     }
 }
+
+TEST_CASE("scanner_left_right_paren", "[scanner]") {
+    auto result_token = scan_for("(1)");
+    using decaf::token_type;
+    decaf::token_stream expected_token = {
+        {token_type ::LEFT_PAREN, "("},
+        {token_type ::INTEGER, "1"},
+        {token_type ::RIGHT_PAREN, ")"},
+        {token_type ::YYEOF}};
+
+    REQUIRE(result_token.size() == expected_token.size());
+    for (int i = 0; i < result_token.size(); i++) {
+        REQUIRE(result_token[i] == expected_token[i]);
+    }
+}
