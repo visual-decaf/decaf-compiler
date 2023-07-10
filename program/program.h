@@ -41,31 +41,35 @@ public:
 
     std::vector<int> IntConstantDetector(){
         logic_prog_instant.clear();
+        code_stream = code.get_code_stream();
+        current_byte = code_stream.begin();
         while (current_byte != code_stream.end()) {
             using Instruction = ByteCode::Instruction;
             switch (*current_byte) {
                     // No Operands
                 case Instruction ::PLUS:
-                    logic_prog_instant.push_back(Instruction ::PLUS);
+                    logic_prog_instant.push_back(int(*current_byte));
                     break;
                 case Instruction ::MINUS:
-                    logic_prog_instant.push_back(Instruction ::MINUS);
+                    logic_prog_instant.push_back(*current_byte);
                     break;
                 case Instruction ::MULTIPLY:
-                    logic_prog_instant.push_back(Instruction ::MULTIPLY);
+                    logic_prog_instant.push_back(*current_byte);
                     break;
                 case Instruction ::DIVIDE:
-                    logic_prog_instant.push_back(Instruction ::DIVIDE);
+                    logic_prog_instant.push_back(*current_byte);
                     break;
                 case Instruction ::MOD:
-                    logic_prog_instant.push_back(Instruction ::MOD);
+                    logic_prog_instant.push_back(*current_byte);
                     break;
 
                     // 1 Operand
                 case Instruction ::GET_INSTANT:
+                    logic_prog_instant.push_back(*current_byte);
                     logic_prog_instant.push_back(*(++current_byte));
                     break;
                 case Instruction ::GET_INT_CONSTANT:
+                    logic_prog_instant.push_back(*current_byte);
                     logic_prog_instant.push_back(i_pool.get_constant(*(++current_byte)));
                     break;
                 }
@@ -74,7 +78,7 @@ public:
         return logic_prog_instant;
     }
 
-    bool operator==(const Program& rhs) {
+    bool operator==(Program& rhs) {
         return IntConstantDetector()==rhs.IntConstantDetector();
     }
 
@@ -85,8 +89,8 @@ private:
     ByteCode code;
     IntConstantPool i_pool;
     std::vector<int> logic_prog_instant;
-    code_stream_type code_stream = code.code_stream;
-    iterator_type current_byte = code_stream.begin();
+    code_stream_type code_stream;
+    iterator_type current_byte;
 };
 
 } // namespace decaf
