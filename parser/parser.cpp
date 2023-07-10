@@ -42,6 +42,7 @@ bool decaf::Parser::is_error() const {
 
 void decaf::Parser::clear_error() {
     has_error = false;
+    err_messages.clear();
 }
 
 std::vector<std::string> decaf::Parser::get_err_messages() const {

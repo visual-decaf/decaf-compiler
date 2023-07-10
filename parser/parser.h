@@ -19,9 +19,9 @@ public:
     void parse();
     ast_ptr get_ast();
 
-    bool is_error() const;
+    [[nodiscard]] bool is_error() const;
     void clear_error();
-    std::vector<std::string> get_err_messages() const;
+    [[nodiscard]] std::vector<std::string> get_err_messages() const;
 
     explicit Parser(decaf::token_stream _token_stream):
         token_stream{std::move(_token_stream)},
