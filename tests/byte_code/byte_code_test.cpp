@@ -2,7 +2,7 @@
 #include <catch2/catch_test_macros.hpp>
 using namespace decaf;
 
-TEST_CASE("byte_code_main", "[byte_code]") {
+TEST_CASE("byte_code_main_json", "[byte_code]") {
     ByteCode byte_code{
         ByteCode::Instruction::GET_INSTANT,
         1,
@@ -20,7 +20,7 @@ TEST_CASE("byte_code_main", "[byte_code]") {
     REQUIRE(expect_json == byte_code.to_json());
 }
 
-TEST_CASE("int_constant", "[byte_code]") {
+TEST_CASE("get_int_constant_json", "[byte_code]") {
     ByteCode byte_code{
         ByteCode::Instruction::GET_INT_CONSTANT,
         1,
