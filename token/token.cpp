@@ -14,6 +14,7 @@ std::map<decaf::token_type, std::string> decaf::token_name_of{
     {token_type ::STAR, "STAR"},
     {token_type ::SLASH, "SLASH"},
     {token_type ::EOL, "EOL"},
+    {token_type ::INVALID, "INVALID"},
     {token_type ::YYEOF, "YYEOF"}};
 
 decaf::token::token(token_type _type, const std::string& lexeme) {

@@ -41,4 +41,9 @@ HEX_INTEGER ("0x"|"0X"){HEX_DIGIT}+
     return token_type::YYEOF;
 }
 
+.* {
+    emit({token_type::INVALID, YYText()});
+    LexerError("Unrecognized token");
+}
+
 %%

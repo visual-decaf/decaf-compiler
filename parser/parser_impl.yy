@@ -27,6 +27,7 @@
 %token PLUS '+' MINUS '-'
 %token STAR '*' SLASH '/' PERCENT '%'
 %token EOL
+%token INVALID
 
 /* Expressions */
 %left PLUS MINUS
