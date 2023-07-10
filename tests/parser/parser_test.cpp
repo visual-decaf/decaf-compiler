@@ -156,3 +156,23 @@ TEST_CASE("parser_group", "[parser]") {
 
     REQUIRE(expect->equals(result));
 }
+
+TEST_CASE("parser_invalid_recovery_point_RIGHT_PAREN", "[parser]") {
+    token_stream tokenStream{
+        {token_type ::LEFT_PAREN, "("},
+        {token_type ::INVALID, "@@@"},
+        {token_type ::RIGHT_PAREN, ")"},
+        {token_type ::EOL}};
+
+    decaf::Parser parser{tokenStream};
+    parser.parse();
+
+    REQUIRE(parser.is_error());
+    auto err_messages = parser.get_err_messages();
+    REQUIRE(err_messages.size() == 1);
+
+    auto result = parser.get_ast();
+    auto expect = std::make_shared<ast::Group>(
+        nullptr);
+    REQUIRE(expect->equals(result));
+}

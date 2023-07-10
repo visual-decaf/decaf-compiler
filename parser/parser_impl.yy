@@ -94,6 +94,12 @@ group:
             $2
         );
     }
+    | LEFT_PAREN error RIGHT_PAREN {
+        $$ = std::make_shared<Group> (
+            nullptr
+        );
+        yyerrok;
+    }
 
 intConstant:
     INTEGER {
@@ -106,5 +112,6 @@ intConstant:
 %%
 
 void yy::parser::error(const std::string& msg) {
-    std::cerr << msg << '\n';
+    driver.has_error = true;
+    driver.err_messages.push_back(msg);
 }

@@ -69,10 +69,11 @@ struct IntConstant: Expr, std::enable_shared_from_this<IntConstant> {
 };
 
 struct Group: Expr, std::enable_shared_from_this<Group> {
+    // IMPORTANT: content is nullable when error occurs
     std::shared_ptr<Expr> content;
 
     explicit Group(std::shared_ptr<Expr> cont):
-        content{cont} {
+        content{std::move(cont)} {
     }
 
     std::any accept(ExprVisitor& visitor) override {

@@ -4,6 +4,8 @@
 #include "parser_impl.h"
 #include "scanner.h"
 #include <memory>
+#include <string>
+#include <vector>
 
 int yylex(yy::parser::value_type* yylval, decaf::Parser& driver);
 
@@ -17,6 +19,10 @@ public:
     void parse();
     ast_ptr get_ast();
 
+    bool is_error() const;
+    void clear_error();
+    std::vector<std::string> get_err_messages() const;
+
     explicit Parser(decaf::token_stream _token_stream):
         token_stream{std::move(_token_stream)},
         next_token{token_stream.begin()} {
@@ -27,5 +33,8 @@ private:
     decaf::token_stream token_stream;
     decaf::token_stream::iterator next_token;
     ast_ptr ast_root{nullptr};
+
+    bool has_error = false;
+    std::vector<std::string> err_messages;
 };
 } // namespace decaf
