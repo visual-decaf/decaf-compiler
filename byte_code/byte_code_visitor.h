@@ -1,8 +1,6 @@
 #pragma once
 
-#include "byte_code.h"
 #include <cstdint>
-#include <memory>
 
 namespace decaf {
 

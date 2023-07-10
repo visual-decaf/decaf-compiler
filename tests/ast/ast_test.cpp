@@ -2,7 +2,7 @@
 #include <catch2/catch_test_macros.hpp>
 using namespace decaf;
 
-TEST_CASE("intconstant_json", "[ast]") {
+TEST_CASE("int_constant_json", "[ast]") {
     auto ast_root = std::make_shared<ast::IntConstant>(3);
     boost::json::value expect_json = boost::json::parse(R"(
 {
