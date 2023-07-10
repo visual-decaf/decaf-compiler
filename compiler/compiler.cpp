@@ -3,7 +3,7 @@
 #include <stdexcept>
 #include <unordered_map>
 
-std::any decaf::Compiler::visitArithmeticBinary(decaf::ast::ArithmeticBinary* binary) {
+std::any decaf::Compiler::visitArithmeticBinary(std::shared_ptr<decaf::ast::ArithmeticBinary> binary) {
     // Push lhs and rhs first into the stack
     binary->left->accept(*this);
     binary->right->accept(*this);
@@ -24,7 +24,7 @@ std::any decaf::Compiler::visitArithmeticBinary(decaf::ast::ArithmeticBinary* bi
     return {};
 }
 
-std::any decaf::Compiler::visitIntConstant(decaf::ast::IntConstant* constant) {
+std::any decaf::Compiler::visitIntConstant(std::shared_ptr<decaf::ast::IntConstant> constant) {
     if (constant->value > UINT8_MAX) {
         IntConstantPool::index_type index = prog.add_int_constant(constant->value);
         prog.emit_bytes(
@@ -38,7 +38,7 @@ std::any decaf::Compiler::visitIntConstant(decaf::ast::IntConstant* constant) {
     return {};
 }
 
-std::any decaf::Compiler::visitGroup(ast::Group* group) {
+std::any decaf::Compiler::visitGroup(std::shared_ptr<ast::Group> group) {
     group->content->accept(*this);
     return {};
 }
