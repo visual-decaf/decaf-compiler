@@ -19,10 +19,10 @@
     using namespace decaf::ast;
 }
 
-%nterm <decaf::ast::Expr*> expression
-%nterm <decaf::ast::Expr*> arithmeticBinaryExpr
-%nterm <decaf::ast::Expr*> intConstant
-%nterm <decaf::ast::Expr*> group
+%nterm <std::shared_ptr<decaf::ast::Expr>> expression
+%nterm <std::shared_ptr<decaf::ast::Expr>> arithmeticBinaryExpr
+%nterm <std::shared_ptr<decaf::ast::Expr>> intConstant
+%nterm <std::shared_ptr<decaf::ast::Expr>> group
 
 %token <int> INTEGER
 %token <int> HEX_INTEGER
@@ -52,35 +52,35 @@ expression:
 
 arithmeticBinaryExpr: 
     expression PLUS expression {
-        $$ = new ArithmeticBinary (
+        $$ = std::make_shared<ArithmeticBinary>(
             $1,
             ArithmeticBinary::Operation::PLUS,
             $3
         );
     }
     | expression MINUS expression {
-        $$ = new ArithmeticBinary (
+        $$ = std::make_shared<ArithmeticBinary>(
             $1,
             ArithmeticBinary::Operation::MINUS,
             $3
         );
     }
     | expression STAR expression {
-        $$ = new ArithmeticBinary (
+        $$ = std::make_shared<ArithmeticBinary>(
             $1,
             ArithmeticBinary::Operation::MULTIPLY,
             $3
         );
     }
     | expression SLASH expression {
-        $$ = new ArithmeticBinary (
+        $$ = std::make_shared<ArithmeticBinary>(
             $1,
             ArithmeticBinary::Operation::DIVIDE,
             $3
         );
     }
     | expression PERCENT expression {
-        $$ = new ArithmeticBinary (
+        $$ = std::make_shared<ArithmeticBinary>(
             $1,
             ArithmeticBinary::Operation::MOD,
             $3
@@ -89,17 +89,17 @@ arithmeticBinaryExpr:
 
 group:
     LEFT_PAREN expression RIGHT_PAREN {
-        $$ = new Group {
+        $$ = std::make_shared<Group>(
             $2
-        };
+        );
     }
 
 intConstant:
     INTEGER {
-        $$ = new IntConstant($1);
+        $$ = std::make_shared<IntConstant>($1);
     } |
     HEX_INTEGER {
-        $$ = new IntConstant($1);
+        $$ = std::make_shared<IntConstant>($1);
     }
 
 %%

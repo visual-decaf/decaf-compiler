@@ -7,8 +7,8 @@ const std::map<decaf::ast::ArithmeticBinary::Operation, std::string> decaf::ast:
     {Operation::DIVIDE, "DIVIDE"},
     {Operation::MOD, "MOD"}};
 
-bool decaf::ast::ArithmeticBinary::equals(Expr* ptr) {
-    auto arith = dynamic_cast<ArithmeticBinary*>(ptr);
+bool decaf::ast::ArithmeticBinary::equals(std::shared_ptr<Expr> ptr) {
+    auto arith = std::dynamic_pointer_cast<ArithmeticBinary>(ptr);
 
     // Not the same type
     if (arith == nullptr) {
@@ -27,8 +27,8 @@ boost::json::value decaf::ast::ArithmeticBinary::to_json() {
     return result;
 }
 
-bool decaf::ast::IntConstant::equals(Expr* ptr) {
-    auto val = dynamic_cast<IntConstant*>(ptr);
+bool decaf::ast::IntConstant::equals(std::shared_ptr<Expr> ptr) {
+    auto val = std::dynamic_pointer_cast<IntConstant>(ptr);
 
     if (val == nullptr) {
         return false;
@@ -44,8 +44,8 @@ boost::json::value decaf::ast::IntConstant::to_json() {
     return result;
 }
 
-bool decaf::ast::Group::equals(decaf::ast::Expr* ptr) {
-    auto group = dynamic_cast<Group*>(ptr);
+bool decaf::ast::Group::equals(std::shared_ptr<Expr> ptr) {
+    auto group = std::dynamic_pointer_cast<Group>(ptr);
 
     if (group == nullptr) {
         return false;

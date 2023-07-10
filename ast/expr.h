@@ -10,22 +10,22 @@
 
 namespace decaf {
 struct ExprVisitor {
-    virtual std::any visitArithmeticBinary(ast::ArithmeticBinary*) = 0;
-    virtual std::any visitIntConstant(ast::IntConstant*) = 0;
-    virtual std::any visitGroup(ast::Group*) = 0;
+    virtual std::any visitArithmeticBinary(std::shared_ptr<ast::ArithmeticBinary>) = 0;
+    virtual std::any visitIntConstant(std::shared_ptr<ast::IntConstant>) = 0;
+    virtual std::any visitGroup(std::shared_ptr<ast::Group>) = 0;
 };
 } // namespace decaf
 
 namespace decaf::ast {
 struct Expr: public serializable {
     virtual std::any accept(ExprVisitor&) = 0;
-    virtual bool equals(Expr* ptr) = 0;
+    virtual bool equals(std::shared_ptr<Expr> ptr) = 0;
     virtual boost::json::value to_json() = 0;
     virtual ~Expr() = default;
 };
 
-struct ArithmeticBinary: public Expr {
-    Expr* left;
+struct ArithmeticBinary: Expr, std::enable_shared_from_this<ArithmeticBinary> {
+    std::shared_ptr<Expr> left;
     enum class Operation {
         PLUS,
         MINUS,
@@ -34,34 +34,22 @@ struct ArithmeticBinary: public Expr {
         MOD
     };
     Operation op;
-    Expr* right;
+    std::shared_ptr<Expr> right;
 
     static const std::map<Operation, std::string> operation_name_of;
 
-    ArithmeticBinary(Expr* left, Operation op, Expr* right):
-        left{left}, op{op}, right{right} {
-    }
-
-    // Don't copy or move a certain type
-    // This class is designed to use and pass like by a pointer
-    ArithmeticBinary(const ArithmeticBinary&) = delete;
-    ArithmeticBinary(ArithmeticBinary&&) = delete;
-    ArithmeticBinary& operator=(const ArithmeticBinary&) = delete;
-    ArithmeticBinary& operator=(ArithmeticBinary&&) = delete;
-
-    ~ArithmeticBinary() override {
-        delete left;
-        delete right;
+    ArithmeticBinary(std::shared_ptr<Expr> left, Operation op, std::shared_ptr<Expr> right):
+        left{std::move(left)}, op{op}, right{std::move(right)} {
     }
 
     std::any accept(ExprVisitor& visitor) override {
-        return visitor.visitArithmeticBinary(this);
+        return visitor.visitArithmeticBinary(shared_from_this());
     }
-    bool equals(Expr* ptr) override;
+    bool equals(std::shared_ptr<Expr> ptr) override;
     boost::json::value to_json() override;
 };
 
-struct IntConstant: Expr {
+struct IntConstant: Expr, std::enable_shared_from_this<IntConstant> {
     int value;
 
     explicit IntConstant(int val):
@@ -74,28 +62,23 @@ struct IntConstant: Expr {
     IntConstant& operator=(IntConstant&&) = delete;
 
     std::any accept(ExprVisitor& visitor) override {
-        return visitor.visitIntConstant(this);
+        return visitor.visitIntConstant(shared_from_this());
     }
-    bool equals(Expr* ptr) override;
+    bool equals(std::shared_ptr<Expr> ptr) override;
     boost::json::value to_json() override;
 };
 
-struct Group: Expr {
-    Expr* content;
+struct Group: Expr, std::enable_shared_from_this<Group> {
+    std::shared_ptr<Expr> content;
 
-    explicit Group(Expr* cont):
+    explicit Group(std::shared_ptr<Expr> cont):
         content{cont} {
     }
 
-    Group(const Group&) = delete;
-    Group(Group&&) = delete;
-    Group& operator=(const Group&) = delete;
-    Group& operator=(Group&&) = delete;
-
     std::any accept(ExprVisitor& visitor) override {
-        return visitor.visitGroup(this);
+        return visitor.visitGroup(shared_from_this());
     }
-    bool equals(Expr* ptr) override;
+    bool equals(std::shared_ptr<Expr> ptr) override;
     boost::json::value to_json() override;
 };
 } // namespace decaf::ast
