@@ -19,13 +19,16 @@
     using namespace decaf::ast;
 }
 
-%nterm <decaf::ast::Expr*> arithmeticBinaryExpr
-%nterm <decaf::ast::IntConstant*> intConstant
+%nterm <std::shared_ptr<decaf::ast::Expr>> expression
+%nterm <std::shared_ptr<decaf::ast::Expr>> arithmeticBinaryExpr
+%nterm <std::shared_ptr<decaf::ast::Expr>> intConstant
+%nterm <std::shared_ptr<decaf::ast::Expr>> group
 
 %token <int> INTEGER
 %token <int> HEX_INTEGER
 %token PLUS '+' MINUS '-'
 %token STAR '*' SLASH '/' PERCENT '%'
+%token LEFT_PAREN '(' RIGHT_PAREN ')'
 %token EOL
 
 /* Expressions */
@@ -36,57 +39,67 @@
 
 input: 
     %empty
-    | input arithmeticBinaryExpr EOL {
+    | input expression EOL {
         driver.ast_root = $2;
     }
     ;
 
+expression:
+    arithmeticBinaryExpr
+    | group
+    | intConstant
+    ;
+
 arithmeticBinaryExpr: 
-    intConstant {
-        $$ = $1;
-    }
-    | arithmeticBinaryExpr PLUS arithmeticBinaryExpr {
-        $$ = new ArithmeticBinary (
+    expression PLUS expression {
+        $$ = std::make_shared<ArithmeticBinary>(
             $1,
             ArithmeticBinary::Operation::PLUS,
             $3
         );
     }
-    | arithmeticBinaryExpr MINUS arithmeticBinaryExpr {
-        $$ = new ArithmeticBinary (
+    | expression MINUS expression {
+        $$ = std::make_shared<ArithmeticBinary>(
             $1,
             ArithmeticBinary::Operation::MINUS,
             $3
         );
     }
-    | arithmeticBinaryExpr STAR arithmeticBinaryExpr {
-        $$ = new ArithmeticBinary (
+    | expression STAR expression {
+        $$ = std::make_shared<ArithmeticBinary>(
             $1,
             ArithmeticBinary::Operation::MULTIPLY,
             $3
         );
     }
-    | arithmeticBinaryExpr SLASH arithmeticBinaryExpr {
-        $$ = new ArithmeticBinary (
+    | expression SLASH expression {
+        $$ = std::make_shared<ArithmeticBinary>(
             $1,
             ArithmeticBinary::Operation::DIVIDE,
             $3
         );
     }
-    | arithmeticBinaryExpr PERCENT arithmeticBinaryExpr {
-        $$ = new ArithmeticBinary (
+    | expression PERCENT expression {
+        $$ = std::make_shared<ArithmeticBinary>(
             $1,
             ArithmeticBinary::Operation::MOD,
             $3
         );
     }
 
+group:
+    LEFT_PAREN expression RIGHT_PAREN {
+        $$ = std::make_shared<Group>(
+            $2
+        );
+    }
+
 intConstant:
     INTEGER {
-        $$ = new IntConstant($1);
+        $$ = std::make_shared<IntConstant>($1);
     } |
     HEX_INTEGER {
-        $$ = new IntConstant($1);
+        $$ = std::make_shared<IntConstant>($1);
     }
 
 %%
