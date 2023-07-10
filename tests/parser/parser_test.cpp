@@ -131,11 +131,10 @@ TEST_CASE("parser_mod", "[parser]") {
     parser.parse();
 
     auto result = parser.get_ast();
-    auto expect = new ast::ArithmeticBinary{
+    auto expect = std::make_shared<ast::ArithmeticBinary>(
         std::make_shared<ast::IntConstant>(15),
         ast::ArithmeticBinary::Operation::MOD,
-        std::make_shared<ast::IntConstant>(7),
-    };
+        std::make_shared<ast::IntConstant>(7));
 
     REQUIRE(expect->equals(result));
 }
@@ -151,8 +150,8 @@ TEST_CASE("parser_group", "[parser]") {
     parser.parse();
 
     auto result = parser.get_ast();
-    auto expect = new ast::Group{
-        std::make_shared<ast::IntConstant>(1)};
+    auto expect = std::make_shared<ast::Group>(
+        std::make_shared<ast::IntConstant>(1));
 
     REQUIRE(expect->equals(result));
 }
