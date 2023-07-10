@@ -21,11 +21,13 @@
 
 %nterm <decaf::ast::Expr*> arithmeticBinaryExpr
 %nterm <decaf::ast::IntConstant*> intConstant
+%nterm <decaf::ast::Expr*> group
 
 %token <int> INTEGER
 %token <int> HEX_INTEGER
 %token PLUS '+' MINUS '-'
 %token STAR '*' SLASH '/' PERCENT '%'
+%token LEFT_PAREN '(' RIGHT_PAREN ')'
 %token EOL
 
 /* Expressions */
@@ -43,6 +45,9 @@ input:
 
 arithmeticBinaryExpr: 
     intConstant {
+        $$ = $1;
+    }
+    | group {
         $$ = $1;
     }
     | arithmeticBinaryExpr PLUS arithmeticBinaryExpr {
@@ -79,6 +84,13 @@ arithmeticBinaryExpr:
             ArithmeticBinary::Operation::MOD,
             $3
         );
+    }
+
+group:
+    LEFT_PAREN arithmeticBinaryExpr RIGHT_PAREN {
+        $$ = new Group {
+            $2
+        };
     }
 
 intConstant:
