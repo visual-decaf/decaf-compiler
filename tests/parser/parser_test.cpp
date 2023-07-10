@@ -157,7 +157,7 @@ TEST_CASE("parser_group", "[parser]") {
         {token_type ::LEFT_PAREN, "("},
         {token_type ::INTEGER, "1"},
         {token_type ::RIGHT_PAREN, ")"},
-        {token_type ::YYEOF}};
+        {token_type ::EOL}};
 
     decaf::Parser parser{tokenStream};
     parser.parse();
