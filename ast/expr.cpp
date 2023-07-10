@@ -51,7 +51,7 @@ bool decaf::ast::Group::equals(decaf::ast::Expr* ptr) {
         return false;
     }
 
-    return this->content->equals(group);
+    return this->content->equals(group->content);
 }
 
 boost::json::value decaf::ast::Group::to_json() {
