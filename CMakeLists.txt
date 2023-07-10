@@ -8,6 +8,11 @@ find_package(FLEX)
 find_package(BISON)
 include_directories(${FLEX_INCLUDE_DIR})
 
+set(Boost_NO_WARN_NEW_VERSIONS ON)
+find_package(Boost REQUIRED
+        COMPONENTS json log
+        )
+
 BISON_TARGET(DecafParser parser/parser_impl.yy ${CMAKE_BINARY_DIR}/parser_impl.cpp
         DEFINES_FILE ${CMAKE_CURRENT_BINARY_DIR}/parser_impl.h
         )
