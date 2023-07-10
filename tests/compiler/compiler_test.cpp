@@ -175,3 +175,22 @@ TEST_CASE("compiler_mod", "[compiler]") {
     REQUIRE(expect == result);
     delete input_ast;
 }
+
+TEST_CASE("compiler_group", "[compiler]") {
+    using namespace decaf;
+    auto input_ast = new ast::Group{
+        new ast::IntConstant(1)};
+
+    decaf::Compiler compiler{input_ast};
+    compiler.compile();
+
+    using Instruction = ByteCode::Instruction;
+    auto result = compiler.get_program();
+    auto expect = Program{
+        ByteCode{
+            Instruction ::GET_INSTANT,
+            1,
+        }};
+    REQUIRE(expect == result);
+    delete input_ast;
+}
