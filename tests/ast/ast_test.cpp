@@ -7,7 +7,8 @@ TEST_CASE("int_constant_json", "[ast]") {
     boost::json::value expect_json = boost::json::parse(R"(
 {
     "type": "IntConstant",
-    "value": 3
+    "value": 3,
+    "resultType": "INT"
 }
     )");
     REQUIRE(expect_json == ast_root->to_json());
@@ -30,16 +31,19 @@ TEST_CASE("arithmetic_binary_json", "[ast]") {
         "operation": "MULTIPLY",
         "left": {
             "type": "IntConstant",
-            "value": 1
+            "value": 1,
+            "resultType": "INT"
         },
         "right": {
             "type": "IntConstant",
-            "value": 2
+            "value": 2,
+            "resultType": "INT"
         }
     },
     "right": {
         "type": "IntConstant",
-        "value": 3
+        "value": 3,
+        "resultType": "INT"
     }
 }
     )");
@@ -60,11 +64,13 @@ TEST_CASE("group_json", "[ast]") {
         "operation": "PLUS",
         "left": {
             "type": "IntConstant",
-            "value": 1
+            "value": 1,
+            "resultType": "INT"
         },
         "right": {
             "type": "IntConstant",
-            "value": 2
+            "value": 2,
+            "resultType": "INT"
         }
     }
 }
@@ -95,12 +101,31 @@ TEST_CASE("null_node_json", "[ast]") {
     "operation": "MOD",
     "left": {
         "type": "IntConstant",
-        "value": 20
+        "value": 20,
+        "resultType": "INT"
     },
     "right": {
         "type": "Group",
         "content": null
     }
+}
+)");
+    REQUIRE(expect_json == ast_root->to_json());
+}
+
+TEST_CASE("arithmetic_unary_json", "[ast]") {
+    auto ast_root = std::make_shared<ast::ArithmeticUnary>(
+        std::make_shared<ast::IntConstant>(3));
+    auto expect_json = boost::json::parse(R"(
+{
+    "type": "ArithmeticUnary",
+    "operation": "NEGATE",
+    "right": {
+        "type": "IntConstant",
+        "value": 3,
+        "resultType": "INT"
+    },
+    "resultType": "INT"
 }
 )");
     REQUIRE(expect_json == ast_root->to_json());

@@ -1,6 +1,9 @@
 #include "expr.h"
 
-const std::map<decaf::ast::ArithmeticBinary::Operation, std::string> decaf::ast::ArithmeticBinary::operation_name_of = {
+const std::map<decaf::ast::ArithmeticUnary::Operation, std::string> decaf::ast::ArithmeticUnary::operation_name_of{
+    {Operation::NEGATE, "NEGATE"}};
+
+const std::map<decaf::ast::ArithmeticBinary::Operation, std::string> decaf::ast::ArithmeticBinary::operation_name_of{
     {Operation::PLUS, "PLUS"},
     {Operation::MINUS, "MINUS"},
     {Operation::MULTIPLY, "MULTIPLY"},
@@ -48,7 +51,8 @@ bool decaf::ast::IntConstant::equals(std::shared_ptr<Expr> ptr) {
 boost::json::value decaf::ast::IntConstant::to_json() {
     boost::json::value result = {
         {"type", "IntConstant"},
-        {"value", this->value}};
+        {"value", this->value},
+        {"resultType", this->type.to_json()}};
     return result;
 }
 
@@ -109,6 +113,21 @@ decaf::Type::Classification decaf::ast::ArithmeticUnary::result_type_of(decaf::T
     if (right.classification == Type::Classification::INT)
         return Type::Classification::INT;
     return Type::Classification::INVALID;
+}
+boost::json::value decaf::ast::ArithmeticUnary::to_json() {
+    boost::json::object result{
+        {"type", "ArithmeticUnary"},
+        {"operation", operation_name_of.at(this->op)}};
+    if (this->right == nullptr) {
+        boost::json::object invalid{
+            {"type", "INVALID"},
+            {"resultType", "INVALID"}};
+        result["right"] = invalid;
+    } else {
+        result["right"] = this->right->to_json();
+    }
+    result["resultType"] = this->type.to_json();
+    return result;
 }
 
 bool decaf::ast::ArithmeticUnary::equals(std::shared_ptr<Expr> ptr) {

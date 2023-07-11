@@ -40,6 +40,7 @@ struct ArithmeticUnary: Expr, std::enable_shared_from_this<ArithmeticUnary> {
     };
     Operation op = Operation::NEGATE;
 
+    static const std::map<Operation, std::string> operation_name_of;
     static Type::Classification result_type_of(Type right);
 
     explicit ArithmeticUnary(std::shared_ptr<Expr> _right):
@@ -52,6 +53,7 @@ struct ArithmeticUnary: Expr, std::enable_shared_from_this<ArithmeticUnary> {
     }
 
     bool equals(std::shared_ptr<Expr> ptr) override;
+    boost::json::value to_json() override;
 };
 
 struct ArithmeticBinary: Expr, std::enable_shared_from_this<ArithmeticBinary> {
