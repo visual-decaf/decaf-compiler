@@ -56,11 +56,6 @@ struct IntConstant: Expr, std::enable_shared_from_this<IntConstant> {
         value{val} {
     }
 
-    IntConstant(const IntConstant&) = delete;
-    IntConstant(IntConstant&&) = delete;
-    IntConstant& operator=(const IntConstant&) = delete;
-    IntConstant& operator=(IntConstant&&) = delete;
-
     std::any accept(ExprVisitor& visitor) override {
         return visitor.visitIntConstant(shared_from_this());
     }
