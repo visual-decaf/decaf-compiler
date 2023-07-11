@@ -105,8 +105,10 @@ struct LogicBinary: Expr, std::enable_shared_from_this<LogicBinary> {
 
     LogicBinary(std::shared_ptr<Expr> _left, Operation op, std::shared_ptr<Expr> _right):
         left{std::move(_left)}, op{op}, right{std::move(_right)} {
-        type.classification = Type::Classification::BOOL;
+        type.classification = result_type_of(left->type, right->type);
     }
+
+    static Type::Classification result_type_of(Type left, Type right);
 
     std::any accept(ExprVisitor& visitor) override {
         return visitor.visitLogicBinary(shared_from_this());

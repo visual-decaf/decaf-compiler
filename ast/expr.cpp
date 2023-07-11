@@ -83,6 +83,14 @@ bool decaf::ast::LogicBinary::equals(std::shared_ptr<Expr> ptr) {
     return this->left->equals(log->left) && this->right->equals(log->right);
 }
 
+decaf::Type::Classification decaf::ast::LogicBinary::result_type_of(decaf::Type left, decaf::Type right) {
+    if (left.classification == Type::Classification::BOOL && right.classification == Type::Classification::BOOL) {
+        return Type::Classification::BOOL;
+    }
+
+    return Type::Classification::INVALID;
+}
+
 bool decaf::ast::BoolConstant::equals(std::shared_ptr<Expr> ptr) {
     auto rhs = std::dynamic_pointer_cast<BoolConstant>(ptr);
 
