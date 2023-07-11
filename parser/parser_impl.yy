@@ -29,10 +29,13 @@
 %token PLUS '+' MINUS '-'
 %token STAR '*' SLASH '/' PERCENT '%'
 %token LEFT_PAREN '(' RIGHT_PAREN ')'
+%token LOGIC_AND "&&" LOGIC_OR "||"
 %token EOL
 %token INVALID
 
 /* Expressions */
+%left LOGIC_OR
+%left LOGIC_AND
 %left PLUS MINUS
 %left STAR SLASH PERCENT
 
