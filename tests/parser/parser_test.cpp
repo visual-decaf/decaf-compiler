@@ -219,3 +219,29 @@ TEST_CASE("parser_or", "[parser]") {
 
     REQUIRE(expect->equals(result));
 }
+
+TEST_CASE("parser_logic_binary_combined_precedence", "[parser]") {
+    token_stream tokenStream{
+        {token_type ::TRUE, "true"},
+        {token_type ::LOGIC_OR, "||"},
+        {token_type ::FALSE, "false"},
+        {token_type ::LOGIC_AND, "&&"},
+        {token_type ::TRUE, "true"},
+        {token_type ::EOL}};
+
+    decaf::Parser parser{tokenStream};
+    parser.parse();
+
+    REQUIRE(!parser.is_error());
+
+    auto result = parser.get_ast();
+    auto expect = std::make_shared<ast::LogicBinary>(
+        std::make_shared<ast::BoolConstant>(true),
+        ast::LogicBinary::Operation::LOGIC_OR,
+        std::make_shared<ast::LogicBinary>(
+            std::make_shared<ast::BoolConstant>(false),
+            ast::LogicBinary::Operation::LOGIC_AND,
+            std::make_shared<ast::BoolConstant>(true)));
+
+    REQUIRE(expect->equals(result));
+}
