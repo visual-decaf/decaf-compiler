@@ -67,9 +67,13 @@ bool decaf::ast::Group::equals(std::shared_ptr<Expr> ptr) {
 }
 
 boost::json::value decaf::ast::Group::to_json() {
-    boost::json::value result = {
-        {"type", "Group"},
-        {"content", this->content->to_json()}};
+    boost::json::object result{
+        {"type", "Group"}};
+    if (this->content == nullptr) {
+        result["content"] = nullptr;
+    } else {
+        result["content"] = this->content->to_json();
+    }
     return result;
 }
 

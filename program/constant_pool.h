@@ -1,5 +1,6 @@
 #pragma once
 
+#include "serializable.h"
 #include <cstddef>
 #include <iostream>
 #include <vector>
@@ -12,25 +13,27 @@ std::ostream& operator<<(std::ostream& os, const decaf::ConstantPool&);
 
 namespace decaf {
 
-class ConstantPool {
+class ConstantPool: public serializable {
     friend std::ostream& ::operator<<(std::ostream& os, const decaf::ConstantPool&);
 
 public:
     using index_type = size_t;
     ConstantPool() = default;
     ConstantPool(std::initializer_list<int> list):
-        pool(list) {
+        i_pool(list) {
     }
 
     index_type add_constant(const int& val);
     int get_int_constant(index_type index);
 
     bool operator==(const ConstantPool& rhs) {
-        return pool == rhs.pool;
+        return i_pool == rhs.i_pool;
     }
 
+    boost::json::value to_json() override;
+
 private:
-    std::vector<int> pool;
+    std::vector<int> i_pool;
 };
 
 } // namespace decaf
