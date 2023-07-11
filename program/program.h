@@ -2,6 +2,7 @@
 
 #include "byte_code.h"
 #include "constant_pool.h"
+#include "serializable.h"
 #include <iostream>
 
 namespace decaf {
@@ -14,7 +15,8 @@ namespace decaf {
 
 class VirtualMachine;
 
-class Program {
+class Program:
+    public serializable {
     friend std::ostream& ::operator<<(std::ostream& os, const decaf::Program&);
     friend class VirtualMachine;
 
@@ -42,6 +44,8 @@ public:
     bool operator==(const Program& rhs) {
         return this->code == rhs.code && this->i_pool == rhs.i_pool;
     }
+
+    boost::json::value to_json() override;
 
 private:
     ByteCode code;

@@ -1,0 +1,3 @@
+add_executable(program_test program_test.cpp)
+target_link_libraries(program_test PRIVATE program Catch2::Catch2WithMain)
+catch_discover_tests(program_test)

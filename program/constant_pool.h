@@ -1,5 +1,6 @@
 #pragma once
 
+#include "serializable.h"
 #include <cstddef>
 #include <iostream>
 #include <vector>
@@ -21,7 +22,8 @@ public:
 };
 
 class IntConstantPool:
-    public BasicConstantPool<int> {
+    public BasicConstantPool<int>,
+    serializable {
     friend std::ostream& ::operator<<(std::ostream& os, const decaf::IntConstantPool&);
 
 public:
@@ -36,6 +38,8 @@ public:
     bool operator==(const IntConstantPool& rhs) {
         return pool == rhs.pool;
     }
+
+    boost::json::value to_json() override;
 
 private:
     std::vector<int> pool;

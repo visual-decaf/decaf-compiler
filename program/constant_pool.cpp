@@ -18,6 +18,14 @@ int decaf::IntConstantPool::get_constant(decaf::IntConstantPool::index_type inde
     return pool[index];
 }
 
+boost::json::value decaf::IntConstantPool::to_json() {
+    boost::json::array result;
+    for (auto val: this->pool) {
+        result.emplace_back(val);
+    }
+    return result;
+}
+
 std::ostream& operator<<(std::ostream& os, const decaf::IntConstantPool& i_pool) {
     for (decaf::IntConstantPool::index_type i = 0; i < i_pool.pool.size(); i++) {
         os << "[" << i << "] = " << i_pool.pool[i] << ',';
