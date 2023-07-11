@@ -468,3 +468,22 @@ TEST_CASE("parser_rational_greater_equal", "[parser]") {
         std::make_shared<ast::IntConstant>(2));
     REQUIRE(expect->equals(result));
 }
+
+TEST_CASE("parser_rational_non_associative", "[parser]") {
+    token_stream tokenStream{
+        {token_type ::INTEGER, "1"},
+        {token_type ::LESS, "<"},
+        {token_type ::INTEGER, "2"},
+        {token_type ::LESS_EQUAL, "<="},
+        {token_type ::INTEGER, "3"},
+        {token_type ::EOL},
+    };
+
+    decaf::Parser parser{tokenStream};
+    parser.parse();
+
+    REQUIRE(parser.is_error());
+
+    auto err_msgs = parser.get_err_messages();
+    REQUIRE(err_msgs.size() == 1);
+}
