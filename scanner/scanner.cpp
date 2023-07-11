@@ -20,3 +20,15 @@ void Scanner::scan_line() {
 token_stream Scanner::get_tokens() {
     return tokens;
 }
+
+bool Scanner::is_error() const {
+    return has_error;
+}
+
+void Scanner::clear_error() {
+    has_error = false;
+}
+
+void Scanner::LexerError(const char* msg) {
+    has_error = true;
+}

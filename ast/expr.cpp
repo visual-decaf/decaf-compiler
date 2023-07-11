@@ -51,6 +51,10 @@ bool decaf::ast::Group::equals(std::shared_ptr<Expr> ptr) {
         return false;
     }
 
+    if (this->content == nullptr) {
+        return group->content == nullptr;
+    }
+
     return this->content->equals(group->content);
 }
 

@@ -35,3 +35,16 @@ void decaf::Parser::parse() {
 decaf::Parser::ast_ptr decaf::Parser::get_ast() {
     return ast_root;
 }
+
+bool decaf::Parser::is_error() const {
+    return has_error;
+}
+
+void decaf::Parser::clear_error() {
+    has_error = false;
+    err_messages.clear();
+}
+
+std::vector<std::string> decaf::Parser::get_err_messages() const {
+    return err_messages;
+}
