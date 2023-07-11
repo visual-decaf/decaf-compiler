@@ -151,3 +151,25 @@ TEST_CASE("vm_mod", "[vm]") {
     REQUIRE(result_ptr != nullptr);
     REQUIRE(*result_ptr == 0);
 }
+
+TEST_CASE("vm_logic_binary", "[vm]") {
+    using namespace decaf;
+    using Instruction = ByteCode::Instruction;
+    auto input_prog = Program{
+        ByteCode{
+            Instruction ::GET_TRUE,
+            Instruction ::GET_TRUE,
+            Instruction ::GET_FALSE,
+            Instruction ::LOGIC_OR,
+            Instruction ::LOGIC_AND,
+        }};
+    input_prog.set_result_type_classification(Type::Classification::BOOL);
+
+    decaf::VirtualMachine vm{input_prog};
+    vm.run();
+
+    auto result = vm.get_result();
+    auto result_ptr = std::get_if<bool>(&result);
+    REQUIRE(result_ptr != nullptr);
+    REQUIRE(*result_ptr == true);
+}
