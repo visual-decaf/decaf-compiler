@@ -17,6 +17,10 @@ public:
     virtual void op_LOGIC_AND() = 0;
     virtual void op_LOGIC_OR() = 0;
     virtual void op_LOGIC_NOT() = 0;
+    virtual void op_LESS() = 0;
+    virtual void op_LESS_EQUAL() = 0;
+    virtual void op_GREATER() = 0;
+    virtual void op_GREATER_EQUAL() = 0;
     virtual void op_GET_TRUE() = 0;
     virtual void op_GET_FALSE() = 0;
 

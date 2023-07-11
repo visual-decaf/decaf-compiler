@@ -118,3 +118,15 @@ void decaf::VirtualMachine::op_LOGIC_NOT() {
     stk.pop();
     stk.emplace(!rhs);
 }
+
+void decaf::VirtualMachine::op_LESS() {
+}
+
+void decaf::VirtualMachine::op_LESS_EQUAL() {
+}
+
+void decaf::VirtualMachine::op_GREATER() {
+}
+
+void decaf::VirtualMachine::op_GREATER_EQUAL() {
+}
