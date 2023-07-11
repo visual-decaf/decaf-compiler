@@ -30,6 +30,14 @@ void decaf::Disassembler::op_GET_INT_CONSTANT(uint8_t index) {
     this->assembly_code.emplace_back("GET_INT_CONSTANT " + std::to_string(static_cast<int>(index)));
 }
 
+void Disassembler::op_GET_TRUE() {
+    this->assembly_code.emplace_back("GET_TRUE");
+}
+
+void Disassembler::op_GET_FALSE() {
+    this->assembly_code.emplace_back("GET_FALSE");
+}
+
 Disassembler::assembly_code_type Disassembler::get_code() {
     return this->assembly_code;
 }

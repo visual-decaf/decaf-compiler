@@ -20,6 +20,8 @@ public:
     void op_MOD() override;
     void op_GET_INSTANT(uint8_t instant) override;
     void op_GET_INT_CONSTANT(uint8_t index) override;
+    void op_GET_TRUE() override;
+    void op_GET_FALSE() override;
 
     assembly_code_type get_code();
 

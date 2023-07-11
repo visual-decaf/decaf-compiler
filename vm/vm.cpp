@@ -49,6 +49,13 @@ void decaf::VirtualMachine::op_GET_INT_CONSTANT(uint8_t index) {
     stk.emplace(prog.i_pool.get_constant(index));
 }
 
+void decaf::VirtualMachine::op_GET_TRUE() {
+    stk.emplace(true);
+}
+
+void decaf::VirtualMachine::op_GET_FALSE() {
+    stk.emplace(false);
+}
 
 void decaf::VirtualMachine::run() {
     ByteCodeDriver driver{prog.code, *this};
