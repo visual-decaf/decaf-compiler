@@ -1,9 +1,11 @@
 #pragma once
 #include <map>
 #include <string>
+#include "serializable.h"
 namespace decaf {
 
-struct Type {
+struct Type:
+public serializable {
     enum class Classification {
         INVALID,
         INT,
@@ -15,6 +17,8 @@ struct Type {
 
     Classification classification = Classification::INVALID;
     // TODO: Add function union type here
+
+    boost::json::value to_json() override;
 };
 
 } // namespace decaf

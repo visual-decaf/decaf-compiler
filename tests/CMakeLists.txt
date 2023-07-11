@@ -1,4 +1,5 @@
 add_subdirectory(token)
+add_subdirectory(type)
 add_subdirectory(scanner)
 add_subdirectory(ast)
 add_subdirectory(parser)
