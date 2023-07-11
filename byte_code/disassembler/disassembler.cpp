@@ -41,3 +41,11 @@ void Disassembler::op_GET_FALSE() {
 Disassembler::assembly_code_type Disassembler::get_code() {
     return this->assembly_code;
 }
+
+void Disassembler::op_LOGIC_AND() {
+    this->assembly_code.emplace_back("LOGIC_AND");
+}
+
+void Disassembler::op_LOGIC_OR() {
+    this->assembly_code.emplace_back("LOGIC_OR");
+}

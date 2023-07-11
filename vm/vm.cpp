@@ -84,3 +84,9 @@ void decaf::VirtualMachine::set_bool_result(bool val) {
 decaf::VirtualMachine::result_type decaf::VirtualMachine::get_result() {
     return result;
 }
+
+void decaf::VirtualMachine::op_LOGIC_AND() {
+}
+
+void decaf::VirtualMachine::op_LOGIC_OR() {
+}
