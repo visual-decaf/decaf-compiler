@@ -14,8 +14,7 @@ TEST_CASE("program_json", "[program]") {
             3,
             ByteCode::Instruction ::MOD,
         },
-        IntConstantPool{
-            1000, 500, 20}};
+        ConstantPool{1000, 500, 20}};
     Type result_type;
     result_type.classification = Type::Classification::INT;
     program.set_result_type(result_type);
@@ -29,7 +28,7 @@ TEST_CASE("program_json", "[program]") {
         "MOD"
     ],
     "resultType": "INT",
-    "intConstantPool": [
+    "constantPool": [
         1000, 500, 20
     ]
 }

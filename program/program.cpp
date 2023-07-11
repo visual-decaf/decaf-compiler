@@ -30,6 +30,6 @@ boost::json::value decaf::Program::to_json() {
     boost::json::object result{
         {"bytecode", this->code.to_json()},
         {"resultType", this->result_type.to_json()},
-        {"intConstantPool", this->pool.to_json()}};
+        {"constantPool", this->pool.to_json()}};
     return result;
 }

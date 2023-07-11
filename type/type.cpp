@@ -6,6 +6,7 @@ const std::map<decaf::Type::Classification, std::string> decaf::Type::type_name_
     {decaf::Type::Classification::DOUBLE, "DOUBLE"},
     {decaf::Type::Classification::BOOL, "BOOL"},
 };
+
 boost::json::value decaf::Type::to_json() {
     boost::json::string result{type_name_of.at(this->classification)};
     return result;

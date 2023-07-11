@@ -4,8 +4,7 @@
 #include "serializable.h"
 namespace decaf {
 
-struct Type:
-public serializable {
+struct Type : public serializable {
     enum class Classification {
         INVALID,
         INT,

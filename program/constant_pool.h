@@ -13,8 +13,7 @@ std::ostream& operator<<(std::ostream& os, const decaf::ConstantPool&);
 
 namespace decaf {
 
-class ConstantPool:
-public serializable {
+class ConstantPool : public serializable{
     friend std::ostream& ::operator<<(std::ostream& os, const decaf::ConstantPool&);
 
 public:
