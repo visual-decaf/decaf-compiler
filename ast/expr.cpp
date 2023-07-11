@@ -104,3 +104,19 @@ bool decaf::ast::BoolConstant::equals(std::shared_ptr<Expr> ptr) {
 
     return this->value == rhs->value;
 }
+
+decaf::Type::Classification decaf::ast::ArithmeticUnary::result_type_of(decaf::Type right) {
+    if (right.classification == Type::Classification::INT)
+        return Type::Classification::INT;
+    return Type::Classification::INVALID;
+}
+
+bool decaf::ast::ArithmeticUnary::equals(std::shared_ptr<Expr> ptr) {
+    auto rhs = std::dynamic_pointer_cast<ArithmeticUnary>(ptr);
+
+    if (rhs == nullptr) {
+        return false;
+    }
+
+    return this->right->equals(rhs->right);
+}

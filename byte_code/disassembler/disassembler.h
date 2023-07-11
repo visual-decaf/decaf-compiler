@@ -23,6 +23,7 @@ public:
     void op_GET_TRUE() override;
     void op_GET_FALSE() override;
     void op_LOGIC_AND() override;
+    void op_NEGATE() override;
     void op_LOGIC_OR() override;
 
     assembly_code_type get_code();

@@ -18,7 +18,7 @@ public:
     explicit VirtualMachine(Program _prog):
         prog{std::move(_prog)} {
     }
-
+    void op_NEGATE() override;
     void op_PLUS() override;
     void op_MINUS() override;
     void op_MULTIPLY() override;

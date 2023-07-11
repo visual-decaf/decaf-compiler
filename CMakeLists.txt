@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.24)
-project(decaf_compiler VERSION 0.0.3)
+project(decaf_compiler VERSION 0.0.4)
 set(CMAKE_CXX_STANDARD 17)
 
 configure_file(meta/version.h.in ${CMAKE_BINARY_DIR}/version.h)
@@ -48,3 +48,8 @@ add_custom_target(graphviz
         COMMAND dot -Tpng dependency.dot -o dependency.png
         WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
         )
+
+add_custom_target(parser_impl_graph
+        COMMAND ${BISON_EXECUTABLE} "--graph=parser_impl_graph.dot" ${CMAKE_SOURCE_DIR}/parser/parser_impl.yy
+        COMMAND dot -Tpng parser_impl_graph.dot -o parser_impl_graph.png
+        WORKING_DIRECTORY "${CMAKE_BINARY_DIR}")

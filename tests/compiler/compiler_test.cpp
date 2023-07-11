@@ -233,6 +233,7 @@ TEST_CASE("compiler_logic_binary_simple_and", "[compiler]") {
 
     using Instruction = ByteCode::Instruction;
     auto result = compiler.get_program();
+    REQUIRE(result.get_result_type_classification() == Type::Classification::BOOL);
     auto expect = Program{
         ByteCode{
             Instruction ::GET_TRUE,
@@ -254,6 +255,7 @@ TEST_CASE("compiler_logic_binary_simple_or", "[compiler]") {
 
     using Instruction = ByteCode::Instruction;
     auto result = compiler.get_program();
+    REQUIRE(result.get_result_type_classification() == Type::Classification::BOOL);
     auto expect = Program{
         ByteCode{
             Instruction ::GET_TRUE,
@@ -278,6 +280,7 @@ TEST_CASE("compiler_logic_binary_combined", "[compiler]") {
 
     using Instruction = ByteCode::Instruction;
     auto result = compiler.get_program();
+    REQUIRE(result.get_result_type_classification() == Type::Classification::BOOL);
     auto expect = Program{
         ByteCode{
             Instruction ::GET_TRUE,
@@ -285,6 +288,80 @@ TEST_CASE("compiler_logic_binary_combined", "[compiler]") {
             Instruction ::GET_FALSE,
             Instruction ::LOGIC_OR,
             Instruction ::LOGIC_AND,
+        }};
+    REQUIRE(expect == result);
+}
+
+TEST_CASE("compiler_arithmetic_unary", "[compiler]") {
+    using namespace decaf;
+    auto input_ast = std::make_shared<ast::ArithmeticUnary>(
+        std::make_shared<ast::IntConstant>(1));
+
+    decaf::Compiler compiler{input_ast};
+    compiler.compile();
+
+    using Instruction = ByteCode::Instruction;
+    auto result = compiler.get_program();
+    REQUIRE(result.get_result_type_classification() == decaf::Type::Classification::INT);
+    auto expect = Program{
+        ByteCode{
+            Instruction ::GET_INSTANT,
+            1,
+            Instruction ::NEGATE,
+        }};
+    REQUIRE(expect == result);
+}
+
+TEST_CASE("compiler_arithmetic_unary_binary_combined", "[compiler]") {
+    using namespace decaf;
+    auto input_ast = std::make_shared<ast::ArithmeticBinary>(
+        std::make_shared<ast::ArithmeticUnary>(
+            std::make_shared<ast::IntConstant>(1)),
+        ast::ArithmeticBinary::Operation::MINUS,
+        std::make_shared<ast::IntConstant>(2));
+
+    decaf::Compiler compiler{input_ast};
+    compiler.compile();
+
+    using Instruction = ByteCode::Instruction;
+    auto result = compiler.get_program();
+    REQUIRE(result.get_result_type_classification() == decaf::Type::Classification::INT);
+    auto expect = Program{
+        ByteCode{
+            Instruction ::GET_INSTANT,
+            1,
+            Instruction ::NEGATE,
+            Instruction ::GET_INSTANT,
+            2,
+            Instruction ::MINUS,
+        }};
+    REQUIRE(expect == result);
+}
+
+TEST_CASE("compiler_arithmetic_unary_binary_complex_combined", "[compiler]") {
+    using namespace decaf;
+    auto input_ast = std::make_shared<ast::ArithmeticBinary>(
+        std::make_shared<ast::ArithmeticUnary>(
+            std::make_shared<ast::IntConstant>(1)),
+        ast::ArithmeticBinary::Operation::MINUS,
+        std::make_shared<ast::ArithmeticUnary>(
+            std::make_shared<ast::IntConstant>(2)));
+
+    decaf::Compiler compiler{input_ast};
+    compiler.compile();
+
+    using Instruction = ByteCode::Instruction;
+    auto result = compiler.get_program();
+    REQUIRE(result.get_result_type_classification() == decaf::Type::Classification::INT);
+    auto expect = Program{
+        ByteCode{
+            Instruction ::GET_INSTANT,
+            1,
+            Instruction ::NEGATE,
+            Instruction ::GET_INSTANT,
+            2,
+            Instruction ::NEGATE,
+            Instruction ::MINUS,
         }};
     REQUIRE(expect == result);
 }

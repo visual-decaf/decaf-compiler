@@ -2,6 +2,7 @@
 
 namespace decaf::ast {
 struct Expr;
+struct ArithmeticUnary;
 struct ArithmeticBinary;
 struct IntConstant;
 struct Group;

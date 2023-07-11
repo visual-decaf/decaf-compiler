@@ -33,6 +33,7 @@ public:
             MULTIPLY,
             DIVIDE,
             MOD,
+            NEGATE,
             LOGIC_AND,
             LOGIC_OR,
             GET_INSTANT,

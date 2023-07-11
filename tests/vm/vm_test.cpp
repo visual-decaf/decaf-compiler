@@ -173,3 +173,70 @@ TEST_CASE("vm_logic_binary", "[vm]") {
     REQUIRE(result_ptr != nullptr);
     REQUIRE(*result_ptr == true);
 }
+
+TEST_CASE("vm_arithmetic_unary", "[vm]") {
+    using namespace decaf;
+    using Instruction = ByteCode::Instruction;
+    auto input_prog = Program{
+        ByteCode{
+            Instruction ::GET_INSTANT,
+            1,
+            Instruction ::NEGATE,
+        }};
+    input_prog.set_result_type_classification(Type::Classification::INT);
+
+    decaf::VirtualMachine vm{input_prog};
+    vm.run();
+
+    auto result = vm.get_result();
+    auto result_ptr = std::get_if<int>(&result);
+    REQUIRE(result_ptr != nullptr);
+    REQUIRE(*result_ptr == -1);
+}
+
+TEST_CASE("vm_arithmetic_unary_binary_combined", "[vm]") {
+    using namespace decaf;
+    using Instruction = ByteCode::Instruction;
+    auto input_prog = Program{
+        ByteCode{
+            Instruction ::GET_INSTANT,
+            1,
+            Instruction ::NEGATE,
+            Instruction ::GET_INSTANT,
+            2,
+            Instruction ::MINUS,
+        }};
+    input_prog.set_result_type_classification(Type::Classification::INT);
+
+    decaf::VirtualMachine vm{input_prog};
+    vm.run();
+
+    auto result = vm.get_result();
+    auto result_ptr = std::get_if<int>(&result);
+    REQUIRE(result_ptr != nullptr);
+    REQUIRE(*result_ptr == -3);
+}
+
+TEST_CASE("vm_arithmetic_unary_binary_complex_combined", "[vm]") {
+    using namespace decaf;
+    using Instruction = ByteCode::Instruction;
+    auto input_prog = Program{
+        ByteCode{
+            Instruction ::GET_INSTANT,
+            1,
+            Instruction ::NEGATE,
+            Instruction ::GET_INSTANT,
+            2,
+            Instruction ::NEGATE,
+            Instruction ::MINUS,
+        }};
+    input_prog.set_result_type_classification(Type::Classification::INT);
+
+    decaf::VirtualMachine vm{input_prog};
+    vm.run();
+
+    auto result = vm.get_result();
+    auto result_ptr = std::get_if<int>(&result);
+    REQUIRE(result_ptr != nullptr);
+    REQUIRE(*result_ptr == 1);
+}

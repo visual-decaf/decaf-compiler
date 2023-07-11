@@ -205,6 +205,7 @@ TEST_CASE("parser_and", "[parser]") {
     REQUIRE(!parser.is_error());
 
     auto result = parser.get_ast();
+    REQUIRE(result->type.classification == Type::Classification::BOOL);
     auto expect = std::make_shared<ast::LogicBinary>(
         std::make_shared<ast::BoolConstant>(true),
         ast::LogicBinary::Operation::LOGIC_AND,
@@ -227,6 +228,7 @@ TEST_CASE("parser_or", "[parser]") {
     REQUIRE(!parser.is_error());
 
     auto result = parser.get_ast();
+    REQUIRE(result->type.classification == Type::Classification::BOOL);
     auto expect = std::make_shared<ast::LogicBinary>(
         std::make_shared<ast::BoolConstant>(true),
         ast::LogicBinary::Operation::LOGIC_OR,
@@ -250,6 +252,7 @@ TEST_CASE("parser_logic_binary_combined_precedence", "[parser]") {
     REQUIRE(!parser.is_error());
 
     auto result = parser.get_ast();
+    REQUIRE(result->type.classification == Type::Classification::BOOL);
     auto expect = std::make_shared<ast::LogicBinary>(
         std::make_shared<ast::BoolConstant>(true),
         ast::LogicBinary::Operation::LOGIC_OR,
@@ -257,6 +260,78 @@ TEST_CASE("parser_logic_binary_combined_precedence", "[parser]") {
             std::make_shared<ast::BoolConstant>(false),
             ast::LogicBinary::Operation::LOGIC_AND,
             std::make_shared<ast::BoolConstant>(true)));
+
+    REQUIRE(expect->equals(result));
+}
+
+TEST_CASE("parser_arithmetic_unary", "[parser]") {
+    token_stream tokenStream{
+        {token_type ::MINUS, "-"},
+        {token_type ::INTEGER, "1"},
+        {token_type ::EOL},
+    };
+
+    decaf::Parser parser{tokenStream};
+    parser.parse();
+
+    REQUIRE(!parser.is_error());
+
+    auto result = parser.get_ast();
+    REQUIRE(result->type.classification == decaf::Type::Classification::INT);
+    auto expect = std::make_shared<ast::ArithmeticUnary>(
+        std::make_shared<ast::IntConstant>(1));
+
+    REQUIRE(expect->equals(result));
+}
+
+TEST_CASE("parser_arithmetic_unary_binary_combined", "[parser]") {
+    token_stream tokenStream{
+        {token_type ::MINUS, "-"},
+        {token_type ::INTEGER, "1"},
+        {token_type ::MINUS, "-"},
+        {token_type ::INTEGER, "2"},
+        {token_type ::EOL},
+    };
+
+    decaf::Parser parser{tokenStream};
+    parser.parse();
+
+    REQUIRE(!parser.is_error());
+
+    auto result = parser.get_ast();
+    REQUIRE(result->type.classification == decaf::Type::Classification::INT);
+    auto expect = std::make_shared<ast::ArithmeticBinary>(
+        std::make_shared<ast::ArithmeticUnary>(
+            std::make_shared<ast::IntConstant>(1)),
+        ast::ArithmeticBinary::Operation::MINUS,
+        std::make_shared<ast::IntConstant>(2));
+
+    REQUIRE(expect->equals(result));
+}
+
+TEST_CASE("parser_arithmetic_unary_binary_complex_combined", "[parser]") {
+    token_stream tokenStream{
+        {token_type ::MINUS, "-"},
+        {token_type ::INTEGER, "1"},
+        {token_type ::MINUS, "-"},
+        {token_type ::MINUS, "-"},
+        {token_type ::INTEGER, "2"},
+        {token_type ::EOL},
+    };
+
+    decaf::Parser parser{tokenStream};
+    parser.parse();
+
+    REQUIRE(!parser.is_error());
+
+    auto result = parser.get_ast();
+    REQUIRE(result->type.classification == decaf::Type::Classification::INT);
+    auto expect = std::make_shared<ast::ArithmeticBinary>(
+        std::make_shared<ast::ArithmeticUnary>(
+            std::make_shared<ast::IntConstant>(1)),
+        ast::ArithmeticBinary::Operation::MINUS,
+        std::make_shared<ast::ArithmeticUnary>(
+            std::make_shared<ast::IntConstant>(2)));
 
     REQUIRE(expect->equals(result));
 }
