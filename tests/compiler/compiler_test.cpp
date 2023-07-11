@@ -14,6 +14,7 @@ TEST_CASE("compiler_main", "[compiler]") {
 
     using Instruction = ByteCode::Instruction;
     auto result = compiler.get_program();
+    REQUIRE(result.get_result_type_classification() == Type::Classification::INT);
     auto expect = Program{
         ByteCode{
             Instruction ::GET_INSTANT,
@@ -41,6 +42,7 @@ TEST_CASE("compiler_plus_deep", "[compiler]") {
 
     using Instruction = ByteCode::Instruction;
     auto result = compiler.get_program();
+    REQUIRE(result.get_result_type_classification() == Type::Classification::INT);
     auto expect = Program{
         ByteCode{
             Instruction ::GET_INSTANT,
@@ -71,6 +73,7 @@ TEST_CASE("compiler_plus_multiply", "[compiler]") {
 
     using Instruction = ByteCode::Instruction;
     auto result = compiler.get_program();
+    REQUIRE(result.get_result_type_classification() == Type::Classification::INT);
     auto expect = Program{
         ByteCode{
             Instruction ::GET_INSTANT,
@@ -101,6 +104,7 @@ TEST_CASE("compiler_plus_minus", "[compiler]") {
 
     using Instruction = ByteCode::Instruction;
     auto result = compiler.get_program();
+    REQUIRE(result.get_result_type_classification() == Type::Classification::INT);
     auto expect = Program{
         ByteCode{
             Instruction ::GET_INSTANT,
@@ -131,6 +135,7 @@ TEST_CASE("compiler_multiply_divide", "[compiler]") {
 
     using Instruction = ByteCode::Instruction;
     auto result = compiler.get_program();
+    REQUIRE(result.get_result_type_classification() == Type::Classification::INT);
     auto expect = Program{
         ByteCode{
             Instruction ::GET_INSTANT,
@@ -158,6 +163,7 @@ TEST_CASE("compiler_mod", "[compiler]") {
 
     using Instruction = ByteCode::Instruction;
     auto result = compiler.get_program();
+    REQUIRE(result.get_result_type_classification() == Type::Classification::INT);
     auto expect = Program{
         ByteCode{
             Instruction ::GET_INSTANT,
@@ -180,6 +186,7 @@ TEST_CASE("compiler_int_constant_pool", "[compiler]") {
 
     using Instruction = ByteCode::Instruction;
     auto result = compiler.get_program();
+    REQUIRE(result.get_result_type_classification() == Type::Classification::INT);
     auto expect = Program{
         ByteCode{
             Instruction ::GET_INT_CONSTANT,
@@ -205,6 +212,7 @@ TEST_CASE("compiler_group", "[compiler]") {
 
     using Instruction = ByteCode::Instruction;
     auto result = compiler.get_program();
+    REQUIRE(result.get_result_type_classification() == Type::Classification::INT);
     auto expect = Program{
         ByteCode{
             Instruction ::GET_INSTANT,
