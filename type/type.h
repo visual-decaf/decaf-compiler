@@ -14,6 +14,12 @@ struct Type: public serializable {
 
     static const std::map<Classification, std::string> type_name_of;
 
+    Type() = default;
+
+    explicit Type(Classification classification) {
+        this->classification = classification;
+    }
+
     Classification classification = Classification::INVALID;
     // TODO: Add function union type here
 
