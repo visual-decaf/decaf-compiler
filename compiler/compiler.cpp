@@ -45,6 +45,7 @@ std::any decaf::Compiler::visitGroup(std::shared_ptr<ast::Group> group) {
 
 void decaf::Compiler::compile() {
     ast_root->accept(*this);
+    prog.set_result_type(ast_root->type);
 }
 
 decaf::Program decaf::Compiler::get_program() {

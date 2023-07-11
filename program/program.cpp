@@ -9,3 +9,7 @@ std::ostream& operator<<(std::ostream& os, const decaf::Program& prog) {
 decaf::IntConstantPool::index_type decaf::Program::add_int_constant(const int& val) {
     return i_pool.add_constant(val);
 }
+
+void decaf::Program::set_result_type(const decaf::Type& result) {
+    result_type = result;
+}
