@@ -28,9 +28,10 @@ TEST_CASE("program_json", "[program]") {
         "MOD"
     ],
     "resultType": "INT",
-    "constantPool": [
-        1000, 500, 20
-    ]
+    "constantPool": {
+        "intConstantPool": [1000, 500, 20],
+        "doubleConstantPool": []
+    }
 }
 )");
     REQUIRE(expect_json == program.to_json());

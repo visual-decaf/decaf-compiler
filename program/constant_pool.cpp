@@ -26,9 +26,13 @@ std::ostream& operator<<(std::ostream& os, const decaf::ConstantPool& i_pool) {
 }
 
 boost::json::value decaf::ConstantPool::to_json() {
-    boost::json::array result;
-    for (auto val: this->pool) {
-        result.emplace_back(val);
+    boost::json::object result;
+    boost::json::array int_constant_pool;
+    boost::json::array double_constant_pool;
+    for (auto constant: this->pool) {
+        int_constant_pool.emplace_back(constant);
     }
+    result["intConstantPool"] = int_constant_pool;
+    result["doubleConstantPool"] = double_constant_pool;
     return result;
 }
