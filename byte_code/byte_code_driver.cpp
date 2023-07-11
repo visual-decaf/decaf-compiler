@@ -32,6 +32,9 @@ void decaf::ByteCodeDriver::produce_instruction() {
         case Instruction ::NEGATE:
             visitor.op_NEGATE();
             break;
+        case Instruction ::LOGIC_NOT:
+            visitor.op_LOGIC_NOT();
+            break;
         case Instruction ::GET_TRUE:
             visitor.op_GET_TRUE();
             break;

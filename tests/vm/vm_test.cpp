@@ -2,9 +2,10 @@
 #include "vm.h"
 #include <catch2/catch_test_macros.hpp>
 
+using namespace decaf;
+using Instruction = ByteCode::Instruction;
+
 TEST_CASE("vm_main", "[vm]") {
-    using namespace decaf;
-    using Instruction = ByteCode::Instruction;
     auto input_prog = Program{
         ByteCode{
             Instruction ::GET_INSTANT,
@@ -28,8 +29,6 @@ TEST_CASE("vm_main", "[vm]") {
 }
 
 TEST_CASE("vm_plus_deep", "[vm]") {
-    using namespace decaf;
-    using Instruction = ByteCode::Instruction;
     auto input_prog = Program{
         ByteCode{
             Instruction ::GET_INSTANT,
@@ -53,8 +52,6 @@ TEST_CASE("vm_plus_deep", "[vm]") {
 }
 
 TEST_CASE("vm_plus_multiply", "[vm]") {
-    using namespace decaf;
-    using Instruction = ByteCode::Instruction;
     auto input_prog = Program{
         ByteCode{
             Instruction ::GET_INSTANT,
@@ -78,8 +75,6 @@ TEST_CASE("vm_plus_multiply", "[vm]") {
 }
 
 TEST_CASE("vm_plus_minus", "[vm]") {
-    using namespace decaf;
-    using Instruction = ByteCode::Instruction;
     auto input_prog = Program{
         ByteCode{
             Instruction ::GET_INSTANT,
@@ -103,8 +98,6 @@ TEST_CASE("vm_plus_minus", "[vm]") {
 }
 
 TEST_CASE("vm_multiply_divide", "[vm]") {
-    using namespace decaf;
-    using Instruction = ByteCode::Instruction;
     auto input_prog = Program{
         ByteCode{
             Instruction ::GET_INSTANT,
@@ -128,8 +121,6 @@ TEST_CASE("vm_multiply_divide", "[vm]") {
 }
 
 TEST_CASE("vm_mod", "[vm]") {
-    using namespace decaf;
-    using Instruction = ByteCode::Instruction;
     auto input_prog = Program{
         ByteCode{
             Instruction ::GET_INSTANT,
@@ -153,8 +144,6 @@ TEST_CASE("vm_mod", "[vm]") {
 }
 
 TEST_CASE("vm_logic_binary", "[vm]") {
-    using namespace decaf;
-    using Instruction = ByteCode::Instruction;
     auto input_prog = Program{
         ByteCode{
             Instruction ::GET_TRUE,
@@ -175,8 +164,6 @@ TEST_CASE("vm_logic_binary", "[vm]") {
 }
 
 TEST_CASE("vm_arithmetic_unary", "[vm]") {
-    using namespace decaf;
-    using Instruction = ByteCode::Instruction;
     auto input_prog = Program{
         ByteCode{
             Instruction ::GET_INSTANT,
@@ -195,8 +182,6 @@ TEST_CASE("vm_arithmetic_unary", "[vm]") {
 }
 
 TEST_CASE("vm_arithmetic_unary_binary_combined", "[vm]") {
-    using namespace decaf;
-    using Instruction = ByteCode::Instruction;
     auto input_prog = Program{
         ByteCode{
             Instruction ::GET_INSTANT,
@@ -218,8 +203,6 @@ TEST_CASE("vm_arithmetic_unary_binary_combined", "[vm]") {
 }
 
 TEST_CASE("vm_arithmetic_unary_binary_complex_combined", "[vm]") {
-    using namespace decaf;
-    using Instruction = ByteCode::Instruction;
     auto input_prog = Program{
         ByteCode{
             Instruction ::GET_INSTANT,
@@ -239,4 +222,40 @@ TEST_CASE("vm_arithmetic_unary_binary_complex_combined", "[vm]") {
     auto result_ptr = std::get_if<int>(&result);
     REQUIRE(result_ptr != nullptr);
     REQUIRE(*result_ptr == 1);
+}
+
+TEST_CASE("vm_logic_not", "[vm]") {
+    auto input_prog = Program{
+        ByteCode{
+            Instruction ::GET_TRUE,
+            Instruction ::LOGIC_NOT,
+        }};
+    input_prog.set_result_type_classification(Type::Classification::BOOL);
+
+    decaf::VirtualMachine vm{input_prog};
+    vm.run();
+
+    auto result = vm.get_result();
+    auto result_ptr = std::get_if<bool>(&result);
+    REQUIRE(result_ptr != nullptr);
+    REQUIRE(*result_ptr == false);
+}
+
+TEST_CASE("vm_logic_not_combined", "[vm]") {
+    auto input_prog = Program{
+        ByteCode{
+            Instruction ::GET_FALSE,
+            Instruction ::GET_TRUE,
+            Instruction ::LOGIC_NOT,
+            Instruction ::LOGIC_OR,
+        }};
+    input_prog.set_result_type_classification(Type::Classification::BOOL);
+
+    decaf::VirtualMachine vm{input_prog};
+    vm.run();
+
+    auto result = vm.get_result();
+    auto result_ptr = std::get_if<bool>(&result);
+    REQUIRE(result_ptr != nullptr);
+    REQUIRE(*result_ptr == false);
 }

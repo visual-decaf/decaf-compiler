@@ -112,3 +112,9 @@ void decaf::VirtualMachine::op_NEGATE() {
     stk.pop();
     stk.emplace(-rhs);
 }
+
+void decaf::VirtualMachine::op_LOGIC_NOT() {
+    bool rhs = std::any_cast<bool>(stk.top());
+    stk.pop();
+    stk.emplace(!rhs);
+}

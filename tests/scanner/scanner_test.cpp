@@ -138,3 +138,16 @@ TEST_CASE("scanner_true_false", "[scanner]") {
         REQUIRE(result_token[i] == expected_token[i]);
     }
 }
+
+TEST_CASE("scanner_logic_not", "[scanner]") {
+    auto result_token = scan_for("!");
+    using decaf::token_type;
+    decaf::token_stream expected_token{
+        {token_type ::LOGIC_NOT, "!"},
+        {token_type ::YYEOF}};
+
+    REQUIRE(result_token.size() == expected_token.size());
+    for (int i = 0; i < result_token.size(); i++) {
+        REQUIRE(result_token[i] == expected_token[i]);
+    }
+}
