@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 
+using decaf::token_type;
+
 decaf::token_stream scan_for(const std::string& str) {
     std::istringstream input{str};
     decaf::Scanner scanner{input};
@@ -14,7 +16,6 @@ decaf::token_stream scan_for(const std::string& str) {
 
 TEST_CASE("scanner_main", "[scanner]") {
     auto result_token = scan_for("12 34 56");
-    using decaf::token_type;
     decaf::token_stream expected_token = {
         {token_type::INTEGER, "12"},
         {token_type::INTEGER, "34"},
@@ -29,7 +30,6 @@ TEST_CASE("scanner_main", "[scanner]") {
 
 TEST_CASE("scanner_plus_minus_star_slash_percent", "[scanner]") {
     auto result_token = scan_for("+ - * / %");
-    using decaf::token_type;
     decaf::token_stream expected_token = {
         {token_type ::PLUS, "+"},
         {token_type ::MINUS, "-"},
@@ -46,7 +46,6 @@ TEST_CASE("scanner_plus_minus_star_slash_percent", "[scanner]") {
 
 TEST_CASE("scanner_integer", "[scanner]") {
     auto result_token = scan_for("0 8 012");
-    using decaf::token_type;
     decaf::token_stream expected_token = {
         {token_type ::INTEGER, "0"},
         {token_type ::INTEGER, "8"},
@@ -61,7 +60,6 @@ TEST_CASE("scanner_integer", "[scanner]") {
 
 TEST_CASE("scanner_hex_integer", "[scanner]") {
     auto result_token = scan_for("0x0 0X12aE");
-    using decaf::token_type;
     decaf::token_stream expected_token = {
         {token_type ::HEX_INTEGER, "0x0"},
         {token_type ::HEX_INTEGER, "0X12aE"},
@@ -75,7 +73,6 @@ TEST_CASE("scanner_hex_integer", "[scanner]") {
 
 TEST_CASE("scanner_left_right_paren", "[scanner]") {
     auto result_token = scan_for("(1)");
-    using decaf::token_type;
     decaf::token_stream expected_token = {
         {token_type ::LEFT_PAREN, "("},
         {token_type ::INTEGER, "1"},
@@ -94,7 +91,6 @@ TEST_CASE("scanner_invalid", "[scanner]") {
     scanner.scan();
 
     auto result_token = scanner.get_tokens();
-    using decaf::token_type;
     decaf::token_stream expected_token = {
         {token_type ::INVALID, "@"},
         {token_type ::INVALID, "@"},
@@ -113,7 +109,6 @@ TEST_CASE("scanner_invalid", "[scanner]") {
 
 TEST_CASE("scanner_logic_and_or", "[scanner]") {
     auto result_token = scan_for("&& ||");
-    using decaf::token_type;
     decaf::token_stream expected_token{
         {token_type ::LOGIC_AND, "&&"},
         {token_type ::LOGIC_OR, "||"},
@@ -127,7 +122,6 @@ TEST_CASE("scanner_logic_and_or", "[scanner]") {
 
 TEST_CASE("scanner_true_false", "[scanner]") {
     auto result_token = scan_for("true false");
-    using decaf::token_type;
     decaf::token_stream expected_token{
         {token_type ::TRUE, "true"},
         {token_type ::FALSE, "false"},
@@ -141,7 +135,6 @@ TEST_CASE("scanner_true_false", "[scanner]") {
 
 TEST_CASE("scanner_logic_not", "[scanner]") {
     auto result_token = scan_for("!");
-    using decaf::token_type;
     decaf::token_stream expected_token{
         {token_type ::LOGIC_NOT, "!"},
         {token_type ::YYEOF}};
