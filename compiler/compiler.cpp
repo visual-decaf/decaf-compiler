@@ -89,3 +89,7 @@ std::any decaf::Compiler::visitLogicUnary(std::shared_ptr<ast::LogicUnary> log_u
     prog.emit(ByteCode::Instruction::LOGIC_NOT);
     return {};
 }
+
+std::any decaf::Compiler::visitRationalBinary(std::shared_ptr<ast::RationalBinary> ptr) {
+    return {};
+}

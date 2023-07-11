@@ -9,4 +9,5 @@ struct Group;
 struct LogicBinary;
 struct LogicUnary;
 struct BoolConstant;
+struct RationalBinary;
 } // namespace decaf::ast
