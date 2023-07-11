@@ -20,8 +20,8 @@ namespace decaf::ast {
 struct Expr: public serializable {
     virtual std::any accept(ExprVisitor&) = 0;
     virtual bool equals(std::shared_ptr<Expr> ptr) = 0;
-    virtual boost::json::value to_json() = 0;
-    virtual ~Expr() = default;
+    boost::json::value to_json() override = 0;
+    ~Expr() override = default;
 };
 
 struct ArithmeticBinary: Expr, std::enable_shared_from_this<ArithmeticBinary> {
