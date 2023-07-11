@@ -49,3 +49,7 @@ void Disassembler::op_LOGIC_AND() {
 void Disassembler::op_LOGIC_OR() {
     this->assembly_code.emplace_back("LOGIC_OR");
 }
+
+void Disassembler::op_NEGATE() {
+    this->assembly_code.emplace_back("NEGATE");
+}
