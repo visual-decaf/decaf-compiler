@@ -43,6 +43,10 @@ std::any decaf::Compiler::visitGroup(std::shared_ptr<ast::Group> group) {
     return {};
 }
 
+std::any decaf::Compiler::visitLogicBinary(std::shared_ptr<ast::LogicBinary> ptr) {
+    return {};
+}
+
 void decaf::Compiler::compile() {
     ast_root->accept(*this);
     prog.set_result_type(ast_root->type);

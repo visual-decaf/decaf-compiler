@@ -72,3 +72,13 @@ boost::json::value decaf::ast::Group::to_json() {
         {"content", this->content->to_json()}};
     return result;
 }
+
+bool decaf::ast::LogicBinary::equals(std::shared_ptr<Expr> ptr) {
+    auto log = std::dynamic_pointer_cast<LogicBinary>(ptr);
+
+    if (log == nullptr) {
+        return false;
+    }
+
+    return this->left->equals(log->left) && this->right->equals(log->right);
+}

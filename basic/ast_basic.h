@@ -5,4 +5,5 @@ struct Expr;
 struct ArithmeticBinary;
 struct IntConstant;
 struct Group;
+struct LogicBinary;
 } // namespace decaf::ast
