@@ -27,6 +27,14 @@ boost::json::value decaf::ast::ArithmeticBinary::to_json() {
     return result;
 }
 
+decaf::Type::Classification decaf::ast::ArithmeticBinary::result_type_of(decaf::Type left, decaf::Type right) {
+    if (left.classification == Type::Classification::INT
+        && right.classification == Type::Classification::INT) {
+        return Type::Classification::INT;
+    }
+    return Type::Classification::INVALID;
+}
+
 bool decaf::ast::IntConstant::equals(std::shared_ptr<Expr> ptr) {
     auto val = std::dynamic_pointer_cast<IntConstant>(ptr);
 
