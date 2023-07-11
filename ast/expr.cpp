@@ -82,3 +82,13 @@ bool decaf::ast::LogicBinary::equals(std::shared_ptr<Expr> ptr) {
 
     return this->left->equals(log->left) && this->right->equals(log->right);
 }
+
+bool decaf::ast::BoolConstant::equals(std::shared_ptr<Expr> ptr) {
+    auto rhs = std::dynamic_pointer_cast<BoolConstant>(ptr);
+
+    if (rhs == nullptr) {
+        return false;
+    }
+
+    return this->value == rhs->value;
+}

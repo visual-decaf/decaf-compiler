@@ -15,6 +15,7 @@ struct ExprVisitor {
     virtual std::any visitIntConstant(std::shared_ptr<ast::IntConstant>) = 0;
     virtual std::any visitGroup(std::shared_ptr<ast::Group>) = 0;
     virtual std::any visitLogicBinary(std::shared_ptr<ast::LogicBinary>) = 0;
+    virtual std::any visitBoolConstant(std::shared_ptr<ast::BoolConstant>) = 0;
 };
 } // namespace decaf
 
@@ -110,6 +111,20 @@ struct LogicBinary: Expr, std::enable_shared_from_this<LogicBinary> {
     std::any accept(ExprVisitor& visitor) override {
         return visitor.visitLogicBinary(shared_from_this());
     }
+    bool equals(std::shared_ptr<Expr> ptr) override;
+};
+
+struct BoolConstant: Expr, std::enable_shared_from_this<BoolConstant> {
+    bool value;
+
+    explicit BoolConstant(bool val):
+        value{val} {
+    }
+
+    std::any accept(ExprVisitor& visitor) override {
+        return visitor.visitBoolConstant(shared_from_this());
+    }
+
     bool equals(std::shared_ptr<Expr> ptr) override;
 };
 
