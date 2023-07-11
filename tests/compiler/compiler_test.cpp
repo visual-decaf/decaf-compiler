@@ -68,7 +68,6 @@ TEST_CASE("compiler_plus_multiply", "[compiler]") {
     decaf::Compiler compiler{input_ast};
     compiler.compile();
 
-
     auto result = compiler.get_program();
     REQUIRE(result.get_result_type_classification() == Type::Classification::INT);
     auto expect = Program{
