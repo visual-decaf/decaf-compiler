@@ -16,6 +16,9 @@ TEST_CASE("program_json", "[program]") {
         },
         IntConstantPool{
             1000, 500, 20}};
+    Type result_type;
+    result_type.classification = Type::Classification::INT;
+    program.set_result_type(result_type);
     boost::json::value expect_json = boost::json::parse(R"(
 {
     "bytecode": [
@@ -25,6 +28,7 @@ TEST_CASE("program_json", "[program]") {
         "GET_INSTANT 3",
         "MOD"
     ],
+    "resultType": "INT",
     "intConstantPool": [
         1000, 500, 20
     ]
