@@ -34,6 +34,10 @@ HEX_INTEGER ("0x"|"0X"){HEX_DIGIT}+
 "&&" { emit({token_type::LOGIC_AND, YYText()}); }
 "||" { emit({token_type::LOGIC_OR, YYText()});}
 "!" { emit({token_type::LOGIC_NOT, YYText()}); }
+"<" { emit({token_type::LESS, YYText()}); }
+"<=" { emit({token_type::LESS_EQUAL, YYText()}); }
+">" { emit({token_type::GREATER, YYText()}); }
+">=" { emit({token_type::GREATER_EQUAL, YYText()}); }
 
 "true" { emit({token_type::TRUE, YYText()}); }
 "false" { emit({token_type::FALSE, YYText()}); }
