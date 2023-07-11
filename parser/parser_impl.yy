@@ -43,6 +43,7 @@
 %left LOGIC_AND
 %left PLUS MINUS
 %left STAR SLASH PERCENT
+%left UNARY_MINUS
 
 %%
 

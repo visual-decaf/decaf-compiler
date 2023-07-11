@@ -67,6 +67,9 @@ std::any decaf::Compiler::visitBoolConstant(std::shared_ptr<ast::BoolConstant> b
     return {};
 }
 
+std::any decaf::Compiler::visitArithmeticUnary(std::shared_ptr<ast::ArithmeticUnary> ptr) {
+    return {};
+}
 
 void decaf::Compiler::compile() {
     ast_root->accept(*this);
