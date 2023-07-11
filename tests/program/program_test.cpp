@@ -14,10 +14,8 @@ TEST_CASE("program_json", "[program]") {
             3,
             ByteCode::Instruction ::MOD,
         },
-        ConstantPool{1000, 500, 20}};
-    Type result_type;
-    result_type.classification = Type::Classification::INT;
-    program.set_result_type(result_type);
+        ConstantPool({1000, 500, 20})};
+    program.set_result_type_classification(Type::Classification::INT);
     boost::json::value expect_json = boost::json::parse(R"(
 {
     "bytecode": [
