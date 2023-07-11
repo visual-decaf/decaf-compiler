@@ -48,3 +48,8 @@ add_custom_target(graphviz
         COMMAND dot -Tpng dependency.dot -o dependency.png
         WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
         )
+
+add_custom_target(parser_impl_graph
+        COMMAND ${BISON_EXECUTABLE} "--graph=parser_impl_graph.dot" ${CMAKE_SOURCE_DIR}/parser/parser_impl.yy
+        COMMAND dot -Tpng parser_impl_graph.dot -o parser_impl_graph.png
+        WORKING_DIRECTORY "${CMAKE_BINARY_DIR}")
