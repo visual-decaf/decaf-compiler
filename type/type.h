@@ -16,7 +16,7 @@ struct Type: public serializable {
 
     Type() = default;
 
-    explicit Type(Classification classification) {
+    explicit Type(const Classification& classification) {
         this->classification = classification;
     }
 
