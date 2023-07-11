@@ -14,6 +14,7 @@ TEST_CASE("parser_main", "[parser]") {
 
     decaf::Parser parser{tokenStream};
     parser.parse();
+    REQUIRE(!parser.is_error());
 
     auto result = parser.get_ast();
     auto expect = std::make_shared<ast::ArithmeticBinary>(
@@ -35,6 +36,7 @@ TEST_CASE("parser_plus_left_associative", "[parser]") {
 
     decaf::Parser parser{tokenStream};
     parser.parse();
+    REQUIRE(!parser.is_error());
 
     auto result = parser.get_ast();
     auto expect = std::make_shared<ast::ArithmeticBinary>(
@@ -59,6 +61,7 @@ TEST_CASE("parser_plus_multiply_precedence", "[parser]") {
 
     decaf::Parser parser{tokenStream};
     parser.parse();
+    REQUIRE(!parser.is_error());
 
     auto result = parser.get_ast();
     auto expect = std::make_shared<ast::ArithmeticBinary>(
@@ -83,6 +86,7 @@ TEST_CASE("parser_plus_minus", "[parser]") {
 
     decaf::Parser parser{tokenStream};
     parser.parse();
+    REQUIRE(!parser.is_error());
 
     auto result = parser.get_ast();
     auto expect = std::make_shared<ast::ArithmeticBinary>(
@@ -107,6 +111,7 @@ TEST_CASE("parser_multiply_divide", "[parser]") {
 
     decaf::Parser parser{tokenStream};
     parser.parse();
+    REQUIRE(!parser.is_error());
 
     auto result = parser.get_ast();
     auto expect = std::make_shared<ast::ArithmeticBinary>(
@@ -129,6 +134,7 @@ TEST_CASE("parser_mod", "[parser]") {
 
     decaf::Parser parser{tokenStream};
     parser.parse();
+    REQUIRE(!parser.is_error());
 
     auto result = parser.get_ast();
     auto expect = std::make_shared<ast::ArithmeticBinary>(
@@ -148,6 +154,7 @@ TEST_CASE("parser_group", "[parser]") {
 
     decaf::Parser parser{tokenStream};
     parser.parse();
+    REQUIRE(!parser.is_error());
 
     auto result = parser.get_ast();
     auto expect = std::make_shared<ast::Group>(
