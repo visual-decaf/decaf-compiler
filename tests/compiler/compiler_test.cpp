@@ -233,6 +233,7 @@ TEST_CASE("compiler_logic_binary_simple_and", "[compiler]") {
 
     using Instruction = ByteCode::Instruction;
     auto result = compiler.get_program();
+    REQUIRE(result.get_result_type_classification() == Type::Classification::BOOL);
     auto expect = Program{
         ByteCode{
             Instruction ::GET_TRUE,
@@ -254,6 +255,7 @@ TEST_CASE("compiler_logic_binary_simple_or", "[compiler]") {
 
     using Instruction = ByteCode::Instruction;
     auto result = compiler.get_program();
+    REQUIRE(result.get_result_type_classification() == Type::Classification::BOOL);
     auto expect = Program{
         ByteCode{
             Instruction ::GET_TRUE,
@@ -278,6 +280,7 @@ TEST_CASE("compiler_logic_binary_combined", "[compiler]") {
 
     using Instruction = ByteCode::Instruction;
     auto result = compiler.get_program();
+    REQUIRE(result.get_result_type_classification() == Type::Classification::BOOL);
     auto expect = Program{
         ByteCode{
             Instruction ::GET_TRUE,
