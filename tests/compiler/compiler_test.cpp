@@ -188,7 +188,7 @@ TEST_CASE("compiler_int_constant_pool", "[compiler]") {
             1,
             Instruction ::PLUS,
         },
-        IntConstantPool{
+        ConstantPool{
             10000,
             2345,
         }};
