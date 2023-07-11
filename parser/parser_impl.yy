@@ -29,9 +29,9 @@
 
 %token <int> INTEGER
 %token <int> HEX_INTEGER
-%token PLUS '+' MINUS '-'
-%token STAR '*' SLASH '/' PERCENT '%'
-%token LEFT_PAREN '(' RIGHT_PAREN ')'
+%token PLUS "+" MINUS "-"
+%token STAR "*" SLASH "/" PERCENT "%"
+%token LEFT_PAREN "(" RIGHT_PAREN ")"
 %token LOGIC_AND "&&" LOGIC_OR "||"
 %token EOL
 %token INVALID
@@ -65,35 +65,35 @@ expression:
     ;
 
 arithmeticBinaryExpr: 
-    expression PLUS expression {
+    expression "+" expression {
         $$ = std::make_shared<ArithmeticBinary>(
             $1,
             ArithmeticBinary::Operation::PLUS,
             $3
         );
     }
-    | expression MINUS expression {
+    | expression "-" expression {
         $$ = std::make_shared<ArithmeticBinary>(
             $1,
             ArithmeticBinary::Operation::MINUS,
             $3
         );
     }
-    | expression STAR expression {
+    | expression "*" expression {
         $$ = std::make_shared<ArithmeticBinary>(
             $1,
             ArithmeticBinary::Operation::MULTIPLY,
             $3
         );
     }
-    | expression SLASH expression {
+    | expression "/" expression {
         $$ = std::make_shared<ArithmeticBinary>(
             $1,
             ArithmeticBinary::Operation::DIVIDE,
             $3
         );
     }
-    | expression PERCENT expression {
+    | expression "%" expression {
         $$ = std::make_shared<ArithmeticBinary>(
             $1,
             ArithmeticBinary::Operation::MOD,
@@ -102,19 +102,19 @@ arithmeticBinaryExpr:
     }
 
 arithmeticUnaryExpr:
-    MINUS expression %prec UNARY_MINUS {
+    "-" expression %prec UNARY_MINUS {
         $$ = std::make_shared<ArithmeticUnary>($2);
     }
 
 logicBinaryExpr:
-    expression LOGIC_AND expression {
+    expression "&&" expression {
         $$ = std::make_shared<LogicBinary>(
             $1,
             LogicBinary::Operation::LOGIC_AND,
             $3
         );
     }
-    | expression LOGIC_OR expression {
+    | expression "||" expression {
         $$ = std::make_shared<LogicBinary>(
             $1,
             LogicBinary::Operation::LOGIC_OR,
@@ -123,12 +123,12 @@ logicBinaryExpr:
     }
 
 group:
-    LEFT_PAREN expression RIGHT_PAREN {
+    "(" expression ")" {
         $$ = std::make_shared<Group>(
             $2
         );
     }
-    | LEFT_PAREN error RIGHT_PAREN {
+    | "(" error ")" {
         $$ = std::make_shared<Group> (
             nullptr
         );
@@ -144,10 +144,10 @@ intConstant:
     }
 
 boolConstant:
-    TRUE {
+    "true" {
         $$ = std::make_shared<BoolConstant>(true);
     }
-    | FALSE {
+    | "false" {
         $$ = std::make_shared<BoolConstant>(false);
     }
     ;
