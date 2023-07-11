@@ -26,7 +26,7 @@ std::any decaf::Compiler::visitArithmeticBinary(std::shared_ptr<decaf::ast::Arit
 
 std::any decaf::Compiler::visitIntConstant(std::shared_ptr<decaf::ast::IntConstant> constant) {
     if (constant->value > UINT8_MAX) {
-        IntConstantPool::index_type index = prog.add_int_constant(constant->value);
+        ConstantPool::index_type index = prog.add_int_constant(constant->value);
         prog.emit_bytes(
             ByteCode::Instruction::GET_INT_CONSTANT,
             index);

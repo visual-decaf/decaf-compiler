@@ -24,8 +24,8 @@ public:
     explicit Program(ByteCode _code):
         Program(std::move(_code), {}) {
     }
-    Program(ByteCode _code, IntConstantPool _i_pool):
-        code{std::move(_code)}, i_pool{std::move(_i_pool)} {
+    Program(ByteCode _code, ConstantPool _pool):
+        code{std::move(_code)}, pool{std::move(_pool)} {
     }
 
     void emit(ByteCode::code_type b) {
@@ -38,19 +38,19 @@ public:
         code.emit(b2);
     }
 
-    IntConstantPool::index_type add_int_constant(const int& val);
+    ConstantPool::index_type add_int_constant(const int& val);
 
     void set_result_type(const Type& result);
     void set_result_type_classification(const Type::Classification& classification);
 
     bool operator==(const Program& rhs) {
-        return this->code == rhs.code && this->i_pool == rhs.i_pool;
+        return this->code == rhs.code && this->pool == rhs.pool;
     }
 
 private:
     ByteCode code;
     Type result_type;
-    IntConstantPool i_pool;
+    ConstantPool pool;
 };
 
 } // namespace decaf
