@@ -35,6 +35,8 @@
 %token LEFT_PAREN "(" RIGHT_PAREN ")"
 %token LOGIC_AND "&&" LOGIC_OR "||"
 %token LOGIC_NOT "!"
+%token LESS "<" LESS_EQUAL "<="
+%token GREATER ">" GREATER_EQUAL ">="
 %token EOL
 %token INVALID
 
@@ -44,6 +46,7 @@
 /* Expressions */
 %left LOGIC_OR
 %left LOGIC_AND
+%nonassoc LESS LESS_EQUAL GREATER GREATER_EQUAL
 %left PLUS MINUS
 %left STAR SLASH PERCENT
 %left UNARY_MINUS LOGIC_NOT
