@@ -109,3 +109,17 @@ TEST_CASE("scanner_invalid", "[scanner]") {
 
     REQUIRE(scanner.is_error());
 }
+
+TEST_CASE("scanner_logic_and_or", "[scanner]") {
+    auto result_token = scan_for("&& ||");
+    using decaf::token_type;
+    decaf::token_stream expected_token{
+        {token_type ::LOGIC_AND, "&&"},
+        {token_type ::LOGIC_OR, "||"},
+        {token_type ::YYEOF}};
+
+    REQUIRE(result_token.size() == expected_token.size());
+    for (int i = 0; i < result_token.size(); i++) {
+        REQUIRE(result_token[i] == expected_token[i]);
+    }
+}
