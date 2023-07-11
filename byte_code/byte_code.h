@@ -35,6 +35,7 @@ public:
             NEGATE,
             LOGIC_AND,
             LOGIC_OR,
+            LOGIC_NOT,
             GET_INSTANT,
             GET_INT_CONSTANT,
             GET_TRUE,

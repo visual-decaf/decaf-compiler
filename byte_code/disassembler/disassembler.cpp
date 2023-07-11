@@ -53,3 +53,7 @@ void Disassembler::op_LOGIC_OR() {
 void Disassembler::op_NEGATE() {
     this->assembly_code.emplace_back("NEGATE");
 }
+
+void Disassembler::op_LOGIC_NOT() {
+    this->assembly_code.emplace_back("LOGIC_NOT");
+}

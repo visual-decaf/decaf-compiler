@@ -112,3 +112,6 @@ void decaf::VirtualMachine::op_NEGATE() {
     stk.pop();
     stk.emplace(-rhs);
 }
+
+void decaf::VirtualMachine::op_LOGIC_NOT() {
+}
