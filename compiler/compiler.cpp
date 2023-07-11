@@ -43,6 +43,31 @@ std::any decaf::Compiler::visitGroup(std::shared_ptr<ast::Group> group) {
     return {};
 }
 
+std::any decaf::Compiler::visitLogicBinary(std::shared_ptr<ast::LogicBinary> logicBinary) {
+    logicBinary->left->accept(*this);
+    logicBinary->right->accept(*this);
+
+    using Operation = ast::LogicBinary::Operation;
+    using Instruction = ByteCode::Instruction;
+    static std::map<Operation, ByteCode::code_type> code_for{
+        {Operation ::LOGIC_AND, Instruction ::LOGIC_AND},
+        {Operation ::LOGIC_OR, Instruction ::LOGIC_OR},
+    };
+    prog.emit(code_for[logicBinary->op]);
+    return {};
+}
+
+std::any decaf::Compiler::visitBoolConstant(std::shared_ptr<ast::BoolConstant> boolConstant) {
+    using Instruction = ByteCode::Instruction;
+    static std::map<bool, ByteCode::code_type> code_for{
+        {true, Instruction ::GET_TRUE},
+        {false, Instruction ::GET_FALSE},
+    };
+    prog.emit(code_for[boolConstant->value]);
+    return {};
+}
+
+
 void decaf::Compiler::compile() {
     ast_root->accept(*this);
     prog.set_result_type(ast_root->type);

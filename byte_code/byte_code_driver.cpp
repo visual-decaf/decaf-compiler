@@ -29,6 +29,18 @@ void decaf::ByteCodeDriver::produce_instruction() {
         case Instruction ::MOD:
             visitor.op_MOD();
             break;
+        case Instruction ::GET_TRUE:
+            visitor.op_GET_TRUE();
+            break;
+        case Instruction ::GET_FALSE:
+            visitor.op_GET_FALSE();
+            break;
+        case Instruction ::LOGIC_AND:
+            visitor.op_LOGIC_AND();
+            break;
+        case Instruction ::LOGIC_OR:
+            visitor.op_LOGIC_OR();
+            break;
 
             // 1 Operand
         case Instruction ::GET_INSTANT:

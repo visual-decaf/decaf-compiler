@@ -32,8 +32,12 @@ public:
             MULTIPLY,
             DIVIDE,
             MOD,
+            LOGIC_AND,
+            LOGIC_OR,
             GET_INSTANT,
             GET_INT_CONSTANT,
+            GET_TRUE,
+            GET_FALSE
         };
     };
 
