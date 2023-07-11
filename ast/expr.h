@@ -21,9 +21,10 @@ namespace decaf::ast {
 struct Expr: public serializable {
     virtual std::any accept(ExprVisitor&) = 0;
     virtual bool equals(std::shared_ptr<Expr> ptr) = 0;
-    virtual boost::json::value to_json() = 0;
-    virtual ~Expr() = default;
 
+    boost::json::value to_json() override = 0;
+    ~Expr() override = default;
+  
     decaf::Type type;
 };
 
@@ -61,11 +62,6 @@ struct IntConstant: Expr, std::enable_shared_from_this<IntConstant> {
         value{val} {
         type.classification = Type::Classification::INT;
     }
-
-    IntConstant(const IntConstant&) = delete;
-    IntConstant(IntConstant&&) = delete;
-    IntConstant& operator=(const IntConstant&) = delete;
-    IntConstant& operator=(IntConstant&&) = delete;
 
     std::any accept(ExprVisitor& visitor) override {
         return visitor.visitIntConstant(shared_from_this());
