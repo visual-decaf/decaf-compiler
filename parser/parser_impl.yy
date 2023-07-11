@@ -23,6 +23,8 @@
 %nterm <std::shared_ptr<decaf::ast::Expr>> arithmeticBinaryExpr
 %nterm <std::shared_ptr<decaf::ast::Expr>> intConstant
 %nterm <std::shared_ptr<decaf::ast::Expr>> group
+%nterm <std::shared_ptr<decaf::ast::Expr>> logicBinaryExpr
+%nterm <std::shared_ptr<decaf::ast::Expr>> boolConstant
 
 %token <int> INTEGER
 %token <int> HEX_INTEGER
@@ -53,8 +55,10 @@ input:
 
 expression:
     arithmeticBinaryExpr
+    | logicBinaryExpr
     | group
     | intConstant
+    | boolConstant
     ;
 
 arithmeticBinaryExpr: 
@@ -94,6 +98,22 @@ arithmeticBinaryExpr:
         );
     }
 
+logicBinaryExpr:
+    expression LOGIC_AND expression {
+        $$ = std::make_shared<LogicBinary>(
+            $1,
+            LogicBinary::Operation::LOGIC_AND,
+            $3
+        );
+    }
+    | expression LOGIC_OR expression {
+        $$ = std::make_shared<LogicBinary>(
+            $1,
+            LogicBinary::Operation::LOGIC_OR,
+            $3
+        );
+    }
+
 group:
     LEFT_PAREN expression RIGHT_PAREN {
         $$ = std::make_shared<Group>(
@@ -114,6 +134,15 @@ intConstant:
     HEX_INTEGER {
         $$ = std::make_shared<IntConstant>($1);
     }
+
+boolConstant:
+    TRUE {
+        $$ = std::make_shared<BoolConstant>(true);
+    }
+    | FALSE {
+        $$ = std::make_shared<BoolConstant>(false);
+    }
+    ;
 
 %%
 
