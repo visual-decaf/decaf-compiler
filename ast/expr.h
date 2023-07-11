@@ -23,7 +23,7 @@ struct Expr: public serializable {
     virtual bool equals(std::shared_ptr<Expr> ptr) = 0;
 
     boost::json::value to_json() override {
-        return "Not Implemented";
+        return "Expression Serializable Not Implemented";
     }
     ~Expr() override = default;
 
