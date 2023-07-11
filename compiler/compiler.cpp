@@ -82,3 +82,7 @@ void decaf::Compiler::compile() {
 decaf::Program decaf::Compiler::get_program() {
     return prog;
 }
+
+std::any decaf::Compiler::visitLogicUnary(std::shared_ptr<ast::LogicUnary> ptr) {
+    return {};
+}

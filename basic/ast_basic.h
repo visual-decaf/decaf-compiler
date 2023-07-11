@@ -7,5 +7,6 @@ struct ArithmeticBinary;
 struct IntConstant;
 struct Group;
 struct LogicBinary;
+struct LogicUnary;
 struct BoolConstant;
 } // namespace decaf::ast

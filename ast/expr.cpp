@@ -116,3 +116,21 @@ bool decaf::ast::ArithmeticUnary::equals(std::shared_ptr<Expr> ptr) {
 
     return this->right->equals(rhs->right);
 }
+
+bool decaf::ast::LogicUnary::equals(std::shared_ptr<Expr> ptr) {
+    auto rhs = std::dynamic_pointer_cast<LogicUnary>(ptr);
+
+    if (rhs == nullptr) {
+        return false;
+    }
+
+    return this->right->equals(rhs->right);
+}
+
+decaf::Type::Classification decaf::ast::LogicUnary::result_type_of(decaf::Type right) {
+    if (right.classification == Type::Classification::BOOL) {
+        return Type::Classification::BOOL;
+    }
+
+    return Type::Classification::INVALID;
+}
