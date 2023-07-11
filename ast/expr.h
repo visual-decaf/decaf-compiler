@@ -24,7 +24,7 @@ struct Expr: public serializable {
 
     boost::json::value to_json() override = 0;
     ~Expr() override = default;
-  
+
     decaf::Type type;
 };
 
