@@ -23,7 +23,7 @@ public:
 
 class IntConstantPool:
     public BasicConstantPool<int>,
-    serializable {
+    public serializable {
     friend std::ostream& ::operator<<(std::ostream& os, const decaf::IntConstantPool&);
 
 public:

@@ -15,7 +15,8 @@ namespace decaf {
 
 class ByteCodeDriver;
 
-class ByteCode: public serializable {
+class ByteCode:
+    public serializable {
     friend class ByteCodeDriver;
     friend std::ostream& ::operator<<(std::ostream& os, const decaf::ByteCode&);
 
