@@ -205,6 +205,7 @@ TEST_CASE("parser_and", "[parser]") {
     REQUIRE(!parser.is_error());
 
     auto result = parser.get_ast();
+    REQUIRE(result->type.classification == Type::Classification::BOOL);
     auto expect = std::make_shared<ast::LogicBinary>(
         std::make_shared<ast::BoolConstant>(true),
         ast::LogicBinary::Operation::LOGIC_AND,
@@ -227,6 +228,7 @@ TEST_CASE("parser_or", "[parser]") {
     REQUIRE(!parser.is_error());
 
     auto result = parser.get_ast();
+    REQUIRE(result->type.classification == Type::Classification::BOOL);
     auto expect = std::make_shared<ast::LogicBinary>(
         std::make_shared<ast::BoolConstant>(true),
         ast::LogicBinary::Operation::LOGIC_OR,
@@ -250,6 +252,7 @@ TEST_CASE("parser_logic_binary_combined_precedence", "[parser]") {
     REQUIRE(!parser.is_error());
 
     auto result = parser.get_ast();
+    REQUIRE(result->type.classification == Type::Classification::BOOL);
     auto expect = std::make_shared<ast::LogicBinary>(
         std::make_shared<ast::BoolConstant>(true),
         ast::LogicBinary::Operation::LOGIC_OR,
