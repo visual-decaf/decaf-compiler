@@ -58,7 +58,7 @@ boost::json::value decaf::ast::Group::to_json() {
     boost::json::object result{
         {"type", "Group"}};
     if (this->content == nullptr) {
-        result["content"] = boost::json::object{};
+        result["content"] = nullptr;
     } else {
         result["content"] = this->content->to_json();
     }

@@ -78,7 +78,7 @@ TEST_CASE("group_null_content_json", "[ast]") {
     boost::json::value expect_json = boost::json::parse(R"(
 {
     "type": "Group",
-    "content": {}
+    "content": null
 }
     )");
     REQUIRE(expect_json == group->to_json());
@@ -99,7 +99,7 @@ TEST_CASE("null_node_json", "[ast]") {
     },
     "right": {
         "type": "Group",
-        "content": {}
+        "content": null
     }
 }
 )");
