@@ -104,8 +104,8 @@ group:
 intConstant:
     INTEGER {
         $$ = std::make_shared<IntConstant>($1);
-    } |
-    HEX_INTEGER {
+    }
+    | HEX_INTEGER {
         $$ = std::make_shared<IntConstant>($1);
     }
 
