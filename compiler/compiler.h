@@ -24,6 +24,7 @@ public:
     std::any visitGroup(std::shared_ptr<ast::Group> group) override;
     std::any visitLogicBinary(std::shared_ptr<ast::LogicBinary> logicBinary) override;
     std::any visitBoolConstant(std::shared_ptr<ast::BoolConstant> boolConstant) override;
+    std::any visitArithmeticUnary(std::shared_ptr<ast::ArithmeticUnary> ptr) override;
 
 private:
     std::shared_ptr<ast::Expr> ast_root;

@@ -11,6 +11,7 @@
 
 namespace decaf {
 struct ExprVisitor {
+    virtual std::any visitArithmeticUnary(std::shared_ptr<ast::ArithmeticUnary>) = 0;
     virtual std::any visitArithmeticBinary(std::shared_ptr<ast::ArithmeticBinary>) = 0;
     virtual std::any visitIntConstant(std::shared_ptr<ast::IntConstant>) = 0;
     virtual std::any visitGroup(std::shared_ptr<ast::Group>) = 0;
@@ -30,6 +31,27 @@ struct Expr: public serializable {
     ~Expr() override = default;
 
     decaf::Type type;
+};
+
+struct ArithmeticUnary: Expr, std::enable_shared_from_this<ArithmeticUnary> {
+    std::shared_ptr<Expr> right;
+    enum class Operation {
+        NEGATE
+    };
+    Operation op = Operation::NEGATE;
+
+    static Type::Classification result_type_of(Type right);
+
+    explicit ArithmeticUnary(std::shared_ptr<Expr> _right):
+        right{std::move(_right)} {
+        type.classification = result_type_of(right->type);
+    }
+
+    std::any accept(ExprVisitor& visitor) override {
+        return visitor.visitArithmeticUnary(shared_from_this());
+    }
+
+    bool equals(std::shared_ptr<Expr> ptr) override;
 };
 
 struct ArithmeticBinary: Expr, std::enable_shared_from_this<ArithmeticBinary> {

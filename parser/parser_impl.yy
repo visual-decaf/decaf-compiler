@@ -21,6 +21,7 @@
 
 %nterm <std::shared_ptr<decaf::ast::Expr>> expression
 %nterm <std::shared_ptr<decaf::ast::Expr>> arithmeticBinaryExpr
+%nterm <std::shared_ptr<decaf::ast::Expr>> arithmeticUnaryExpr
 %nterm <std::shared_ptr<decaf::ast::Expr>> intConstant
 %nterm <std::shared_ptr<decaf::ast::Expr>> group
 %nterm <std::shared_ptr<decaf::ast::Expr>> logicBinaryExpr
@@ -43,6 +44,7 @@
 %left LOGIC_AND
 %left PLUS MINUS
 %left STAR SLASH PERCENT
+%left UNARY_MINUS
 
 %%
 
@@ -55,6 +57,7 @@ input:
 
 expression:
     arithmeticBinaryExpr
+    | arithmeticUnaryExpr
     | logicBinaryExpr
     | group
     | intConstant
@@ -96,6 +99,11 @@ arithmeticBinaryExpr:
             ArithmeticBinary::Operation::MOD,
             $3
         );
+    }
+
+arithmeticUnaryExpr:
+    MINUS expression %prec UNARY_MINUS {
+        $$ = std::make_shared<ArithmeticUnary>($2);
     }
 
 logicBinaryExpr:
