@@ -8,6 +8,7 @@ decaf::token_stream scan_for(const std::string& str) {
     std::istringstream input{str};
     decaf::Scanner scanner{input};
     scanner.scan();
+    REQUIRE(!scanner.is_error());
     return scanner.get_tokens();
 }
 
