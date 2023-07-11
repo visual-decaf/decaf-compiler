@@ -120,13 +120,33 @@ void decaf::VirtualMachine::op_LOGIC_NOT() {
 }
 
 void decaf::VirtualMachine::op_LESS() {
+    int rhs = std::any_cast<int>(stk.top());
+    stk.pop();
+    int lhs = std::any_cast<int>(stk.top());
+    stk.pop();
+    stk.emplace(lhs < rhs);
 }
 
 void decaf::VirtualMachine::op_LESS_EQUAL() {
+    int rhs = std::any_cast<int>(stk.top());
+    stk.pop();
+    int lhs = std::any_cast<int>(stk.top());
+    stk.pop();
+    stk.emplace(lhs <= rhs);
 }
 
 void decaf::VirtualMachine::op_GREATER() {
+    int rhs = std::any_cast<int>(stk.top());
+    stk.pop();
+    int lhs = std::any_cast<int>(stk.top());
+    stk.pop();
+    stk.emplace(lhs > rhs);
 }
 
 void decaf::VirtualMachine::op_GREATER_EQUAL() {
+    int rhs = std::any_cast<int>(stk.top());
+    stk.pop();
+    int lhs = std::any_cast<int>(stk.top());
+    stk.pop();
+    stk.emplace(lhs >= rhs);
 }
