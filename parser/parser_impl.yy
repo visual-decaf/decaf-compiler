@@ -27,6 +27,7 @@
 %nterm <std::shared_ptr<decaf::ast::Expr>> logicBinaryExpr
 %nterm <std::shared_ptr<decaf::ast::Expr>> logicUnaryExpr
 %nterm <std::shared_ptr<decaf::ast::Expr>> boolConstant
+%nterm <std::shared_ptr<decaf::ast::Expr>> rationalBinary
 
 %token <int> INTEGER
 %token <int> HEX_INTEGER
@@ -65,6 +66,7 @@ expression:
     | arithmeticUnaryExpr
     | logicBinaryExpr
     | logicUnaryExpr
+    | rationalBinary
     | group
     | intConstant
     | boolConstant
@@ -144,6 +146,36 @@ group:
             nullptr
         );
         yyerrok;
+    }
+
+rationalBinary:
+    expression "<" expression {
+        $$ = std::make_shared<RationalBinary>(
+            $1,
+            RationalBinary::Operation::LESS,
+            $3
+        );
+    }
+    | expression "<=" expression {
+        $$ = std::make_shared<RationalBinary>(
+            $1,
+            RationalBinary::Operation::LESS_EQUAL,
+            $3
+        );
+    }
+    | expression ">" expression {
+        $$ = std::make_shared<RationalBinary>(
+            $1,
+            RationalBinary::Operation::GREATER,
+            $3
+        );
+    }
+    | expression ">=" expression {
+        $$ = std::make_shared<RationalBinary>(
+            $1,
+            RationalBinary::Operation::GREATER_EQUAL,
+            $3
+        );
     }
 
 intConstant:
