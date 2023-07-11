@@ -17,6 +17,7 @@ TEST_CASE("parser_main", "[parser]") {
     REQUIRE(!parser.is_error());
 
     auto result = parser.get_ast();
+    REQUIRE(result->type.classification == Type::Classification::INT);
     auto expect = std::make_shared<ast::ArithmeticBinary>(
         std::make_shared<ast::IntConstant>(12),
         ast::ArithmeticBinary::Operation::PLUS,
@@ -39,6 +40,7 @@ TEST_CASE("parser_plus_left_associative", "[parser]") {
     REQUIRE(!parser.is_error());
 
     auto result = parser.get_ast();
+    REQUIRE(result->type.classification == Type::Classification::INT);
     auto expect = std::make_shared<ast::ArithmeticBinary>(
         std::make_shared<ast::ArithmeticBinary>(
             std::make_shared<ast::IntConstant>(1),
@@ -64,6 +66,7 @@ TEST_CASE("parser_plus_multiply_precedence", "[parser]") {
     REQUIRE(!parser.is_error());
 
     auto result = parser.get_ast();
+    REQUIRE(result->type.classification == Type::Classification::INT);
     auto expect = std::make_shared<ast::ArithmeticBinary>(
         std::make_shared<ast::IntConstant>(1),
         ast::ArithmeticBinary::Operation::PLUS,
@@ -89,6 +92,7 @@ TEST_CASE("parser_plus_minus", "[parser]") {
     REQUIRE(!parser.is_error());
 
     auto result = parser.get_ast();
+    REQUIRE(result->type.classification == Type::Classification::INT);
     auto expect = std::make_shared<ast::ArithmeticBinary>(
         std::make_shared<ast::ArithmeticBinary>(
             std::make_shared<ast::IntConstant>(1),
@@ -114,6 +118,7 @@ TEST_CASE("parser_multiply_divide", "[parser]") {
     REQUIRE(!parser.is_error());
 
     auto result = parser.get_ast();
+    REQUIRE(result->type.classification == Type::Classification::INT);
     auto expect = std::make_shared<ast::ArithmeticBinary>(
         std::make_shared<ast::ArithmeticBinary>(
             std::make_shared<ast::IntConstant>(1),
@@ -137,6 +142,7 @@ TEST_CASE("parser_mod", "[parser]") {
     REQUIRE(!parser.is_error());
 
     auto result = parser.get_ast();
+    REQUIRE(result->type.classification == Type::Classification::INT);
     auto expect = std::make_shared<ast::ArithmeticBinary>(
         std::make_shared<ast::IntConstant>(15),
         ast::ArithmeticBinary::Operation::MOD,
@@ -157,6 +163,7 @@ TEST_CASE("parser_group", "[parser]") {
     REQUIRE(!parser.is_error());
 
     auto result = parser.get_ast();
+    REQUIRE(result->type.classification == Type::Classification::INT);
     auto expect = std::make_shared<ast::Group>(
         std::make_shared<ast::IntConstant>(1));
 
@@ -178,6 +185,7 @@ TEST_CASE("parser_invalid_recovery_point_RIGHT_PAREN", "[parser]") {
     REQUIRE(err_messages.size() == 1);
 
     auto result = parser.get_ast();
+    REQUIRE(result->type.classification == Type::Classification::INVALID);
     auto expect = std::make_shared<ast::Group>(
         nullptr);
     REQUIRE(expect->equals(result));
