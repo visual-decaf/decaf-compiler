@@ -340,3 +340,20 @@ TEST_CASE("compiler_arithmetic_unary_binary_complex_combined", "[compiler]") {
         }};
     REQUIRE(expect == result);
 }
+
+TEST_CASE("compiler_logic_not", "[compiler]") {
+    auto input_ast = std::make_shared<ast::LogicUnary>(
+        std::make_shared<ast::BoolConstant>(true));
+
+    decaf::Compiler compiler{input_ast};
+    compiler.compile();
+
+    auto result = compiler.get_program();
+    REQUIRE(result.get_result_type_classification() == decaf::Type::Classification::BOOL);
+    auto expect = Program{
+        ByteCode{
+            Instruction ::GET_TRUE,
+            Instruction ::LOGIC_NOT,
+        }};
+    REQUIRE(expect == result);
+}
