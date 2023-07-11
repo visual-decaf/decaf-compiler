@@ -144,3 +144,18 @@ TEST_CASE("scanner_logic_not", "[scanner]") {
         REQUIRE(result_token[i] == expected_token[i]);
     }
 }
+
+TEST_CASE("scanner_rational", "[scanner]") {
+    auto result_token = scan_for("< <= > >=");
+    decaf::token_stream expected_token{
+        {token_type ::LESS, "<"},
+        {token_type ::LESS_EQUAL, "<="},
+        {token_type ::GREATER, ">"},
+        {token_type ::GREATER_EQUAL, ">="},
+        {token_type ::YYEOF}};
+
+    REQUIRE(result_token.size() == expected_token.size());
+    for (int i = 0; i < result_token.size(); i++) {
+        REQUIRE(result_token[i] == expected_token[i]);
+    }
+}
