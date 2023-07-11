@@ -108,4 +108,7 @@ decaf::VirtualMachine::result_type decaf::VirtualMachine::get_result() {
 }
 
 void decaf::VirtualMachine::op_NEGATE() {
+    int rhs = std::any_cast<int>(stk.top());
+    stk.pop();
+    stk.emplace(-rhs);
 }
