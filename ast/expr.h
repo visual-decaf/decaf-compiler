@@ -22,7 +22,9 @@ struct Expr: public serializable {
     virtual std::any accept(ExprVisitor&) = 0;
     virtual bool equals(std::shared_ptr<Expr> ptr) = 0;
 
-    boost::json::value to_json() override = 0;
+    boost::json::value to_json() override {
+        return "Not Implemented";
+    }
     ~Expr() override = default;
 
     decaf::Type type;
