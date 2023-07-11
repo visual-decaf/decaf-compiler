@@ -33,6 +33,9 @@
 %token EOL
 %token INVALID
 
+/* Keywords */
+%token TRUE "ture" FALSE "false"
+
 /* Expressions */
 %left LOGIC_OR
 %left LOGIC_AND

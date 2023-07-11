@@ -34,6 +34,9 @@ HEX_INTEGER ("0x"|"0X"){HEX_DIGIT}+
 "&&" { emit({token_type::LOGIC_AND, YYText()}); }
 "||" { emit({token_type::LOGIC_OR, YYText()});}
 
+"true" { emit({token_type::TRUE, YYText()}); }
+"false" { emit({token_type::FALSE, YYText()}); }
+
 [ \t] {}
 
 "\n" {
