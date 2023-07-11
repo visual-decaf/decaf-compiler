@@ -44,6 +44,9 @@ std::any decaf::Compiler::visitGroup(std::shared_ptr<ast::Group> group) {
 }
 
 std::any decaf::Compiler::visitLogicBinary(std::shared_ptr<ast::LogicBinary> logicBinary) {
+    logicBinary->left->accept(*this);
+    logicBinary->right->accept(*this);
+
     using Operation = ast::LogicBinary::Operation;
     using Instruction = ByteCode::Instruction;
     static std::map<Operation, ByteCode::code_type> code_for{
