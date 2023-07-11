@@ -33,6 +33,7 @@
 %token STAR "*" SLASH "/" PERCENT "%"
 %token LEFT_PAREN "(" RIGHT_PAREN ")"
 %token LOGIC_AND "&&" LOGIC_OR "||"
+%token LOGIC_NOT "!"
 %token EOL
 %token INVALID
 
@@ -44,7 +45,7 @@
 %left LOGIC_AND
 %left PLUS MINUS
 %left STAR SLASH PERCENT
-%left UNARY_MINUS
+%left UNARY_MINUS LOGIC_NOT
 
 %%
 
