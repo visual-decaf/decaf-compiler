@@ -1,2 +1,2 @@
-add_library(type INTERFACE type.h)
-target_include_directories(type INTERFACE .)
+add_library(type type.cpp)
+target_include_directories(type PUBLIC .)
