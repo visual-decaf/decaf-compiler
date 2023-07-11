@@ -25,6 +25,7 @@
 %nterm <std::shared_ptr<decaf::ast::Expr>> intConstant
 %nterm <std::shared_ptr<decaf::ast::Expr>> group
 %nterm <std::shared_ptr<decaf::ast::Expr>> logicBinaryExpr
+%nterm <std::shared_ptr<decaf::ast::Expr>> logicUnaryExpr
 %nterm <std::shared_ptr<decaf::ast::Expr>> boolConstant
 
 %token <int> INTEGER
@@ -60,6 +61,7 @@ expression:
     arithmeticBinaryExpr
     | arithmeticUnaryExpr
     | logicBinaryExpr
+    | logicUnaryExpr
     | group
     | intConstant
     | boolConstant
@@ -121,6 +123,11 @@ logicBinaryExpr:
             LogicBinary::Operation::LOGIC_OR,
             $3
         );
+    }
+
+logicUnaryExpr:
+    "!" expression {
+        $$ = std::make_shared<LogicUnary>($2);
     }
 
 group:
