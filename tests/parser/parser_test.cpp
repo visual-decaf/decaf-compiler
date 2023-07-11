@@ -14,8 +14,10 @@ TEST_CASE("parser_main", "[parser]") {
 
     decaf::Parser parser{tokenStream};
     parser.parse();
+    REQUIRE(!parser.is_error());
 
     auto result = parser.get_ast();
+    REQUIRE(result->type.classification == Type::Classification::INT);
     auto expect = std::make_shared<ast::ArithmeticBinary>(
         std::make_shared<ast::IntConstant>(12),
         ast::ArithmeticBinary::Operation::PLUS,
@@ -35,8 +37,10 @@ TEST_CASE("parser_plus_left_associative", "[parser]") {
 
     decaf::Parser parser{tokenStream};
     parser.parse();
+    REQUIRE(!parser.is_error());
 
     auto result = parser.get_ast();
+    REQUIRE(result->type.classification == Type::Classification::INT);
     auto expect = std::make_shared<ast::ArithmeticBinary>(
         std::make_shared<ast::ArithmeticBinary>(
             std::make_shared<ast::IntConstant>(1),
@@ -59,8 +63,10 @@ TEST_CASE("parser_plus_multiply_precedence", "[parser]") {
 
     decaf::Parser parser{tokenStream};
     parser.parse();
+    REQUIRE(!parser.is_error());
 
     auto result = parser.get_ast();
+    REQUIRE(result->type.classification == Type::Classification::INT);
     auto expect = std::make_shared<ast::ArithmeticBinary>(
         std::make_shared<ast::IntConstant>(1),
         ast::ArithmeticBinary::Operation::PLUS,
@@ -83,8 +89,10 @@ TEST_CASE("parser_plus_minus", "[parser]") {
 
     decaf::Parser parser{tokenStream};
     parser.parse();
+    REQUIRE(!parser.is_error());
 
     auto result = parser.get_ast();
+    REQUIRE(result->type.classification == Type::Classification::INT);
     auto expect = std::make_shared<ast::ArithmeticBinary>(
         std::make_shared<ast::ArithmeticBinary>(
             std::make_shared<ast::IntConstant>(1),
@@ -107,8 +115,10 @@ TEST_CASE("parser_multiply_divide", "[parser]") {
 
     decaf::Parser parser{tokenStream};
     parser.parse();
+    REQUIRE(!parser.is_error());
 
     auto result = parser.get_ast();
+    REQUIRE(result->type.classification == Type::Classification::INT);
     auto expect = std::make_shared<ast::ArithmeticBinary>(
         std::make_shared<ast::ArithmeticBinary>(
             std::make_shared<ast::IntConstant>(1),
@@ -129,8 +139,10 @@ TEST_CASE("parser_mod", "[parser]") {
 
     decaf::Parser parser{tokenStream};
     parser.parse();
+    REQUIRE(!parser.is_error());
 
     auto result = parser.get_ast();
+    REQUIRE(result->type.classification == Type::Classification::INT);
     auto expect = std::make_shared<ast::ArithmeticBinary>(
         std::make_shared<ast::IntConstant>(15),
         ast::ArithmeticBinary::Operation::MOD,
@@ -148,8 +160,10 @@ TEST_CASE("parser_group", "[parser]") {
 
     decaf::Parser parser{tokenStream};
     parser.parse();
+    REQUIRE(!parser.is_error());
 
     auto result = parser.get_ast();
+    REQUIRE(result->type.classification == Type::Classification::INT);
     auto expect = std::make_shared<ast::Group>(
         std::make_shared<ast::IntConstant>(1));
 
@@ -171,7 +185,78 @@ TEST_CASE("parser_invalid_recovery_point_RIGHT_PAREN", "[parser]") {
     REQUIRE(err_messages.size() == 1);
 
     auto result = parser.get_ast();
+    REQUIRE(result->type.classification == Type::Classification::INVALID);
     auto expect = std::make_shared<ast::Group>(
         nullptr);
+    REQUIRE(expect->equals(result));
+}
+
+TEST_CASE("parser_and", "[parser]") {
+    token_stream tokenStream{
+        {token_type ::TRUE, "true"},
+        {token_type ::LOGIC_AND, "&&"},
+        {token_type ::FALSE, "false"},
+        {token_type ::EOL},
+    };
+
+    decaf::Parser parser{tokenStream};
+    parser.parse();
+
+    REQUIRE(!parser.is_error());
+
+    auto result = parser.get_ast();
+    auto expect = std::make_shared<ast::LogicBinary>(
+        std::make_shared<ast::BoolConstant>(true),
+        ast::LogicBinary::Operation::LOGIC_AND,
+        std::make_shared<ast::BoolConstant>(false));
+
+    REQUIRE(expect->equals(result));
+}
+
+TEST_CASE("parser_or", "[parser]") {
+    token_stream tokenStream{
+        {token_type ::TRUE, "true"},
+        {token_type ::LOGIC_OR, "||"},
+        {token_type ::FALSE, "false"},
+        {token_type ::EOL},
+    };
+
+    decaf::Parser parser{tokenStream};
+    parser.parse();
+
+    REQUIRE(!parser.is_error());
+
+    auto result = parser.get_ast();
+    auto expect = std::make_shared<ast::LogicBinary>(
+        std::make_shared<ast::BoolConstant>(true),
+        ast::LogicBinary::Operation::LOGIC_OR,
+        std::make_shared<ast::BoolConstant>(false));
+
+    REQUIRE(expect->equals(result));
+}
+
+TEST_CASE("parser_logic_binary_combined_precedence", "[parser]") {
+    token_stream tokenStream{
+        {token_type ::TRUE, "true"},
+        {token_type ::LOGIC_OR, "||"},
+        {token_type ::FALSE, "false"},
+        {token_type ::LOGIC_AND, "&&"},
+        {token_type ::TRUE, "true"},
+        {token_type ::EOL}};
+
+    decaf::Parser parser{tokenStream};
+    parser.parse();
+
+    REQUIRE(!parser.is_error());
+
+    auto result = parser.get_ast();
+    auto expect = std::make_shared<ast::LogicBinary>(
+        std::make_shared<ast::BoolConstant>(true),
+        ast::LogicBinary::Operation::LOGIC_OR,
+        std::make_shared<ast::LogicBinary>(
+            std::make_shared<ast::BoolConstant>(false),
+            ast::LogicBinary::Operation::LOGIC_AND,
+            std::make_shared<ast::BoolConstant>(true)));
+
     REQUIRE(expect->equals(result));
 }

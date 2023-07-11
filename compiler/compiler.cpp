@@ -26,7 +26,7 @@ std::any decaf::Compiler::visitArithmeticBinary(std::shared_ptr<decaf::ast::Arit
 
 std::any decaf::Compiler::visitIntConstant(std::shared_ptr<decaf::ast::IntConstant> constant) {
     if (constant->value > UINT8_MAX) {
-        IntConstantPool::index_type index = prog.add_int_constant(constant->value);
+        ConstantPool::index_type index = prog.add_int_constant(constant->value);
         prog.emit_bytes(
             ByteCode::Instruction::GET_INT_CONSTANT,
             index);
@@ -42,6 +42,31 @@ std::any decaf::Compiler::visitGroup(std::shared_ptr<ast::Group> group) {
     group->content->accept(*this);
     return {};
 }
+
+std::any decaf::Compiler::visitLogicBinary(std::shared_ptr<ast::LogicBinary> logicBinary) {
+    logicBinary->left->accept(*this);
+    logicBinary->right->accept(*this);
+
+    using Operation = ast::LogicBinary::Operation;
+    using Instruction = ByteCode::Instruction;
+    static std::map<Operation, ByteCode::code_type> code_for{
+        {Operation ::LOGIC_AND, Instruction ::LOGIC_AND},
+        {Operation ::LOGIC_OR, Instruction ::LOGIC_OR},
+    };
+    prog.emit(code_for[logicBinary->op]);
+    return {};
+}
+
+std::any decaf::Compiler::visitBoolConstant(std::shared_ptr<ast::BoolConstant> boolConstant) {
+    using Instruction = ByteCode::Instruction;
+    static std::map<bool, ByteCode::code_type> code_for{
+        {true, Instruction ::GET_TRUE},
+        {false, Instruction ::GET_FALSE},
+    };
+    prog.emit(code_for[boolConstant->value]);
+    return {};
+}
+
 
 void decaf::Compiler::compile() {
     ast_root->accept(*this);

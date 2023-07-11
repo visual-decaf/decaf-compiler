@@ -14,6 +14,7 @@ TEST_CASE("compiler_main", "[compiler]") {
 
     using Instruction = ByteCode::Instruction;
     auto result = compiler.get_program();
+    REQUIRE(result.get_result_type_classification() == Type::Classification::INT);
     auto expect = Program{
         ByteCode{
             Instruction ::GET_INSTANT,
@@ -41,6 +42,7 @@ TEST_CASE("compiler_plus_deep", "[compiler]") {
 
     using Instruction = ByteCode::Instruction;
     auto result = compiler.get_program();
+    REQUIRE(result.get_result_type_classification() == Type::Classification::INT);
     auto expect = Program{
         ByteCode{
             Instruction ::GET_INSTANT,
@@ -71,6 +73,7 @@ TEST_CASE("compiler_plus_multiply", "[compiler]") {
 
     using Instruction = ByteCode::Instruction;
     auto result = compiler.get_program();
+    REQUIRE(result.get_result_type_classification() == Type::Classification::INT);
     auto expect = Program{
         ByteCode{
             Instruction ::GET_INSTANT,
@@ -101,6 +104,7 @@ TEST_CASE("compiler_plus_minus", "[compiler]") {
 
     using Instruction = ByteCode::Instruction;
     auto result = compiler.get_program();
+    REQUIRE(result.get_result_type_classification() == Type::Classification::INT);
     auto expect = Program{
         ByteCode{
             Instruction ::GET_INSTANT,
@@ -131,6 +135,7 @@ TEST_CASE("compiler_multiply_divide", "[compiler]") {
 
     using Instruction = ByteCode::Instruction;
     auto result = compiler.get_program();
+    REQUIRE(result.get_result_type_classification() == Type::Classification::INT);
     auto expect = Program{
         ByteCode{
             Instruction ::GET_INSTANT,
@@ -158,6 +163,7 @@ TEST_CASE("compiler_mod", "[compiler]") {
 
     using Instruction = ByteCode::Instruction;
     auto result = compiler.get_program();
+    REQUIRE(result.get_result_type_classification() == Type::Classification::INT);
     auto expect = Program{
         ByteCode{
             Instruction ::GET_INSTANT,
@@ -180,6 +186,7 @@ TEST_CASE("compiler_int_constant_pool", "[compiler]") {
 
     using Instruction = ByteCode::Instruction;
     auto result = compiler.get_program();
+    REQUIRE(result.get_result_type_classification() == Type::Classification::INT);
     auto expect = Program{
         ByteCode{
             Instruction ::GET_INT_CONSTANT,
@@ -188,7 +195,7 @@ TEST_CASE("compiler_int_constant_pool", "[compiler]") {
             1,
             Instruction ::PLUS,
         },
-        IntConstantPool{
+        ConstantPool{
             10000,
             2345,
         }};
@@ -205,10 +212,79 @@ TEST_CASE("compiler_group", "[compiler]") {
 
     using Instruction = ByteCode::Instruction;
     auto result = compiler.get_program();
+    REQUIRE(result.get_result_type_classification() == Type::Classification::INT);
     auto expect = Program{
         ByteCode{
             Instruction ::GET_INSTANT,
             1,
+        }};
+    REQUIRE(expect == result);
+}
+
+TEST_CASE("compiler_logic_binary_simple_and", "[compiler]") {
+    using namespace decaf;
+    auto input_ast = std::make_shared<ast::LogicBinary>(
+        std::make_shared<ast::BoolConstant>(true),
+        ast::LogicBinary::Operation::LOGIC_AND,
+        std::make_shared<ast::BoolConstant>(false));
+
+    decaf::Compiler compiler{input_ast};
+    compiler.compile();
+
+    using Instruction = ByteCode::Instruction;
+    auto result = compiler.get_program();
+    auto expect = Program{
+        ByteCode{
+            Instruction ::GET_TRUE,
+            Instruction ::GET_FALSE,
+            Instruction ::LOGIC_AND,
+        }};
+    REQUIRE(expect == result);
+}
+
+TEST_CASE("compiler_logic_binary_simple_or", "[compiler]") {
+    using namespace decaf;
+    auto input_ast = std::make_shared<ast::LogicBinary>(
+        std::make_shared<ast::BoolConstant>(true),
+        ast::LogicBinary::Operation::LOGIC_OR,
+        std::make_shared<ast::BoolConstant>(false));
+
+    decaf::Compiler compiler{input_ast};
+    compiler.compile();
+
+    using Instruction = ByteCode::Instruction;
+    auto result = compiler.get_program();
+    auto expect = Program{
+        ByteCode{
+            Instruction ::GET_TRUE,
+            Instruction ::GET_FALSE,
+            Instruction ::LOGIC_OR,
+        }};
+    REQUIRE(expect == result);
+}
+
+TEST_CASE("compiler_logic_binary_combined", "[compiler]") {
+    using namespace decaf;
+    auto input_ast = std::make_shared<ast::LogicBinary>(
+        std::make_shared<ast::BoolConstant>(true),
+        ast::LogicBinary::Operation::LOGIC_AND,
+        std::make_shared<ast::LogicBinary>(
+            std::make_shared<ast::BoolConstant>(true),
+            ast::LogicBinary::Operation::LOGIC_OR,
+            std::make_shared<ast::BoolConstant>(false)));
+
+    decaf::Compiler compiler{input_ast};
+    compiler.compile();
+
+    using Instruction = ByteCode::Instruction;
+    auto result = compiler.get_program();
+    auto expect = Program{
+        ByteCode{
+            Instruction ::GET_TRUE,
+            Instruction ::GET_TRUE,
+            Instruction ::GET_FALSE,
+            Instruction ::LOGIC_OR,
+            Instruction ::LOGIC_AND,
         }};
     REQUIRE(expect == result);
 }

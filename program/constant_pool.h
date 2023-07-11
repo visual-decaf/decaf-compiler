@@ -6,36 +6,28 @@
 #include <vector>
 
 namespace decaf {
-class IntConstantPool;
+class ConstantPool;
 }
 
-std::ostream& operator<<(std::ostream& os, const decaf::IntConstantPool&);
+std::ostream& operator<<(std::ostream& os, const decaf::ConstantPool&);
 
 namespace decaf {
 
-template<typename T>
-class BasicConstantPool {
+class ConstantPool:
+public serializable {
+    friend std::ostream& ::operator<<(std::ostream& os, const decaf::ConstantPool&);
+
 public:
     using index_type = size_t;
-    virtual index_type add_constant(const T&) = 0;
-    virtual T get_constant(index_type) = 0;
-};
-
-class IntConstantPool:
-    public BasicConstantPool<int>,
-    public serializable {
-    friend std::ostream& ::operator<<(std::ostream& os, const decaf::IntConstantPool&);
-
-public:
-    IntConstantPool() = default;
-    IntConstantPool(std::initializer_list<int> list):
+    ConstantPool() = default;
+    ConstantPool(std::initializer_list<int> list):
         pool(list) {
     }
 
-    index_type add_constant(const int& val) override;
-    int get_constant(index_type index) override;
+    index_type add_constant(const int& val);
+    int get_int_constant(index_type index);
 
-    bool operator==(const IntConstantPool& rhs) {
+    bool operator==(const ConstantPool& rhs) {
         return pool == rhs.pool;
     }
 

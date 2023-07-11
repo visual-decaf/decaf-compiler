@@ -2,12 +2,12 @@
 
 std::ostream& operator<<(std::ostream& os, const decaf::Program& prog) {
     os << "{ code = 0x{" << prog.code << "}\n";
-    os << "  Int Constant = [" << prog.i_pool << "] }";
+    os << "Constant = [" << prog.pool << "] }";
     return os;
 }
 
-decaf::IntConstantPool::index_type decaf::Program::add_int_constant(const int& val) {
-    return i_pool.add_constant(val);
+decaf::ConstantPool::index_type decaf::Program::add_int_constant(const int& val) {
+    return pool.add_constant(val);
 }
 
 void decaf::Program::set_result_type(const decaf::Type& result) {
@@ -18,10 +18,18 @@ void decaf::Program::set_result_type_classification(const decaf::Type::Classific
     result_type.classification = classification;
 }
 
+decaf::Type decaf::Program::get_result_type() const {
+    return result_type;
+}
+
+decaf::Type::Classification decaf::Program::get_result_type_classification() const {
+    return result_type.classification;
+}
+
 boost::json::value decaf::Program::to_json() {
     boost::json::object result{
         {"bytecode", this->code.to_json()},
         {"resultType", this->result_type.to_json()},
-        {"intConstantPool", this->i_pool.to_json()}};
+        {"intConstantPool", this->pool.to_json()}};
     return result;
 }

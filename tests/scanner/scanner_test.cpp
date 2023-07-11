@@ -8,6 +8,7 @@ decaf::token_stream scan_for(const std::string& str) {
     std::istringstream input{str};
     decaf::Scanner scanner{input};
     scanner.scan();
+    REQUIRE(!scanner.is_error());
     return scanner.get_tokens();
 }
 
@@ -108,4 +109,32 @@ TEST_CASE("scanner_invalid", "[scanner]") {
     }
 
     REQUIRE(scanner.is_error());
+}
+
+TEST_CASE("scanner_logic_and_or", "[scanner]") {
+    auto result_token = scan_for("&& ||");
+    using decaf::token_type;
+    decaf::token_stream expected_token{
+        {token_type ::LOGIC_AND, "&&"},
+        {token_type ::LOGIC_OR, "||"},
+        {token_type ::YYEOF}};
+
+    REQUIRE(result_token.size() == expected_token.size());
+    for (int i = 0; i < result_token.size(); i++) {
+        REQUIRE(result_token[i] == expected_token[i]);
+    }
+}
+
+TEST_CASE("scanner_true_false", "[scanner]") {
+    auto result_token = scan_for("true false");
+    using decaf::token_type;
+    decaf::token_stream expected_token{
+        {token_type ::TRUE, "true"},
+        {token_type ::FALSE, "false"},
+        {token_type ::YYEOF}};
+
+    REQUIRE(result_token.size() == expected_token.size());
+    for (int i = 0; i < result_token.size(); i++) {
+        REQUIRE(result_token[i] == expected_token[i]);
+    }
 }
