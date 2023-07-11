@@ -1,10 +1,10 @@
 #pragma once
+#include "serializable.h"
 #include <map>
 #include <string>
-#include "serializable.h"
 namespace decaf {
 
-struct Type : public serializable {
+struct Type: public serializable {
     enum class Classification {
         INVALID,
         INT,
