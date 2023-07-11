@@ -223,3 +223,39 @@ TEST_CASE("vm_arithmetic_unary_binary_complex_combined", "[vm]") {
     REQUIRE(result_ptr != nullptr);
     REQUIRE(*result_ptr == 1);
 }
+
+TEST_CASE("vm_logic_not", "[vm]") {
+    auto input_prog = Program{
+        ByteCode{
+            Instruction ::GET_TRUE,
+            Instruction ::LOGIC_NOT,
+        }};
+    input_prog.set_result_type_classification(Type::Classification::BOOL);
+
+    decaf::VirtualMachine vm{input_prog};
+    vm.run();
+
+    auto result = vm.get_result();
+    auto result_ptr = std::get_if<bool>(&result);
+    REQUIRE(result_ptr != nullptr);
+    REQUIRE(*result_ptr == false);
+}
+
+TEST_CASE("vm_logic_not_combined", "[vm]") {
+    auto input_prog = Program{
+        ByteCode{
+            Instruction ::GET_FALSE,
+            Instruction ::GET_TRUE,
+            Instruction ::LOGIC_NOT,
+            Instruction ::LOGIC_OR,
+        }};
+    input_prog.set_result_type_classification(Type::Classification::BOOL);
+
+    decaf::VirtualMachine vm{input_prog};
+    vm.run();
+
+    auto result = vm.get_result();
+    auto result_ptr = std::get_if<bool>(&result);
+    REQUIRE(result_ptr != nullptr);
+    REQUIRE(*result_ptr == false);
+}
