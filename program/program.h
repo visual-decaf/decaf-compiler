@@ -40,6 +40,8 @@ public:
 
     IntConstantPool::index_type add_int_constant(const int& val);
 
+    [[nodiscard]] Type get_result_type() const;
+    [[nodiscard]] Type::Classification get_result_type_classification() const;
     void set_result_type(const Type& result);
     void set_result_type_classification(const Type::Classification& classification);
 

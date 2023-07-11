@@ -17,3 +17,11 @@ void decaf::Program::set_result_type(const decaf::Type& result) {
 void decaf::Program::set_result_type_classification(const decaf::Type::Classification& classification) {
     result_type.classification = classification;
 }
+
+decaf::Type decaf::Program::get_result_type() const {
+    return result_type;
+}
+
+decaf::Type::Classification decaf::Program::get_result_type_classification() const {
+    return result_type.classification;
+}
