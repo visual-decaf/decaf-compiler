@@ -121,6 +121,7 @@ struct BoolConstant: Expr, std::enable_shared_from_this<BoolConstant> {
 
     explicit BoolConstant(bool val):
         value{val} {
+        type.classification = Type::Classification::BOOL;
     }
 
     std::any accept(ExprVisitor& visitor) override {
