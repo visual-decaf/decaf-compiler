@@ -27,7 +27,8 @@ void run_repl() {
 
         decaf::VirtualMachine vm{program};
         vm.run();
-        std::cout << std::any_cast<int>(vm.top()) << std::endl;
+        auto result = vm.get_result();
+        std::cout << std::get<int>(result) << std::endl;
     }
 }
 

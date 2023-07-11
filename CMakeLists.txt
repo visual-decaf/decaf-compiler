@@ -26,6 +26,7 @@ include_directories(${CMAKE_BINARY_DIR})
 add_subdirectory(basic)
 
 add_subdirectory(token)
+add_subdirectory(type)
 add_subdirectory(ast)
 add_subdirectory(scanner)
 add_subdirectory(parser)

@@ -131,11 +131,10 @@ TEST_CASE("parser_mod", "[parser]") {
     parser.parse();
 
     auto result = parser.get_ast();
-    auto expect = new ast::ArithmeticBinary{
+    auto expect = std::make_shared<ast::ArithmeticBinary>(
         std::make_shared<ast::IntConstant>(15),
         ast::ArithmeticBinary::Operation::MOD,
-        std::make_shared<ast::IntConstant>(7),
-    };
+        std::make_shared<ast::IntConstant>(7));
 
     REQUIRE(expect->equals(result));
 }
@@ -151,8 +150,28 @@ TEST_CASE("parser_group", "[parser]") {
     parser.parse();
 
     auto result = parser.get_ast();
-    auto expect = new ast::Group{
-        std::make_shared<ast::IntConstant>(1)};
+    auto expect = std::make_shared<ast::Group>(
+        std::make_shared<ast::IntConstant>(1));
 
+    REQUIRE(expect->equals(result));
+}
+
+TEST_CASE("parser_invalid_recovery_point_RIGHT_PAREN", "[parser]") {
+    token_stream tokenStream{
+        {token_type ::LEFT_PAREN, "("},
+        {token_type ::INVALID, "@@@"},
+        {token_type ::RIGHT_PAREN, ")"},
+        {token_type ::EOL}};
+
+    decaf::Parser parser{tokenStream};
+    parser.parse();
+
+    REQUIRE(parser.is_error());
+    auto err_messages = parser.get_err_messages();
+    REQUIRE(err_messages.size() == 1);
+
+    auto result = parser.get_ast();
+    auto expect = std::make_shared<ast::Group>(
+        nullptr);
     REQUIRE(expect->equals(result));
 }

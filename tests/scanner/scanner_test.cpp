@@ -86,3 +86,26 @@ TEST_CASE("scanner_left_right_paren", "[scanner]") {
         REQUIRE(result_token[i] == expected_token[i]);
     }
 }
+
+TEST_CASE("scanner_invalid", "[scanner]") {
+    std::istringstream input{"@@@@@"};
+    decaf::Scanner scanner{input};
+    scanner.scan();
+
+    auto result_token = scanner.get_tokens();
+    using decaf::token_type;
+    decaf::token_stream expected_token = {
+        {token_type ::INVALID, "@"},
+        {token_type ::INVALID, "@"},
+        {token_type ::INVALID, "@"},
+        {token_type ::INVALID, "@"},
+        {token_type ::INVALID, "@"},
+        {token_type ::YYEOF}};
+
+    REQUIRE(result_token.size() == expected_token.size());
+    for (int i = 0; i < result_token.size(); i++) {
+        REQUIRE(result_token[i] == expected_token[i]);
+    }
+
+    REQUIRE(scanner.is_error());
+}

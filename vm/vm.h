@@ -5,6 +5,7 @@
 #include <any>
 #include <stack>
 #include <utility>
+#include <variant>
 
 namespace decaf {
 
@@ -12,6 +13,7 @@ class VirtualMachine:
     public ByteCodeVisitor {
 public:
     using stack_type = std::stack<std::any>;
+    using result_type = std::variant<std::monostate, int, double, bool>;
 
     explicit VirtualMachine(Program _prog):
         prog{std::move(_prog)} {
@@ -25,12 +27,16 @@ public:
     void op_GET_INSTANT(uint8_t instant) override;
     void op_GET_INT_CONSTANT(uint8_t index) override;
 
-    std::any top();
+    result_type get_result();
     void run();
 
 private:
+    void set_int_result(int);
+    void set_double_result(double);
+    void set_bool_result(bool);
     Program prog;
     stack_type stk;
+    result_type result;
 };
 
 } // namespace decaf

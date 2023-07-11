@@ -22,9 +22,15 @@ public:
     void scan();
     void scan_line();
 
+    bool is_error() const;
+    void clear_error();
+
 private:
     // add token into token stream
     void emit(token new_token);
+    void LexerError(const char* msg) override;
+
     token_stream tokens;
+    bool has_error = false;
 };
 } // namespace decaf
