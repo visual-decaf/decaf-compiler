@@ -380,3 +380,91 @@ TEST_CASE("parser_logic_not_combined", "[parser]") {
 
     REQUIRE(expect->equals(result));
 }
+
+TEST_CASE("parser_rational_less", "[parser]") {
+    token_stream tokenStream{
+        {token_type ::INTEGER, "1"},
+        {token_type ::LESS, "<"},
+        {token_type ::INTEGER, "2"},
+        {token_type ::EOL},
+    };
+
+    decaf::Parser parser{tokenStream};
+    parser.parse();
+
+    REQUIRE(!parser.is_error());
+
+    auto result = parser.get_ast();
+    REQUIRE(result->type.classification == decaf::Type::Classification::BOOL);
+    auto expect = std::make_shared<ast::RationalBinary>(
+        std::make_shared<ast::IntConstant>(1),
+        ast::RationalBinary::Operation::LESS,
+        std::make_shared<ast::IntConstant>(2));
+    REQUIRE(expect->equals(result));
+}
+
+TEST_CASE("parser_rational_less_equal", "[parser]") {
+    token_stream tokenStream{
+        {token_type ::INTEGER, "1"},
+        {token_type ::LESS_EQUAL, "<="},
+        {token_type ::INTEGER, "2"},
+        {token_type ::EOL},
+    };
+
+    decaf::Parser parser{tokenStream};
+    parser.parse();
+
+    REQUIRE(!parser.is_error());
+
+    auto result = parser.get_ast();
+    REQUIRE(result->type.classification == decaf::Type::Classification::BOOL);
+    auto expect = std::make_shared<ast::RationalBinary>(
+        std::make_shared<ast::IntConstant>(1),
+        ast::RationalBinary::Operation::LESS_EQUAL,
+        std::make_shared<ast::IntConstant>(2));
+    REQUIRE(expect->equals(result));
+}
+
+TEST_CASE("parser_rational_greater", "[parser]") {
+    token_stream tokenStream{
+        {token_type ::INTEGER, "1"},
+        {token_type ::GREATER, ">"},
+        {token_type ::INTEGER, "2"},
+        {token_type ::EOL},
+    };
+
+    decaf::Parser parser{tokenStream};
+    parser.parse();
+
+    REQUIRE(!parser.is_error());
+
+    auto result = parser.get_ast();
+    REQUIRE(result->type.classification == decaf::Type::Classification::BOOL);
+    auto expect = std::make_shared<ast::RationalBinary>(
+        std::make_shared<ast::IntConstant>(1),
+        ast::RationalBinary::Operation::GREATER,
+        std::make_shared<ast::IntConstant>(2));
+    REQUIRE(expect->equals(result));
+}
+
+TEST_CASE("parser_rational_greater_equal", "[parser]") {
+    token_stream tokenStream{
+        {token_type ::INTEGER, "1"},
+        {token_type ::GREATER_EQUAL, ">="},
+        {token_type ::INTEGER, "2"},
+        {token_type ::EOL},
+    };
+
+    decaf::Parser parser{tokenStream};
+    parser.parse();
+
+    REQUIRE(!parser.is_error());
+
+    auto result = parser.get_ast();
+    REQUIRE(result->type.classification == decaf::Type::Classification::BOOL);
+    auto expect = std::make_shared<ast::RationalBinary>(
+        std::make_shared<ast::IntConstant>(1),
+        ast::RationalBinary::Operation::GREATER_EQUAL,
+        std::make_shared<ast::IntConstant>(2));
+    REQUIRE(expect->equals(result));
+}
