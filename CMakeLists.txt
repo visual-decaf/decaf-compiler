@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.24)
-project(decaf_compiler VERSION 0.0.2)
+project(decaf_compiler VERSION 0.0.3)
 set(CMAKE_CXX_STANDARD 17)
 
 configure_file(meta/version.h.in ${CMAKE_BINARY_DIR}/version.h)

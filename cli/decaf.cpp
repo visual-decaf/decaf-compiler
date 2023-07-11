@@ -6,6 +6,17 @@
 
 #include <iostream>
 
+void print_result(decaf::VirtualMachine::result_type& result) {
+    int* ptr_int = std::get_if<int>(&result);
+    bool* ptr_bool = std::get_if<bool>(&result);
+    if (ptr_int) {
+        std::cout << *ptr_int << std::endl;
+    }
+    if (ptr_bool) {
+        std::cout << std::boolalpha << *ptr_bool << std::endl;
+    }
+}
+
 void run_repl() {
     while (true) {
         std::cout << ">> ";
@@ -28,7 +39,7 @@ void run_repl() {
         decaf::VirtualMachine vm{program};
         vm.run();
         auto result = vm.get_result();
-        std::cout << std::get<int>(result) << std::endl;
+        print_result(result);
     }
 }
 
