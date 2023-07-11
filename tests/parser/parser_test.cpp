@@ -335,3 +335,48 @@ TEST_CASE("parser_arithmetic_unary_binary_complex_combined", "[parser]") {
 
     REQUIRE(expect->equals(result));
 }
+
+TEST_CASE("parser_logic_not", "[parser]") {
+    token_stream tokenStream{
+        {token_type ::LOGIC_NOT, "!"},
+        {token_type ::TRUE, "true"},
+        {token_type ::EOL},
+    };
+
+    decaf::Parser parser{tokenStream};
+    parser.parse();
+
+    REQUIRE(!parser.is_error());
+
+    auto result = parser.get_ast();
+    REQUIRE(result->type.classification == decaf::Type::Classification::BOOL);
+    auto expect = std::make_shared<ast::LogicUnary>(
+        std::make_shared<ast::BoolConstant>(true));
+
+    REQUIRE(expect->equals(result));
+}
+
+TEST_CASE("parser_logic_not_combined", "[parser]") {
+    token_stream tokenStream{
+        {token_type ::FALSE, "false"},
+        {token_type ::LOGIC_OR, "||"},
+        {token_type ::LOGIC_NOT, "!"},
+        {token_type ::TRUE, "true"},
+        {token_type ::EOL},
+    };
+
+    decaf::Parser parser{tokenStream};
+    parser.parse();
+
+    REQUIRE(!parser.is_error());
+
+    auto result = parser.get_ast();
+    REQUIRE(result->type.classification == decaf::Type::Classification::BOOL);
+    auto expect = std::make_shared<ast::LogicBinary>(
+        std::make_shared<ast::BoolConstant>(false),
+        ast::LogicBinary::Operation::LOGIC_OR,
+        std::make_shared<ast::LogicUnary>(
+            std::make_shared<ast::BoolConstant>(true)));
+
+    REQUIRE(expect->equals(result));
+}

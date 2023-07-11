@@ -16,6 +16,7 @@ struct ExprVisitor {
     virtual std::any visitIntConstant(std::shared_ptr<ast::IntConstant>) = 0;
     virtual std::any visitGroup(std::shared_ptr<ast::Group>) = 0;
     virtual std::any visitLogicBinary(std::shared_ptr<ast::LogicBinary>) = 0;
+    virtual std::any visitLogicUnary(std::shared_ptr<ast::LogicUnary>) = 0;
     virtual std::any visitBoolConstant(std::shared_ptr<ast::BoolConstant>) = 0;
 };
 } // namespace decaf
@@ -136,6 +137,26 @@ struct LogicBinary: Expr, std::enable_shared_from_this<LogicBinary> {
 
     std::any accept(ExprVisitor& visitor) override {
         return visitor.visitLogicBinary(shared_from_this());
+    }
+    bool equals(std::shared_ptr<Expr> ptr) override;
+};
+
+struct LogicUnary: Expr, std::enable_shared_from_this<LogicUnary> {
+    std::shared_ptr<Expr> right;
+    enum class Operation {
+        LOGIC_NOT,
+    };
+    Operation op = Operation::LOGIC_NOT;
+
+    static Type::Classification result_type_of(Type right);
+
+    explicit LogicUnary(std::shared_ptr<Expr> _right):
+        right{std::move(_right)} {
+        type.classification = result_type_of(right->type);
+    }
+
+    std::any accept(ExprVisitor& visitor) override {
+        return visitor.visitLogicUnary(shared_from_this());
     }
     bool equals(std::shared_ptr<Expr> ptr) override;
 };
