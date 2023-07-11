@@ -25,6 +25,9 @@
                 },
                 {
                     "$ref": "./IntConstant_schema.json"
+                },
+                {
+                    "$ref": "./Group_schema.json"
                 }
             ]
         },
@@ -35,6 +38,9 @@
                 },
                 {
                     "$ref": "./IntConstant_schema.json"
+                },
+                {
+                    "$ref": "./Group_schema.json"
                 }
             ]
         }

@@ -8,6 +8,9 @@
         },
         {
             "$ref": "./IntConstant_schema.json"
+        },
+        {
+            "$ref": "./Group_schema.json"
         }
     ]
 }
