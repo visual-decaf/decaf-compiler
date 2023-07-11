@@ -41,6 +41,7 @@ public:
     IntConstantPool::index_type add_int_constant(const int& val);
 
     void set_result_type(const Type& result);
+    void set_result_type_classification(const Type::Classification& classification);
 
     bool operator==(const Program& rhs) {
         return this->code == rhs.code && this->i_pool == rhs.i_pool;
