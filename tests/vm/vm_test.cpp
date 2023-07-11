@@ -16,11 +16,15 @@ TEST_CASE("vm_main", "[vm]") {
             3,
             Instruction ::PLUS,
         }};
+    input_prog.set_result_type_classification(Type::Classification::INT);
 
     decaf::VirtualMachine vm{input_prog};
     vm.run();
 
-    REQUIRE(std::any_cast<int>(vm.top()) == 6);
+    auto result = vm.get_result();
+    auto result_ptr = std::get_if<int>(&result);
+    REQUIRE(result_ptr != nullptr);
+    REQUIRE(*result_ptr == 6);
 }
 
 TEST_CASE("vm_plus_deep", "[vm]") {
@@ -37,11 +41,15 @@ TEST_CASE("vm_plus_deep", "[vm]") {
             3,
             Instruction ::PLUS,
         }};
+    input_prog.set_result_type_classification(Type::Classification::INT);
 
     decaf::VirtualMachine vm{input_prog};
     vm.run();
 
-    REQUIRE(std::any_cast<int>(vm.top()) == 6);
+    auto result = vm.get_result();
+    auto result_ptr = std::get_if<int>(&result);
+    REQUIRE(result_ptr != nullptr);
+    REQUIRE(*result_ptr == 6);
 }
 
 TEST_CASE("vm_plus_multiply", "[vm]") {
@@ -58,11 +66,15 @@ TEST_CASE("vm_plus_multiply", "[vm]") {
             Instruction ::MULTIPLY,
             Instruction ::PLUS,
         }};
+    input_prog.set_result_type_classification(Type::Classification::INT);
 
     decaf::VirtualMachine vm{input_prog};
     vm.run();
 
-    REQUIRE(std::any_cast<int>(vm.top()) == 7);
+    auto result = vm.get_result();
+    auto result_ptr = std::get_if<int>(&result);
+    REQUIRE(result_ptr != nullptr);
+    REQUIRE(*result_ptr == 7);
 }
 
 TEST_CASE("vm_plus_minus", "[vm]") {
@@ -79,11 +91,15 @@ TEST_CASE("vm_plus_minus", "[vm]") {
             3,
             Instruction ::MINUS,
         }};
+    input_prog.set_result_type_classification(Type::Classification::INT);
 
     decaf::VirtualMachine vm{input_prog};
     vm.run();
 
-    REQUIRE(std::any_cast<int>(vm.top()) == 0);
+    auto result = vm.get_result();
+    auto result_ptr = std::get_if<int>(&result);
+    REQUIRE(result_ptr != nullptr);
+    REQUIRE(*result_ptr == 0);
 }
 
 TEST_CASE("vm_multiply_divide", "[vm]") {
@@ -100,11 +116,15 @@ TEST_CASE("vm_multiply_divide", "[vm]") {
             3,
             Instruction ::DIVIDE,
         }};
+    input_prog.set_result_type_classification(Type::Classification::INT);
 
     decaf::VirtualMachine vm{input_prog};
     vm.run();
 
-    REQUIRE(std::any_cast<int>(vm.top()) == 0);
+    auto result = vm.get_result();
+    auto result_ptr = std::get_if<int>(&result);
+    REQUIRE(result_ptr != nullptr);
+    REQUIRE(*result_ptr == 0);
 }
 
 TEST_CASE("vm_mod", "[vm]") {
@@ -121,9 +141,13 @@ TEST_CASE("vm_mod", "[vm]") {
             3,
             Instruction ::DIVIDE,
         }};
+    input_prog.set_result_type_classification(Type::Classification::INT);
 
     decaf::VirtualMachine vm{input_prog};
     vm.run();
 
-    REQUIRE(std::any_cast<int>(vm.top()) == 0);
+    auto result = vm.get_result();
+    auto result_ptr = std::get_if<int>(&result);
+    REQUIRE(result_ptr != nullptr);
+    REQUIRE(*result_ptr == 0);
 }
