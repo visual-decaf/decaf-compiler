@@ -37,7 +37,7 @@
 %token INVALID
 
 /* Keywords */
-%token TRUE "ture" FALSE "false"
+%token TRUE "true" FALSE "false"
 
 /* Expressions */
 %left LOGIC_OR
