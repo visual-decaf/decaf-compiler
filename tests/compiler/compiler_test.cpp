@@ -212,3 +212,71 @@ TEST_CASE("compiler_group", "[compiler]") {
         }};
     REQUIRE(expect == result);
 }
+
+TEST_CASE("compiler_logic_binary_simple_and", "[compiler]") {
+    using namespace decaf;
+    auto input_ast = std::make_shared<ast::LogicBinary>(
+        std::make_shared<ast::BoolConstant>(true),
+        ast::LogicBinary::Operation::LOGIC_AND,
+        std::make_shared<ast::BoolConstant>(false));
+
+    decaf::Compiler compiler{input_ast};
+    compiler.compile();
+
+    using Instruction = ByteCode::Instruction;
+    auto result = compiler.get_program();
+    auto expect = Program{
+        ByteCode{
+            Instruction ::GET_TRUE,
+            Instruction ::GET_FALSE,
+            Instruction ::LOGIC_AND,
+        }};
+    REQUIRE(expect == result);
+}
+
+TEST_CASE("compiler_logic_binary_simple_or", "[compiler]") {
+    using namespace decaf;
+    auto input_ast = std::make_shared<ast::LogicBinary>(
+        std::make_shared<ast::BoolConstant>(true),
+        ast::LogicBinary::Operation::LOGIC_OR,
+        std::make_shared<ast::BoolConstant>(false));
+
+    decaf::Compiler compiler{input_ast};
+    compiler.compile();
+
+    using Instruction = ByteCode::Instruction;
+    auto result = compiler.get_program();
+    auto expect = Program{
+        ByteCode{
+            Instruction ::GET_TRUE,
+            Instruction ::GET_FALSE,
+            Instruction ::LOGIC_OR,
+        }};
+    REQUIRE(expect == result);
+}
+
+TEST_CASE("compiler_logic_binary_combined", "[compiler]") {
+    using namespace decaf;
+    auto input_ast = std::make_shared<ast::LogicBinary>(
+        std::make_shared<ast::BoolConstant>(true),
+        ast::LogicBinary::Operation::LOGIC_AND,
+        std::make_shared<ast::LogicBinary>(
+            std::make_shared<ast::BoolConstant>(true),
+            ast::LogicBinary::Operation::LOGIC_OR,
+            std::make_shared<ast::BoolConstant>(false)));
+
+    decaf::Compiler compiler{input_ast};
+    compiler.compile();
+
+    using Instruction = ByteCode::Instruction;
+    auto result = compiler.get_program();
+    auto expect = Program{
+        ByteCode{
+            Instruction ::GET_TRUE,
+            Instruction ::GET_TRUE,
+            Instruction ::GET_FALSE,
+            Instruction ::LOGIC_OR,
+            Instruction ::LOGIC_AND,
+        }};
+    REQUIRE(expect == result);
+}
