@@ -57,6 +57,22 @@ void decaf::VirtualMachine::op_GET_FALSE() {
     stk.emplace(false);
 }
 
+void decaf::VirtualMachine::op_LOGIC_AND() {
+    bool rhs = std::any_cast<bool>(stk.top());
+    stk.pop();
+    bool lhs = std::any_cast<bool>(stk.top());
+    stk.pop();
+    stk.emplace(lhs && rhs);
+}
+
+void decaf::VirtualMachine::op_LOGIC_OR() {
+    bool rhs = std::any_cast<bool>(stk.top());
+    stk.pop();
+    bool lhs = std::any_cast<bool>(stk.top());
+    stk.pop();
+    stk.emplace(lhs || rhs);
+}
+
 void decaf::VirtualMachine::run() {
     ByteCodeDriver driver{prog.code, *this};
     driver.produce();
@@ -83,10 +99,4 @@ void decaf::VirtualMachine::set_bool_result(bool val) {
 
 decaf::VirtualMachine::result_type decaf::VirtualMachine::get_result() {
     return result;
-}
-
-void decaf::VirtualMachine::op_LOGIC_AND() {
-}
-
-void decaf::VirtualMachine::op_LOGIC_OR() {
 }
