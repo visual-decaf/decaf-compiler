@@ -3,7 +3,7 @@
 const std::map<decaf::Type::Classification, std::string> decaf::Type::type_name_of{
     {decaf::Type::Classification::INVALID, "INVALID"},
     {decaf::Type::Classification::INT, "INT"},
-    {decaf::Type::Classification::DOUBLE, "DOUBLE"},
+    {decaf::Type::Classification::FLOAT, "FLOAT"},
     {decaf::Type::Classification::BOOL, "BOOL"},
 };
 

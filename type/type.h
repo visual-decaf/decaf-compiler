@@ -8,7 +8,7 @@ struct Type: public Serializable {
     enum class Classification {
         INVALID,
         INT,
-        DOUBLE,
+        FLOAT,
         BOOL
     };
 

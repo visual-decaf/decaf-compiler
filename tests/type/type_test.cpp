@@ -10,8 +10,8 @@ TEST_CASE("int_type_json", "[type]") {
 
 TEST_CASE("double_type_json", "[type]") {
     using namespace decaf;
-    Type double_type(Type::Classification::DOUBLE);
-    boost::json::value expect_json = boost::json::parse("\"DOUBLE\"");
+    Type double_type(Type::Classification::FLOAT);
+    boost::json::value expect_json = boost::json::parse("\"FLOAT\"");
     REQUIRE(expect_json == double_type.to_json());
 }
 
