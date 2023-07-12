@@ -701,7 +701,7 @@ TEST_CASE("vm_float_equal", "[vm]") {
     REQUIRE(*result_ptr == true);
 }
 
-TEST_CASE("vm_float_equal", "[vm]") {
+TEST_CASE("vm_float_not_equal", "[vm]") {
     auto input_prog = Program{
         ByteCode{
             Instruction ::GET_FLOAT_CONSTANT,
