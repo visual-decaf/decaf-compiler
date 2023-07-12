@@ -3,6 +3,7 @@
 #include "byte_code_visitor.h"
 #include "program.h"
 #include <any>
+#include <optional>
 #include <stack>
 #include <utility>
 #include <variant>
@@ -56,12 +57,11 @@ private:
     void push_classification(std::any val, decaf::Type::Classification type_classification);
     combined_item_type pop();
 
-    using combined_int = std::pair<int, decaf::Type::Classification>;
-    using combined_bool = std::pair<bool, decaf::Type::Classification>;
     [[nodiscard]] bool expected_top_type(const decaf::Type&) const;
     [[nodiscard]] bool expected_top_type_classification(decaf::Type::Classification) const;
-    combined_int pop_combined_int();
-    combined_bool pop_combined_bool();
+    std::optional<std::pair<int, int>> expected_two_integer();
+    std::optional<std::pair<bool, bool>> expected_two_bool();
+
     int pop_as_int();
     bool pop_as_bool();
 
