@@ -2,106 +2,56 @@
 #include "byte_code_driver.h"
 
 bool decaf::VirtualMachine::op_PLUS() {
-    if (!expected_top_type_classification(Type::Classification::INT)) {
-        report_unexpected_type(
-            "PLUS rhs op",
-            Type::Classification::INT,
-            type_stk.top().classification);
+    auto i_top = expected_two_integer();
+    if (!i_top.has_value()) {
+        report("PLUS performed with unexpected types");
         return false;
     }
-    int rhs = pop_as_int();
-    if (!expected_top_type_classification(Type::Classification::INT)) {
-        report_unexpected_type(
-            "PLUS lhs op",
-            Type::Classification::INT,
-            type_stk.top().classification);
-        return false;
-    }
-    int lhs = pop_as_int();
+    auto [lhs, rhs] = i_top.value();
     push_classification(lhs + rhs, Type::Classification::INT);
     return true;
 }
 
 bool decaf::VirtualMachine::op_MINUS() {
-    if (!expected_top_type_classification(Type::Classification::INT)) {
-        report_unexpected_type(
-            "MINUS rhs op",
-            Type::Classification::INT,
-            type_stk.top().classification);
+    auto i_top = expected_two_integer();
+    if (!i_top.has_value()) {
+        report("MINUS performed with unexpected types");
         return false;
     }
-    int rhs = pop_as_int();
-    if (!expected_top_type_classification(Type::Classification::INT)) {
-        report_unexpected_type(
-            "MINUS lhs op",
-            Type::Classification::INT,
-            type_stk.top().classification);
-        return false;
-    }
-    int lhs = pop_as_int();
+    auto [lhs, rhs] = i_top.value();
     push_classification(lhs - rhs, Type::Classification::INT);
     return true;
 }
 
 bool decaf::VirtualMachine::op_MULTIPLY() {
-    if (!expected_top_type_classification(Type::Classification::INT)) {
-        report_unexpected_type(
-            "MULTIPLY rhs op",
-            Type::Classification::INT,
-            type_stk.top().classification);
+    auto i_top = expected_two_integer();
+    if (!i_top.has_value()) {
+        report("MULTIPLY performed with unexpected types");
         return false;
     }
-    int rhs = pop_as_int();
-    if (!expected_top_type_classification(Type::Classification::INT)) {
-        report_unexpected_type(
-            "MULTIPLY lhs op",
-            Type::Classification::INT,
-            type_stk.top().classification);
-        return false;
-    }
-    int lhs = pop_as_int();
+    auto [lhs, rhs] = i_top.value();
     push_classification(lhs * rhs, Type::Classification::INT);
     return true;
 }
 
 bool decaf::VirtualMachine::op_DIVIDE() {
-    if (!expected_top_type_classification(Type::Classification::INT)) {
-        report_unexpected_type(
-            "DIVIDE rhs op",
-            Type::Classification::INT,
-            type_stk.top().classification);
+    auto i_top = expected_two_integer();
+    if (!i_top.has_value()) {
+        report("DIVIDE performed with unexpected types");
         return false;
     }
-    int rhs = pop_as_int();
-    if (!expected_top_type_classification(Type::Classification::INT)) {
-        report_unexpected_type(
-            "DIVIDE lhs op",
-            Type::Classification::INT,
-            type_stk.top().classification);
-        return false;
-    }
-    int lhs = pop_as_int();
+    auto [lhs, rhs] = i_top.value();
     push_classification(lhs / rhs, Type::Classification::INT);
     return true;
 }
 
 bool decaf::VirtualMachine::op_MOD() {
-    if (!expected_top_type_classification(Type::Classification::INT)) {
-        report_unexpected_type(
-            "MOD rhs op",
-            Type::Classification::INT,
-            type_stk.top().classification);
+    auto i_top = expected_two_integer();
+    if (!i_top.has_value()) {
+        report("MOD performed with unexpected types");
         return false;
     }
-    int rhs = pop_as_int();
-    if (!expected_top_type_classification(Type::Classification::INT)) {
-        report_unexpected_type(
-            "MOD lhs op",
-            Type::Classification::INT,
-            type_stk.top().classification);
-        return false;
-    }
-    int lhs = pop_as_int();
+    auto [lhs, rhs] = i_top.value();
     push_classification(lhs % rhs, Type::Classification::INT);
     return true;
 }
@@ -127,43 +77,23 @@ bool decaf::VirtualMachine::op_GET_FALSE() {
 }
 
 bool decaf::VirtualMachine::op_LOGIC_AND() {
-    if (!expected_top_type_classification(Type::Classification::BOOL)) {
-        report_unexpected_type(
-            "LOGIC_AND rhs op",
-            Type::Classification::BOOL,
-            type_stk.top().classification);
+    auto b_top = expected_two_bool();
+    if (!b_top.has_value()) {
+        report("LOGIC_AND performed with unexpected types");
         return false;
     }
-    bool rhs = pop_as_bool();
-    if (!expected_top_type_classification(Type::Classification::BOOL)) {
-        report_unexpected_type(
-            "LOGIC_AND lhs op",
-            Type::Classification::BOOL,
-            type_stk.top().classification);
-        return false;
-    }
-    bool lhs = pop_as_bool();
+    auto [lhs, rhs] = b_top.value();
     push_classification(lhs && rhs, Type::Classification::BOOL);
     return true;
 }
 
 bool decaf::VirtualMachine::op_LOGIC_OR() {
-    if (!expected_top_type_classification(Type::Classification::BOOL)) {
-        report_unexpected_type(
-            "LOGIC_OR rhs op",
-            Type::Classification::BOOL,
-            type_stk.top().classification);
+    auto b_top = expected_two_bool();
+    if (!b_top.has_value()) {
+        report("LOGIC_OR performed with unexpected types");
         return false;
     }
-    bool rhs = pop_as_bool();
-    if (!expected_top_type_classification(Type::Classification::BOOL)) {
-        report_unexpected_type(
-            "LOGIC_OR lhs op",
-            Type::Classification::BOOL,
-            type_stk.top().classification);
-        return false;
-    }
-    bool lhs = pop_as_bool();
+    auto [lhs, rhs] = b_top.value();
     push_classification(lhs || rhs, Type::Classification::BOOL);
     return true;
 }
@@ -245,85 +175,45 @@ bool decaf::VirtualMachine::op_LOGIC_NOT() {
 }
 
 bool decaf::VirtualMachine::op_LESS() {
-    if (!expected_top_type_classification(Type::Classification::INT)) {
-        report_unexpected_type(
-            "LESS rhs op",
-            Type::Classification::INT,
-            type_stk.top().classification);
+    auto i_top = expected_two_integer();
+    if (!i_top.has_value()) {
+        report("LESS performed with unexpected types");
         return false;
     }
-    int rhs = pop_as_int();
-    if (!expected_top_type_classification(Type::Classification::INT)) {
-        report_unexpected_type(
-            "LESS lhs op",
-            Type::Classification::INT,
-            type_stk.top().classification);
-        return false;
-    }
-    int lhs = pop_as_int();
+    auto [lhs, rhs] = i_top.value();
     push_classification(lhs < rhs, Type::Classification::BOOL);
     return true;
 }
 
 bool decaf::VirtualMachine::op_LESS_EQUAL() {
-    if (!expected_top_type_classification(Type::Classification::INT)) {
-        report_unexpected_type(
-            "LESS_EQUAL rhs op",
-            Type::Classification::INT,
-            type_stk.top().classification);
+    auto i_top = expected_two_integer();
+    if (!i_top.has_value()) {
+        report("LESS_EQUAL performed with unexpected types");
         return false;
     }
-    int rhs = pop_as_int();
-    if (!expected_top_type_classification(Type::Classification::INT)) {
-        report_unexpected_type(
-            "LESS_EQUAL lhs op",
-            Type::Classification::INT,
-            type_stk.top().classification);
-        return false;
-    }
-    int lhs = pop_as_int();
+    auto [lhs, rhs] = i_top.value();
     push_classification(lhs <= rhs, Type::Classification::BOOL);
     return true;
 }
 
 bool decaf::VirtualMachine::op_GREATER() {
-    if (!expected_top_type_classification(Type::Classification::INT)) {
-        report_unexpected_type(
-            "GREATER rhs op",
-            Type::Classification::INT,
-            type_stk.top().classification);
+    auto i_top = expected_two_integer();
+    if (!i_top.has_value()) {
+        report("GREATER performed with unexpected types");
         return false;
     }
-    int rhs = pop_as_int();
-    if (!expected_top_type_classification(Type::Classification::INT)) {
-        report_unexpected_type(
-            "GREATER lhs op",
-            Type::Classification::INT,
-            type_stk.top().classification);
-        return false;
-    }
-    int lhs = pop_as_int();
+    auto [lhs, rhs] = i_top.value();
     push_classification(lhs > rhs, Type::Classification::BOOL);
     return true;
 }
 
 bool decaf::VirtualMachine::op_GREATER_EQUAL() {
-    if (!expected_top_type_classification(Type::Classification::INT)) {
-        report_unexpected_type(
-            "GREATER_EQUAL rhs op",
-            Type::Classification::INT,
-            type_stk.top().classification);
+    auto i_top = expected_two_integer();
+    if (!i_top.has_value()) {
+        report("GREATER_EQUAL performed with unexpected types");
         return false;
     }
-    int rhs = pop_as_int();
-    if (!expected_top_type_classification(Type::Classification::INT)) {
-        report_unexpected_type(
-            "GREATER_EQUAL lhs op",
-            Type::Classification::INT,
-            type_stk.top().classification);
-        return false;
-    }
-    int lhs = pop_as_int();
+    auto [lhs, rhs] = i_top.value();
     push_classification(lhs >= rhs, Type::Classification::BOOL);
     return true;
 }
@@ -340,24 +230,6 @@ void decaf::VirtualMachine::push_classification(std::any val, decaf::Type::Class
 
 std::pair<std::any, decaf::Type> decaf::VirtualMachine::pop() {
     auto top = std::make_pair(stk.top(), type_stk.top());
-    stk.pop();
-    type_stk.pop();
-    return top;
-}
-
-decaf::VirtualMachine::combined_int decaf::VirtualMachine::pop_combined_int() {
-    auto top = std::make_pair(
-        std::any_cast<int>(stk.top()),
-        type_stk.top().classification);
-    stk.pop();
-    type_stk.pop();
-    return top;
-}
-
-decaf::VirtualMachine::combined_bool decaf::VirtualMachine::pop_combined_bool() {
-    auto top = std::make_pair(
-        std::any_cast<bool>(stk.top()),
-        type_stk.top().classification);
     stk.pop();
     type_stk.pop();
     return top;
@@ -415,61 +287,67 @@ void decaf::VirtualMachine::report_unexpected_type(const std::string& object, de
 }
 
 bool decaf::VirtualMachine::op_EQUAL() {
-    if (expected_top_type_classification(Type::Classification::INT)) {
-        // Must both INT then
-        int rhs = pop_as_int();
-        if (!expected_top_type_classification(Type::Classification::INT)) {
-            report_unexpected_type(
-                "EQUAL lhs op",
-                Type::Classification::INT,
-                type_stk.top().classification);
-            return false;
-        }
-        int lhs = pop_as_int();
+    auto i_top = expected_two_integer();
+    if (i_top.has_value()) {
+        auto [lhs, rhs] = i_top.value();
         push_classification(lhs == rhs, Type::Classification::BOOL);
         return true;
-    } else if (expected_top_type_classification(Type::Classification::BOOL)) {
-        // Must both BOOL then
-        bool rhs = pop_as_bool();
-        if (!expected_top_type_classification(Type::Classification::BOOL)) {
-            report_unexpected_type(
-                "EQUAL lhs op",
-                Type::Classification::BOOL,
-                type_stk.top().classification);
-            return false;
-        }
-        bool lhs = pop_as_bool();
-        push_classification(lhs == rhs, Type::Classification::BOOL);
     }
+
+    auto b_top = expected_two_bool();
+    if (b_top.has_value()) {
+        auto [lhs, rhs] = b_top.value();
+        push_classification(lhs == rhs, Type::Classification::BOOL);
+        return true;
+    }
+
+    report("EQUAL performed with unequal types");
     return false;
 }
 
 bool decaf::VirtualMachine::op_NOT_EQUAL() {
-    if (expected_top_type_classification(Type::Classification::INT)) {
-        // Must both INT then
-        int rhs = pop_as_int();
-        if (!expected_top_type_classification(Type::Classification::INT)) {
-            report_unexpected_type(
-                "NOT_EQUAL lhs op",
-                Type::Classification::INT,
-                type_stk.top().classification);
-            return false;
-        }
-        int lhs = pop_as_int();
+    auto i_top = expected_two_integer();
+    if (i_top.has_value()) {
+        auto [lhs, rhs] = i_top.value();
         push_classification(lhs != rhs, Type::Classification::BOOL);
         return true;
-    } else if (expected_top_type_classification(Type::Classification::BOOL)) {
-        // Must both BOOL then
-        bool rhs = pop_as_bool();
-        if (!expected_top_type_classification(Type::Classification::BOOL)) {
-            report_unexpected_type(
-                "NOT_EQUAL lhs op",
-                Type::Classification::BOOL,
-                type_stk.top().classification);
-            return false;
-        }
-        bool lhs = pop_as_bool();
-        push_classification(lhs != rhs, Type::Classification::BOOL);
     }
+
+    auto b_top = expected_two_bool();
+    if (b_top.has_value()) {
+        auto [lhs, rhs] = b_top.value();
+        push_classification(lhs != rhs, Type::Classification::BOOL);
+        return true;
+    }
+
+    report("NOT_EQUAL performed with unequal types");
     return false;
+}
+
+std::optional<std::pair<int, int>> decaf::VirtualMachine::expected_two_integer() {
+    if (!expected_top_type_classification(Type::Classification::INT)) {
+        return std::nullopt;
+    }
+    int rhs = pop_as_int();
+    if (!expected_top_type_classification(Type::Classification::INT)) {
+        push_classification(rhs, Type::Classification::INT);
+        return std::nullopt;
+    }
+    // Then both is int
+    int lhs = pop_as_int();
+    return std::make_pair(lhs, rhs);
+}
+
+std::optional<std::pair<bool, bool>> decaf::VirtualMachine::expected_two_bool() {
+    if (!expected_top_type_classification(Type::Classification::BOOL)) {
+        return std::nullopt;
+    }
+    bool rhs = pop_as_bool();
+    if (!expected_top_type_classification(Type::Classification::BOOL)) {
+        push_classification(rhs, Type::Classification::BOOL);
+        return std::nullopt;
+    }
+    // Then both is bool
+    bool lhs = pop_as_bool();
+    return std::make_pair(lhs, rhs);
 }
