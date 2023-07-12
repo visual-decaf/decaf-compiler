@@ -23,6 +23,10 @@ struct Type: public serializable {
     Classification classification = Classification::INVALID;
     // TODO: Add function union type here
 
+    bool operator==(const Type& rhs) const {
+        return classification == rhs.classification;
+    }
+
     boost::json::value to_json() override;
 };
 
