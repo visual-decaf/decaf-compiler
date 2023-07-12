@@ -23,7 +23,7 @@ struct ExprVisitor {
 } // namespace decaf
 
 namespace decaf::ast {
-struct Expr: public serializable {
+struct Expr: public Serializable {
     virtual std::any accept(ExprVisitor&) = 0;
     virtual bool equals(std::shared_ptr<Expr> ptr) = 0;
 

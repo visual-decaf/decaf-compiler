@@ -17,7 +17,7 @@ namespace decaf {
 class VirtualMachine;
 
 class Program:
-    public serializable {
+    public Serializable {
     friend std::ostream& ::operator<<(std::ostream& os, const decaf::Program&);
     friend class VirtualMachine;
 

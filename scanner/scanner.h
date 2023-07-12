@@ -10,7 +10,7 @@
 namespace decaf {
 class Scanner: yyFlexLexer {
 public:
-    // using token_stream = std::vector<token>;
+    // using TokenStream = std::vector<token>;
     using yyFlexLexer::yyFlexLexer;
 
     explicit Scanner(std::istream& is):
@@ -18,7 +18,7 @@ public:
     }
 
     int yylex() override;
-    token_stream get_tokens();
+    TokenStream get_tokens();
     void scan();
     void scan_line();
 
@@ -27,10 +27,10 @@ public:
 
 private:
     // add token into token stream
-    void emit(token new_token);
+    void emit(Token new_token);
     void LexerError(const char* msg) override;
 
-    token_stream tokens;
+    TokenStream tokens;
     bool has_error = false;
 };
 } // namespace decaf

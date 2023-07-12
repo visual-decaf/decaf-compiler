@@ -2,11 +2,11 @@
 #include <catch2/catch_test_macros.hpp>
 
 using namespace decaf;
-using decaf::token_stream;
+using decaf::TokenStream;
 using std::make_shared;
 
 TEST_CASE("parser_main", "[parser]") {
-    token_stream tokenStream{
+    TokenStream tokenStream{
         {token_type ::INTEGER, "12"},
         {token_type ::PLUS, "+"},
         {token_type ::INTEGER, "34"},
@@ -27,7 +27,7 @@ TEST_CASE("parser_main", "[parser]") {
 }
 
 TEST_CASE("parser_plus_left_associative", "[parser]") {
-    token_stream tokenStream{
+    TokenStream tokenStream{
         {token_type ::INTEGER, "1"},
         {token_type ::PLUS, "+"},
         {token_type ::INTEGER, "2"},
@@ -53,7 +53,7 @@ TEST_CASE("parser_plus_left_associative", "[parser]") {
 }
 
 TEST_CASE("parser_plus_multiply_precedence", "[parser]") {
-    token_stream tokenStream{
+    TokenStream tokenStream{
         {token_type ::INTEGER, "1"},
         {token_type ::PLUS, "+"},
         {token_type ::INTEGER, "2"},
@@ -79,7 +79,7 @@ TEST_CASE("parser_plus_multiply_precedence", "[parser]") {
 }
 
 TEST_CASE("parser_plus_minus", "[parser]") {
-    token_stream tokenStream{
+    TokenStream tokenStream{
         {token_type ::INTEGER, "1"},
         {token_type ::PLUS, "+"},
         {token_type ::INTEGER, "2"},
@@ -105,7 +105,7 @@ TEST_CASE("parser_plus_minus", "[parser]") {
 }
 
 TEST_CASE("parser_multiply_divide", "[parser]") {
-    token_stream tokenStream{
+    TokenStream tokenStream{
         {token_type ::INTEGER, "1"},
         {token_type ::STAR, "*"},
         {token_type ::INTEGER, "2"},
@@ -131,7 +131,7 @@ TEST_CASE("parser_multiply_divide", "[parser]") {
 }
 
 TEST_CASE("parser_mod", "[parser]") {
-    token_stream tokenStream{
+    TokenStream tokenStream{
         {token_type ::INTEGER, "15"},
         {token_type ::PERCENT, "%"},
         {token_type ::INTEGER, "7"},
@@ -152,7 +152,7 @@ TEST_CASE("parser_mod", "[parser]") {
 }
 
 TEST_CASE("parser_group", "[parser]") {
-    token_stream tokenStream{
+    TokenStream tokenStream{
         {token_type ::LEFT_PAREN, "("},
         {token_type ::INTEGER, "1"},
         {token_type ::RIGHT_PAREN, ")"},
@@ -171,7 +171,7 @@ TEST_CASE("parser_group", "[parser]") {
 }
 
 TEST_CASE("parser_invalid_recovery_point_RIGHT_PAREN", "[parser]") {
-    token_stream tokenStream{
+    TokenStream tokenStream{
         {token_type ::LEFT_PAREN, "("},
         {token_type ::INVALID, "@@@"},
         {token_type ::RIGHT_PAREN, ")"},
@@ -192,7 +192,7 @@ TEST_CASE("parser_invalid_recovery_point_RIGHT_PAREN", "[parser]") {
 }
 
 TEST_CASE("parser_and", "[parser]") {
-    token_stream tokenStream{
+    TokenStream tokenStream{
         {token_type ::TRUE, "true"},
         {token_type ::LOGIC_AND, "&&"},
         {token_type ::FALSE, "false"},
@@ -215,7 +215,7 @@ TEST_CASE("parser_and", "[parser]") {
 }
 
 TEST_CASE("parser_or", "[parser]") {
-    token_stream tokenStream{
+    TokenStream tokenStream{
         {token_type ::TRUE, "true"},
         {token_type ::LOGIC_OR, "||"},
         {token_type ::FALSE, "false"},
@@ -238,7 +238,7 @@ TEST_CASE("parser_or", "[parser]") {
 }
 
 TEST_CASE("parser_logic_binary_combined_precedence", "[parser]") {
-    token_stream tokenStream{
+    TokenStream tokenStream{
         {token_type ::TRUE, "true"},
         {token_type ::LOGIC_OR, "||"},
         {token_type ::FALSE, "false"},
@@ -265,7 +265,7 @@ TEST_CASE("parser_logic_binary_combined_precedence", "[parser]") {
 }
 
 TEST_CASE("parser_arithmetic_unary", "[parser]") {
-    token_stream tokenStream{
+    TokenStream tokenStream{
         {token_type ::MINUS, "-"},
         {token_type ::INTEGER, "1"},
         {token_type ::EOL},
@@ -285,7 +285,7 @@ TEST_CASE("parser_arithmetic_unary", "[parser]") {
 }
 
 TEST_CASE("parser_arithmetic_unary_binary_combined", "[parser]") {
-    token_stream tokenStream{
+    TokenStream tokenStream{
         {token_type ::MINUS, "-"},
         {token_type ::INTEGER, "1"},
         {token_type ::MINUS, "-"},
@@ -310,7 +310,7 @@ TEST_CASE("parser_arithmetic_unary_binary_combined", "[parser]") {
 }
 
 TEST_CASE("parser_arithmetic_unary_binary_complex_combined", "[parser]") {
-    token_stream tokenStream{
+    TokenStream tokenStream{
         {token_type ::MINUS, "-"},
         {token_type ::INTEGER, "1"},
         {token_type ::MINUS, "-"},
@@ -337,7 +337,7 @@ TEST_CASE("parser_arithmetic_unary_binary_complex_combined", "[parser]") {
 }
 
 TEST_CASE("parser_logic_not", "[parser]") {
-    token_stream tokenStream{
+    TokenStream tokenStream{
         {token_type ::LOGIC_NOT, "!"},
         {token_type ::TRUE, "true"},
         {token_type ::EOL},
@@ -357,7 +357,7 @@ TEST_CASE("parser_logic_not", "[parser]") {
 }
 
 TEST_CASE("parser_logic_not_combined", "[parser]") {
-    token_stream tokenStream{
+    TokenStream tokenStream{
         {token_type ::FALSE, "false"},
         {token_type ::LOGIC_OR, "||"},
         {token_type ::LOGIC_NOT, "!"},
@@ -382,7 +382,7 @@ TEST_CASE("parser_logic_not_combined", "[parser]") {
 }
 
 TEST_CASE("parser_rational_less", "[parser]") {
-    token_stream tokenStream{
+    TokenStream tokenStream{
         {token_type ::INTEGER, "1"},
         {token_type ::LESS, "<"},
         {token_type ::INTEGER, "2"},
@@ -404,7 +404,7 @@ TEST_CASE("parser_rational_less", "[parser]") {
 }
 
 TEST_CASE("parser_rational_less_equal", "[parser]") {
-    token_stream tokenStream{
+    TokenStream tokenStream{
         {token_type ::INTEGER, "1"},
         {token_type ::LESS_EQUAL, "<="},
         {token_type ::INTEGER, "2"},
@@ -426,7 +426,7 @@ TEST_CASE("parser_rational_less_equal", "[parser]") {
 }
 
 TEST_CASE("parser_rational_greater", "[parser]") {
-    token_stream tokenStream{
+    TokenStream tokenStream{
         {token_type ::INTEGER, "1"},
         {token_type ::GREATER, ">"},
         {token_type ::INTEGER, "2"},
@@ -448,7 +448,7 @@ TEST_CASE("parser_rational_greater", "[parser]") {
 }
 
 TEST_CASE("parser_rational_greater_equal", "[parser]") {
-    token_stream tokenStream{
+    TokenStream tokenStream{
         {token_type ::INTEGER, "1"},
         {token_type ::GREATER_EQUAL, ">="},
         {token_type ::INTEGER, "2"},
@@ -470,7 +470,7 @@ TEST_CASE("parser_rational_greater_equal", "[parser]") {
 }
 
 TEST_CASE("parser_rational_non_associative", "[parser]") {
-    token_stream tokenStream{
+    TokenStream tokenStream{
         {token_type ::INTEGER, "1"},
         {token_type ::LESS, "<"},
         {token_type ::INTEGER, "2"},

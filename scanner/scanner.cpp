@@ -2,7 +2,7 @@
 
 using namespace decaf;
 
-void Scanner::emit(token new_token) {
+void Scanner::emit(Token new_token) {
     tokens.emplace_back(std::move(new_token));
 }
 
@@ -17,7 +17,7 @@ void Scanner::scan_line() {
         ;
 }
 
-token_stream Scanner::get_tokens() {
+TokenStream Scanner::get_tokens() {
     return tokens;
 }
 
