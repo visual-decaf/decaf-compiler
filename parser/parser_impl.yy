@@ -32,6 +32,7 @@
 
 %token <int> INTEGER
 %token <int> HEX_INTEGER
+%token <double> FLOAT
 %token PLUS "+" MINUS "-"
 %token STAR "*" SLASH "/" PERCENT "%"
 %token LEFT_PAREN "(" RIGHT_PAREN ")"
