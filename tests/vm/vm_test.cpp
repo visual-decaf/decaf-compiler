@@ -373,3 +373,20 @@ TEST_CASE("vm_type_mismatch_report", "[vm]") {
     auto err_msgs = vm.get_error_messages();
     REQUIRE(err_msgs.size() == 1);
 }
+
+TEST_CASE("vm_input_program_type_mismatch_report", "[vm]") {
+    auto input_prog = Program{
+        ByteCode{
+            Instruction ::GET_FALSE,
+            Instruction ::GET_TRUE,
+            Instruction ::LOGIC_OR}};
+    input_prog.set_result_type_classification(Type::Classification::INT);
+
+    decaf::VirtualMachine vm{input_prog};
+    vm.run();
+
+    REQUIRE(vm.is_error());
+    auto err_msgs = vm.get_error_messages();
+    std::cout << err_msgs[0] << std::endl;
+    REQUIRE(err_msgs.size() == 1);
+}
