@@ -172,3 +172,22 @@ TEST_CASE("scanner_equality", "[scanner]") {
         REQUIRE(result_token[i] == expected_token[i]);
     }
 }
+
+TEST_CASE("scanner_float", "[scanner]") {
+    auto result_token = scan_for("0.12 12. 12.2E+2");
+    decaf::TokenStream expected_token{
+        {token_type ::FLOAT, "0.12"},
+        {token_type ::FLOAT, "12."},
+        {token_type ::FLOAT, "12.2E+2"},
+        {token_type ::YYEOF}};
+
+    REQUIRE(result_token.size() == expected_token.size());
+    for (int i = 0; i < result_token.size(); i++) {
+        REQUIRE(result_token[i] == expected_token[i]);
+    }
+
+    // Try std::stod satisfies decaf requirements
+    REQUIRE(std::stod("0.12") == 0.12);
+    REQUIRE(std::stod("0012.") == 12.);
+    REQUIRE(std::stod("12.2E+2") == 12.2E+2);
+}
