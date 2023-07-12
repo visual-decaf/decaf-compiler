@@ -14,6 +14,8 @@ class VirtualMachine:
 public:
     using stack_type = std::stack<std::any>;
     using result_type = std::variant<std::monostate, int, double, bool>;
+    using type_stack_type = std::stack<decaf::Type>;
+    using combined_item_type = std::pair<std::any, decaf::Type>;
 
     explicit VirtualMachine(Program _prog):
         prog{std::move(_prog)} {
@@ -39,13 +41,39 @@ public:
     result_type get_result();
     void run();
 
+    [[nodiscard]] bool is_error() const;
+    void clear();
+    std::vector<std::string> get_error_messages();
+
 private:
     void set_int_result(int);
     void set_double_result(double);
     void set_bool_result(bool);
+    void push(std::any val, decaf::Type type);
+    void push_classification(std::any val, decaf::Type::Classification type_classification);
+    combined_item_type pop();
+
+    using combined_int = std::pair<int, decaf::Type::Classification>;
+    using combined_bool = std::pair<bool, decaf::Type::Classification>;
+    [[nodiscard]] bool expected_top_type(const decaf::Type&) const;
+    [[nodiscard]] bool expected_top_type_classification(decaf::Type::Classification) const;
+    combined_int pop_combined_int();
+    combined_bool pop_combined_bool();
+    int pop_as_int();
+    bool pop_as_bool();
+
     Program prog;
     stack_type stk;
+    type_stack_type type_stk;
     result_type result;
+
+    void report(const std::string& msg);
+    void report_unexpected_type(const std::string& object,
+                                Type::Classification expect,
+                                Type::Classification unexpect);
+
+    bool has_error = false;
+    std::vector<std::string> error_messages;
 };
 
 } // namespace decaf
