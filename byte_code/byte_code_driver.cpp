@@ -1,12 +1,13 @@
 #include "byte_code_driver.h"
 
-void decaf::ByteCodeDriver::produce() {
+bool decaf::ByteCodeDriver::produce() {
     while (current_byte != code_stream.end()) {
         bool success = produce_instruction();
         if (!success)
-            break;
+            return false;
         current_byte++;
     }
+    return true;
 }
 
 // Contract
