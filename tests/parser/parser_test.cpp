@@ -552,3 +552,42 @@ TEST_CASE("parser_float_plus", "[parser]") {
         std::make_shared<ast::FloatConstant>(1.48));
     REQUIRE(expect->equals(result));
 }
+
+TEST_CASE("parser_float_negate", "[parser]") {
+    TokenStream tokenStream{
+        {token_type ::MINUS, "-"},
+        {token_type ::FLOAT, "1.48e+0"},
+        {token_type ::EOL}};
+
+    decaf::Parser parser{tokenStream};
+    parser.parse();
+
+    REQUIRE(!parser.is_error());
+    auto result = parser.get_ast();
+
+    REQUIRE(result->type.classification == decaf::Type::Classification::FLOAT);
+    auto expect = std::make_shared<ast::ArithmeticUnary>(
+        std::make_shared<ast::FloatConstant>(1.48));
+    REQUIRE(expect->equals(result));
+}
+
+TEST_CASE("parser_float_rational", "[parser]") {
+    TokenStream tokenStream{
+        {token_type ::FLOAT, "1.52"},
+        {token_type ::GREATER, ">"},
+        {token_type ::FLOAT, "1.48e+0"},
+        {token_type ::EOL}};
+
+    decaf::Parser parser{tokenStream};
+    parser.parse();
+
+    REQUIRE(!parser.is_error());
+    auto result = parser.get_ast();
+
+    REQUIRE(result->type.classification == decaf::Type::Classification::BOOL);
+    auto expect = std::make_shared<ast::RationalBinary>(
+        std::make_shared<ast::FloatConstant>(1.52),
+        ast::RationalBinary::Operation::GREATER,
+        std::make_shared<ast::FloatConstant>(1.48));
+    REQUIRE(expect->equals(result));
+}
