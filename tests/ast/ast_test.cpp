@@ -144,20 +144,82 @@ TEST_CASE("arithmetic_unary_json", "[ast]") {
     REQUIRE(expect_json == ast_root->to_json());
 }
 
-TEST_CASE("arithmetic_unary_invalid_right_json", "[ast]") {
-    auto ast_root = std::make_shared<ast::ArithmeticUnary>(
-        std::make_shared<ast::Group>(nullptr));
+TEST_CASE("bool_constant_json", "[ast]") {
+    auto ast_root = std::make_shared<ast::BoolConstant>(true);
     auto expect_json = boost::json::parse(R"(
 {
-    "type": "ArithmeticUnary",
-    "operation": "NEGATE",
+    "type": "BoolConstant",
+    "value": true,
+    "resultType": "BOOL"
+}
+)");
+    REQUIRE(expect_json == ast_root->to_json());
+}
+
+TEST_CASE("logic_unary_json", "[ast]") {
+    auto ast_root = std::make_shared<ast::LogicUnary>(
+        std::make_shared<ast::BoolConstant>(false));
+    auto expect_json = boost::json::parse(R"(
+{
+    "type": "LogicUnary",
+    "operation": "LOGIC_NOT",
     "right": {
+        "type": "BoolConstant",
+        "value": false,
+        "resultType": "BOOL"
+    },
+    "resultType": "BOOL"
+}
+)");
+    REQUIRE(expect_json == ast_root->to_json());
+}
+
+TEST_CASE("logic_binary_json", "[ast]") {
+    auto ast_root = std::make_shared<ast::LogicBinary>(
+        std::make_shared<ast::BoolConstant>(false),
+        ast::LogicBinary::Operation::LOGIC_OR,
+        std::make_shared<ast::IntConstant>(1));
+    auto expect_json = boost::json::parse(R"(
+{
+    "type": "LogicBinary",
+    "operation": "LOGIC_OR",
+    "left": {
+        "type": "BoolConstant",
+        "value": false,
+        "resultType": "BOOL"
+    },
+    "right": {
+        "type": "IntConstant",
+        "value": 1,
+        "resultType": "INT"
+    },
+    "resultType": "INVALID"
+}
+)");
+    REQUIRE(expect_json == ast_root->to_json());
+}
+
+TEST_CASE("rational_binary_json", "[ast]") {
+    auto ast_root = std::make_shared<ast::RationalBinary>(
+        std::make_shared<ast::Group>(nullptr),
+        ast::RationalBinary::Operation::LESS_EQUAL,
+        std::make_shared<ast::IntConstant>(3));
+    auto expect_json = boost::json::parse(R"(
+{
+    "type": "RationalBinary",
+    "operation": "LESS_EQUAL",
+    "left": {
         "type": "Group",
         "content": {
             "type": "INVALID",
             "resultType": "INVALID"
         },
         "resultType": "INVALID"
+    },
+    "right": {
+        "type": "IntConstant",
+        "value": 3,
+        "resultType": "INT"
     },
     "resultType": "INVALID"
 }

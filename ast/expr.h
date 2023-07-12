@@ -196,6 +196,7 @@ struct RationalBinary: Expr, std::enable_shared_from_this<RationalBinary> {
     Operation op;
     std::shared_ptr<Expr> right;
 
+    static const std::map<Operation, std::string> operation_name_of;
     static Type::Classification result_type_of(Type left, Type right);
 
     RationalBinary(std::shared_ptr<Expr> _left, Operation op, std::shared_ptr<Expr> _right):
@@ -207,6 +208,7 @@ struct RationalBinary: Expr, std::enable_shared_from_this<RationalBinary> {
         return visitor.visitRationalBinary(shared_from_this());
     }
     bool equals(std::shared_ptr<Expr> rational_bin) override;
+    boost::json::value to_json() override;
 };
 
 } // namespace decaf::ast
