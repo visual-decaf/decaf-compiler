@@ -18,6 +18,8 @@ public:
     bool op_MULTIPLY() override;
     bool op_DIVIDE() override;
     bool op_MOD() override;
+    bool op_EQUAL() override;
+    bool op_NOT_EQUAL() override;
     bool op_GET_INSTANT(uint8_t instant) override;
     bool op_GET_INT_CONSTANT(uint8_t index) override;
     bool op_LESS() override;
