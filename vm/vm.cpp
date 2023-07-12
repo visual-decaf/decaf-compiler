@@ -202,6 +202,7 @@ bool decaf::VirtualMachine::op_NEGATE() {
     if (expected_top_type_classification(Type::Classification::FLOAT)) {
         double rhs = pop_as_double();
         push_classification(-rhs, Type::Classification::FLOAT);
+        return true;
     }
 
     report("NEGATE performed with unexpected type");
