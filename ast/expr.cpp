@@ -150,6 +150,8 @@ boost::json::value decaf::ast::BoolConstant::to_json() {
 decaf::Type::Classification decaf::ast::ArithmeticUnary::result_type_of(decaf::Type right) {
     if (right.classification == Type::Classification::INT)
         return Type::Classification::INT;
+    if (right.classification == Type::Classification::FLOAT)
+        return Type::Classification::FLOAT;
     return Type::Classification::INVALID;
 }
 boost::json::value decaf::ast::ArithmeticUnary::to_json() {
