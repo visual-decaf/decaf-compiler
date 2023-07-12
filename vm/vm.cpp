@@ -475,5 +475,6 @@ bool decaf::VirtualMachine::op_NOT_EQUAL() {
 }
 
 bool decaf::VirtualMachine::op_GET_FLOAT_CONSTANT(uint8_t index) {
+    push_classification(prog.pool.get_double_constant(index), Type::Classification::FLOAT);
     return false;
 }
