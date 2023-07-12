@@ -122,5 +122,9 @@ std::any decaf::Compiler::visitEqualityBinary(std::shared_ptr<ast::EqualityBinar
 }
 
 std::any decaf::Compiler::visitFloatConstant(std::shared_ptr<ast::FloatConstant> floatConstant) {
+    ConstantPool::index_type index = prog.add_double_constant(floatConstant->value);
+    prog.emit_bytes(
+        ByteCode::Instruction::GET_FLOAT_CONSTANT,
+        index);
     return {};
 }
