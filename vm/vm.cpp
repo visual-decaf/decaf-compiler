@@ -151,13 +151,18 @@ void decaf::VirtualMachine::op_GREATER_EQUAL() {
     stk.emplace(lhs >= rhs);
 }
 
-void decaf::VirtualMachine::push(std::any val, decaf::Type::Classification type_classification) {
+void decaf::VirtualMachine::push(std::any val, decaf::Type type) {
+    stk.emplace(std::move(val));
+    type_stk.emplace(std::move(type));
+}
+
+void decaf::VirtualMachine::push_classification(std::any val, decaf::Type::Classification type_classification) {
     stk.emplace(std::move(val));
     type_stk.emplace(type_classification);
 }
 
-std::pair<std::any, decaf::Type::Classification> decaf::VirtualMachine::pop() {
-    auto top = std::make_pair(stk.top(), type_stk.top().classification);
+std::pair<std::any, decaf::Type> decaf::VirtualMachine::pop() {
+    auto top = std::make_pair(stk.top(), type_stk.top());
     stk.pop();
     type_stk.pop();
     return top;
