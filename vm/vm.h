@@ -15,6 +15,7 @@ public:
     using stack_type = std::stack<std::any>;
     using result_type = std::variant<std::monostate, int, double, bool>;
     using type_stack_type = std::stack<decaf::Type>;
+    using combined_item_type = std::pair<std::any, decaf::Type::Classification>;
 
     explicit VirtualMachine(Program _prog):
         prog{std::move(_prog)} {
@@ -45,7 +46,8 @@ private:
     void set_double_result(double);
     void set_bool_result(bool);
     void push(std::any val, decaf::Type::Classification type_classification);
-    std::pair<std::any, decaf::Type::Classification> pop();
+    combined_item_type pop();
+
     Program prog;
     stack_type stk;
     type_stack_type type_stk;
