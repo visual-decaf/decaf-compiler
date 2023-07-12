@@ -89,3 +89,20 @@ std::any decaf::Compiler::visitLogicUnary(std::shared_ptr<ast::LogicUnary> log_u
     prog.emit(ByteCode::Instruction::LOGIC_NOT);
     return {};
 }
+
+std::any decaf::Compiler::visitRationalBinary(std::shared_ptr<ast::RationalBinary> rational_bin) {
+    rational_bin->left->accept(*this);
+    rational_bin->right->accept(*this);
+
+    using Operation = ast::RationalBinary::Operation;
+    using Instruction = ByteCode::Instruction;
+    static std::map<Operation, ByteCode::code_type> code_for{
+        {Operation ::LESS, Instruction ::LESS},
+        {Operation ::LESS_EQUAL, Instruction ::LESS_EQUAL},
+        {Operation ::GREATER, Instruction ::GREATER},
+        {Operation ::GREATER_EQUAL, Instruction ::GREATER_EQUAL},
+    };
+
+    prog.emit(code_for[rational_bin->op]);
+    return {};
+}

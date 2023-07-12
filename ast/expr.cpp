@@ -138,3 +138,23 @@ decaf::Type::Classification decaf::ast::LogicUnary::result_type_of(decaf::Type r
 
     return Type::Classification::INVALID;
 }
+
+decaf::Type::Classification decaf::ast::RationalBinary::result_type_of(decaf::Type left, decaf::Type right) {
+    if (left.classification == Type::Classification::INT && right.classification == Type::Classification::INT) {
+        return Type::Classification::BOOL;
+    }
+
+    return Type::Classification::INVALID;
+}
+
+bool decaf::ast::RationalBinary::equals(std::shared_ptr<Expr> rational_bin) {
+    auto rhs = std::dynamic_pointer_cast<RationalBinary>(rational_bin);
+
+    if (rhs == nullptr) {
+        return false;
+    }
+
+    return this->left->equals(rhs->left)
+           && this->op == rhs->op
+           && this->right->equals(rhs->right);
+}

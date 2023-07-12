@@ -68,7 +68,6 @@ TEST_CASE("compiler_plus_multiply", "[compiler]") {
     decaf::Compiler compiler{input_ast};
     compiler.compile();
 
-
     auto result = compiler.get_program();
     REQUIRE(result.get_result_type_classification() == Type::Classification::INT);
     auto expect = Program{
@@ -376,6 +375,94 @@ TEST_CASE("compiler_logic_not_combined", "[compiler]") {
             Instruction ::GET_TRUE,
             Instruction ::LOGIC_NOT,
             Instruction ::LOGIC_OR,
+        }};
+    REQUIRE(expect == result);
+}
+
+TEST_CASE("compiler_rational_less", "[compiler]") {
+    auto input_ast = std::make_shared<ast::RationalBinary>(
+        std::make_shared<ast::IntConstant>(1),
+        ast::RationalBinary::Operation::LESS,
+        std::make_shared<ast::IntConstant>(2));
+
+    decaf::Compiler compiler{input_ast};
+    compiler.compile();
+
+    auto result = compiler.get_program();
+    REQUIRE(result.get_result_type_classification() == decaf::Type::Classification::BOOL);
+    auto expect = Program{
+        ByteCode{
+            Instruction ::GET_INSTANT,
+            1,
+            Instruction ::GET_INSTANT,
+            2,
+            Instruction ::LESS,
+        }};
+    REQUIRE(expect == result);
+}
+
+TEST_CASE("compiler_rational_less_equal", "[compiler]") {
+    auto input_ast = std::make_shared<ast::RationalBinary>(
+        std::make_shared<ast::IntConstant>(1),
+        ast::RationalBinary::Operation::LESS_EQUAL,
+        std::make_shared<ast::IntConstant>(2));
+
+    decaf::Compiler compiler{input_ast};
+    compiler.compile();
+
+    auto result = compiler.get_program();
+    REQUIRE(result.get_result_type_classification() == decaf::Type::Classification::BOOL);
+    auto expect = Program{
+        ByteCode{
+            Instruction ::GET_INSTANT,
+            1,
+            Instruction ::GET_INSTANT,
+            2,
+            Instruction ::LESS_EQUAL,
+        }};
+    REQUIRE(expect == result);
+}
+
+TEST_CASE("compiler_rational_greater", "[compiler]") {
+    auto input_ast = std::make_shared<ast::RationalBinary>(
+        std::make_shared<ast::IntConstant>(1),
+        ast::RationalBinary::Operation::GREATER,
+        std::make_shared<ast::IntConstant>(2));
+
+    decaf::Compiler compiler{input_ast};
+    compiler.compile();
+
+    auto result = compiler.get_program();
+    REQUIRE(result.get_result_type_classification() == decaf::Type::Classification::BOOL);
+    auto expect = Program{
+        ByteCode{
+            Instruction ::GET_INSTANT,
+            1,
+            Instruction ::GET_INSTANT,
+            2,
+            Instruction ::GREATER,
+        }};
+    REQUIRE(expect == result);
+}
+
+TEST_CASE("compiler_rational_greater_equal", "[compiler]") {
+    auto input_ast = std::make_shared<ast::RationalBinary>(
+        std::make_shared<ast::IntConstant>(1),
+        ast::RationalBinary::Operation::GREATER_EQUAL,
+        std::make_shared<ast::IntConstant>(2));
+
+    decaf::Compiler compiler{input_ast};
+    compiler.compile();
+
+    auto result = compiler.get_program();
+    REQUIRE(result.get_result_type_classification() == decaf::Type::Classification::BOOL);
+    auto expect = Program{
+        ByteCode{
+            Instruction ::GET_INSTANT,
+            1,
+            Instruction ::GET_INSTANT,
+            2,
+            Instruction ::GREATER_EQUAL,
         }};
     REQUIRE(expect == result);
 }

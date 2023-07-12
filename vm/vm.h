@@ -22,6 +22,10 @@ public:
     void op_NEGATE() override;
     void op_PLUS() override;
     void op_MINUS() override;
+    void op_LESS() override;
+    void op_LESS_EQUAL() override;
+    void op_GREATER() override;
+    void op_GREATER_EQUAL() override;
     void op_MULTIPLY() override;
     void op_DIVIDE() override;
     void op_MOD() override;
