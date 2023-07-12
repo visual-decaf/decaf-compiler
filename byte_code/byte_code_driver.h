@@ -9,7 +9,7 @@ public:
         code{code}, visitor{visitor} {
     }
 
-    virtual void produce();
+    virtual bool produce();
     using code_stream_type = ByteCode::code_stream_type;
     using iterator_type = code_stream_type::iterator;
 
