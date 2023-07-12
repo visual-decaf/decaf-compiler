@@ -464,7 +464,7 @@ TEST_CASE("vm_float_minus", "[vm]") {
             0,
             Instruction ::GET_FLOAT_CONSTANT,
             1,
-            Instruction ::PLUS,
+            Instruction ::MINUS,
         },
         ConstantPool{
             {},

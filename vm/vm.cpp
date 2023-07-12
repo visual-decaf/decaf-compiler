@@ -378,6 +378,13 @@ bool decaf::VirtualMachine::op_EQUAL() {
         return true;
     }
 
+    auto d_top = expected_two_double();
+    if (d_top.has_value()) {
+        auto [lhs, rhs] = d_top.value();
+        push_classification(lhs == rhs, Type::Classification::BOOL);
+        return true;
+    }
+
     report("EQUAL performed with unequal types");
     return false;
 }
@@ -393,6 +400,13 @@ bool decaf::VirtualMachine::op_NOT_EQUAL() {
     auto b_top = expected_two_bool();
     if (b_top.has_value()) {
         auto [lhs, rhs] = b_top.value();
+        push_classification(lhs != rhs, Type::Classification::BOOL);
+        return true;
+    }
+
+    auto d_top = expected_two_double();
+    if (d_top.has_value()) {
+        auto [lhs, rhs] = d_top.value();
         push_classification(lhs != rhs, Type::Classification::BOOL);
         return true;
     }
