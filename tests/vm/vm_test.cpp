@@ -371,6 +371,5 @@ TEST_CASE("vm_type_mismatch_report", "[vm]") {
 
     REQUIRE(vm.is_error());
     auto err_msgs = vm.get_error_messages();
-    std::cout << err_msgs[0];
     REQUIRE(err_msgs.size() == 1);
 }
