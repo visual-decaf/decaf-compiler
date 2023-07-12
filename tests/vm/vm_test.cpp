@@ -431,3 +431,28 @@ TEST_CASE("vm_equality_not_equal", "[equality]") {
     REQUIRE(result_ptr != nullptr);
     REQUIRE(*result_ptr == true);
 }
+
+TEST_CASE("vm_float_plus", "[vm]") {
+    auto input_prog = Program{
+        ByteCode{
+            Instruction ::GET_FLOAT_CONSTANT,
+            0,
+            Instruction ::GET_FLOAT_CONSTANT,
+            1,
+            Instruction ::PLUS,
+        },
+        ConstantPool{
+            {},
+            {2.5, 7.5},
+        }};
+    input_prog.set_result_type_classification(Type::Classification::FLOAT);
+
+    decaf::VirtualMachine vm{input_prog};
+    vm.run();
+
+    REQUIRE(!vm.is_error());
+    auto result = vm.get_result();
+    auto result_ptr = std::get_if<double>(&result);
+    REQUIRE(result_ptr != nullptr);
+    REQUIRE(*result_ptr == 10.0);
+}
