@@ -3,6 +3,7 @@
 /* %define api.token.constructor */
 %define parse.error verbose
 %define parse.trace
+%define parse.lac full
 
 %param{decaf::Parser& driver}
 
