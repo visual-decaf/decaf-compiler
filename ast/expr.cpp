@@ -240,3 +240,13 @@ decaf::Type::Classification decaf::ast::EqualityBinary::result_type_of(decaf::Ty
     }
     return Type::Classification::INVALID;
 }
+
+bool decaf::ast::FloatConstant::equals(std::shared_ptr<Expr> ptr) {
+    auto rhs = std::dynamic_pointer_cast<FloatConstant>(ptr);
+
+    if (rhs == nullptr) {
+        return false;
+    }
+
+    return this->value == rhs->value;
+}
