@@ -16,7 +16,7 @@ public:
     token_type type;
     std::string lexeme;
 
-    explicit Token(token_type _type, const std::string& lexeme = "");
+    Token(token_type _type, const std::string& lexeme = "");
 
     bool operator==(const Token& rhs) const;
 
