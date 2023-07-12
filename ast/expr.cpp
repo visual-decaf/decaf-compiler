@@ -53,6 +53,10 @@ decaf::Type::Classification decaf::ast::ArithmeticBinary::result_type_of(decaf::
         && right.classification == Type::Classification::INT) {
         return Type::Classification::INT;
     }
+    if (left.classification == Type::Classification::FLOAT
+        && right.classification == Type::Classification::FLOAT) {
+        return Type::Classification::FLOAT;
+    }
     return Type::Classification::INVALID;
 }
 
@@ -150,6 +154,8 @@ boost::json::value decaf::ast::BoolConstant::to_json() {
 decaf::Type::Classification decaf::ast::ArithmeticUnary::result_type_of(decaf::Type right) {
     if (right.classification == Type::Classification::INT)
         return Type::Classification::INT;
+    if (right.classification == Type::Classification::FLOAT)
+        return Type::Classification::FLOAT;
     return Type::Classification::INVALID;
 }
 boost::json::value decaf::ast::ArithmeticUnary::to_json() {
@@ -198,7 +204,12 @@ boost::json::value decaf::ast::LogicUnary::to_json() {
 }
 
 decaf::Type::Classification decaf::ast::RationalBinary::result_type_of(decaf::Type left, decaf::Type right) {
-    if (left.classification == Type::Classification::INT && right.classification == Type::Classification::INT) {
+    if (left.classification == Type::Classification::INT
+        && right.classification == Type::Classification::INT) {
+        return Type::Classification::BOOL;
+    }
+    if (left.classification == Type::Classification::FLOAT
+        && right.classification == Type::Classification::FLOAT) {
         return Type::Classification::BOOL;
     }
 
@@ -239,7 +250,8 @@ bool decaf::ast::EqualityBinary::equals(std::shared_ptr<Expr> ptr) {
 }
 
 decaf::Type::Classification decaf::ast::EqualityBinary::result_type_of(decaf::Type left, decaf::Type right) {
-    if (left.classification == right.classification && left.classification != Type::Classification::INVALID) {
+    if (left.classification == right.classification
+        && left.classification != Type::Classification::INVALID) {
         return Type::Classification::BOOL;
     }
     return Type::Classification::INVALID;
@@ -252,4 +264,14 @@ boost::json::value decaf::ast::EqualityBinary::to_json() {
         {"right", this->right->to_json()},
         {"resultType", this->type.to_json()}};
     return result;
+}
+
+bool decaf::ast::FloatConstant::equals(std::shared_ptr<Expr> ptr) {
+    auto rhs = std::dynamic_pointer_cast<FloatConstant>(ptr);
+
+    if (rhs == nullptr) {
+        return false;
+    }
+
+    return this->value == rhs->value;
 }

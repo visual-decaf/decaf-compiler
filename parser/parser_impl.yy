@@ -29,9 +29,11 @@
 %nterm <std::shared_ptr<decaf::ast::Expr>> boolConstant
 %nterm <std::shared_ptr<decaf::ast::Expr>> rationalBinary
 %nterm <std::shared_ptr<decaf::ast::Expr>> equalityBinary
+%nterm <std::shared_ptr<decaf::ast::Expr>> floatConstant
 
 %token <int> INTEGER
 %token <int> HEX_INTEGER
+%token <double> FLOAT
 %token PLUS "+" MINUS "-"
 %token STAR "*" SLASH "/" PERCENT "%"
 %token LEFT_PAREN "(" RIGHT_PAREN ")"
@@ -74,6 +76,7 @@ expression:
     | group
     | intConstant
     | boolConstant
+    | floatConstant
     ;
 
 arithmeticBinaryExpr: 
@@ -214,6 +217,11 @@ boolConstant:
         $$ = std::make_shared<BoolConstant>(false);
     }
     ;
+
+floatConstant:
+    FLOAT {
+        $$ = std::make_shared<FloatConstant>($1);
+    }
 
 %%
 

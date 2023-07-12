@@ -41,6 +41,7 @@ public:
     }
 
     ConstantPool::index_type add_int_constant(const int& val);
+    ConstantPool::index_type add_double_constant(const double& val);
 
     [[nodiscard]] Type get_result_type() const;
     [[nodiscard]] Type::Classification get_result_type_classification() const;

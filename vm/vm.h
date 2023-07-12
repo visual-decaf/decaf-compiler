@@ -39,6 +39,7 @@ public:
     bool op_LOGIC_AND() override;
     bool op_EQUAL() override;
     bool op_NOT_EQUAL() override;
+    bool op_GET_FLOAT_CONSTANT(uint8_t index) override;
     bool op_LOGIC_OR() override;
 
     result_type get_result();
@@ -60,9 +61,11 @@ private:
     [[nodiscard]] bool expected_top_type_classification(decaf::Type::Classification) const;
     std::optional<std::pair<int, int>> expected_two_integer();
     std::optional<std::pair<bool, bool>> expected_two_bool();
+    std::optional<std::pair<double, double>> expected_two_double();
 
     int pop_as_int();
     bool pop_as_bool();
+    double pop_as_double();
 
     Program prog;
     stack_type stk;

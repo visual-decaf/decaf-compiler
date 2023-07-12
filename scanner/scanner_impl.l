@@ -14,6 +14,9 @@ DIGIT [0-9]
 HEX_DIGIT [0-9a-fA-F]
 INTEGER {DIGIT}+
 HEX_INTEGER ("0x"|"0X"){HEX_DIGIT}+
+EXPONENT ("e"|"E")("+"|"-")?{DIGIT}+
+NORMAL_FLOAT {DIGIT}+"."{DIGIT}*
+FLOAT {NORMAL_FLOAT}{EXPONENT}?
 
 %%
 
@@ -22,6 +25,9 @@ HEX_INTEGER ("0x"|"0X"){HEX_DIGIT}+
 }
 {HEX_INTEGER} {
     emit({token_type::HEX_INTEGER, YYText()});
+}
+{FLOAT} {
+    emit({token_type::FLOAT, YYText()});
 }
 
 "+" { emit({token_type::PLUS, YYText()}); }

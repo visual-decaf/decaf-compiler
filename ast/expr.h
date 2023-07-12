@@ -20,6 +20,7 @@ struct ExprVisitor {
     virtual std::any visitBoolConstant(std::shared_ptr<ast::BoolConstant>) = 0;
     virtual std::any visitRationalBinary(std::shared_ptr<ast::RationalBinary>) = 0;
     virtual std::any visitEqualityBinary(std::shared_ptr<ast::EqualityBinary>) = 0;
+    virtual std::any visitFloatConstant(std::shared_ptr<ast::FloatConstant>) = 0;
 };
 } // namespace decaf
 
@@ -235,6 +236,20 @@ struct EqualityBinary: Expr, std::enable_shared_from_this<EqualityBinary> {
 
     bool equals(std::shared_ptr<Expr> ptr) override;
     boost::json::value to_json() override;
+};
+
+struct FloatConstant: Expr, std::enable_shared_from_this<FloatConstant> {
+    double value;
+    explicit FloatConstant(double val):
+        value(val) {
+        type.classification = Type::Classification::FLOAT;
+    }
+
+    std::any accept(ExprVisitor& visitor) override {
+        return visitor.visitFloatConstant(shared_from_this());
+    }
+
+    bool equals(std::shared_ptr<Expr> ptr) override;
 };
 
 } // namespace decaf::ast

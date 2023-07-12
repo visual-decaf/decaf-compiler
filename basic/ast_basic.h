@@ -11,4 +11,5 @@ struct LogicUnary;
 struct BoolConstant;
 struct RationalBinary;
 struct EqualityBinary;
+struct FloatConstant;
 } // namespace decaf::ast

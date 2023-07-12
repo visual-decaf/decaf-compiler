@@ -36,3 +36,18 @@ boost::json::value decaf::ConstantPool::to_json() {
     result["doubleConstantPool"] = double_constant_pool;
     return result;
 }
+
+decaf::ConstantPool::index_type decaf::ConstantPool::add_constant(const double& val) {
+    for (index_type i = 0; i < f_pool.size(); i++) {
+        if (std::fabs(val - f_pool[i]) < 1e-10) {
+            return i;
+        }
+    }
+
+    f_pool.push_back(val);
+    return f_pool.size() - 1;
+}
+
+double decaf::ConstantPool::get_double_constant(decaf::ConstantPool::index_type index) {
+    return f_pool[index];
+}

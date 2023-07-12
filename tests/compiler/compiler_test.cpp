@@ -508,3 +508,32 @@ TEST_CASE("compiler_equality_not_equal", "[equality]") {
             Instruction ::NOT_EQUAL}};
     REQUIRE(expect == result);
 }
+
+TEST_CASE("compiler_float_rational", "[compiler]") {
+    auto input_ast = std::make_shared<ast::RationalBinary>(
+        std::make_shared<ast::FloatConstant>(1.52),
+        ast::RationalBinary::Operation::GREATER,
+        std::make_shared<ast::FloatConstant>(1.48));
+
+    decaf::Compiler compiler{input_ast};
+    compiler.compile();
+
+    auto result = compiler.get_program();
+    REQUIRE(result.get_result_type_classification() == decaf::Type::Classification::BOOL);
+    auto expect = Program{
+        ByteCode{
+            Instruction ::GET_FLOAT_CONSTANT,
+            0,
+            Instruction ::GET_FLOAT_CONSTANT,
+            1,
+            Instruction ::GREATER,
+        },
+        ConstantPool{
+            {},
+            {
+                1.52,
+                1.48,
+            },
+        }};
+    REQUIRE(expect == result);
+}
