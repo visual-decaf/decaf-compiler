@@ -38,6 +38,8 @@ HEX_INTEGER ("0x"|"0X"){HEX_DIGIT}+
 "<=" { emit({token_type::LESS_EQUAL, YYText()}); }
 ">" { emit({token_type::GREATER, YYText()}); }
 ">=" { emit({token_type::GREATER_EQUAL, YYText()}); }
+"==" { emit({token_type::EQUAL, YYText()}); }
+"!=" { emit({token_type::NOT_EQUAL, YYText()}); }
 
 "true" { emit({token_type::TRUE, YYText()}); }
 "false" { emit({token_type::FALSE, YYText()}); }

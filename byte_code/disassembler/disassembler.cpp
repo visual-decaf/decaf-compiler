@@ -90,3 +90,12 @@ bool Disassembler::op_GREATER_EQUAL() {
     this->assembly_code.emplace_back("GREATER_EQUAL");
     return true;
 }
+
+bool Disassembler::op_EQUAL() {
+    this->assembly_code.emplace_back("EQUAL");
+    return true;
+}
+bool Disassembler::op_NOT_EQUAL() {
+    this->assembly_code.emplace_back("NOT_EQUAL");
+    return true;
+}

@@ -36,6 +36,8 @@ public:
     bool op_GET_TRUE() override;
     bool op_GET_FALSE() override;
     bool op_LOGIC_AND() override;
+    bool op_EQUAL() override;
+    bool op_NOT_EQUAL() override;
     bool op_LOGIC_OR() override;
 
     result_type get_result();

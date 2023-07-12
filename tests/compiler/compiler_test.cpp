@@ -466,3 +466,45 @@ TEST_CASE("compiler_rational_greater_equal", "[compiler]") {
         }};
     REQUIRE(expect == result);
 }
+
+TEST_CASE("compiler_equality_equal", "[equality]") {
+    auto input_ast = std::make_shared<ast::EqualityBinary>(
+        std::make_shared<ast::IntConstant>(1),
+        ast::EqualityBinary::Operation::EQUAL,
+        std::make_shared<ast::IntConstant>(2));
+
+    decaf::Compiler compiler{input_ast};
+    compiler.compile();
+
+    auto result = compiler.get_program();
+    REQUIRE(result.get_result_type_classification() == decaf::Type::Classification::BOOL);
+    auto expect = Program{
+        ByteCode{
+            Instruction ::GET_INSTANT,
+            1,
+            Instruction ::GET_INSTANT,
+            2,
+            Instruction ::EQUAL}};
+    REQUIRE(expect == result);
+}
+
+TEST_CASE("compiler_equality_not_equal", "[equality]") {
+    auto input_ast = std::make_shared<ast::EqualityBinary>(
+        std::make_shared<ast::IntConstant>(1),
+        ast::EqualityBinary::Operation::NOT_EQUAL,
+        std::make_shared<ast::IntConstant>(2));
+
+    decaf::Compiler compiler{input_ast};
+    compiler.compile();
+
+    auto result = compiler.get_program();
+    REQUIRE(result.get_result_type_classification() == decaf::Type::Classification::BOOL);
+    auto expect = Program{
+        ByteCode{
+            Instruction ::GET_INSTANT,
+            1,
+            Instruction ::GET_INSTANT,
+            2,
+            Instruction ::NOT_EQUAL}};
+    REQUIRE(expect == result);
+}

@@ -413,3 +413,63 @@ void decaf::VirtualMachine::report_unexpected_type(const std::string& object, de
         + " expected type [" + Type::type_name_of.at(expect) + "]"
         + " but got type [" + Type::type_name_of.at(unexpect) + "] instead");
 }
+
+bool decaf::VirtualMachine::op_EQUAL() {
+    if (expected_top_type_classification(Type::Classification::INT)) {
+        // Must both INT then
+        int rhs = pop_as_int();
+        if (!expected_top_type_classification(Type::Classification::INT)) {
+            report_unexpected_type(
+                "EQUAL lhs op",
+                Type::Classification::INT,
+                type_stk.top().classification);
+            return false;
+        }
+        int lhs = pop_as_int();
+        push_classification(lhs == rhs, Type::Classification::BOOL);
+        return true;
+    } else if (expected_top_type_classification(Type::Classification::BOOL)) {
+        // Must both BOOL then
+        bool rhs = pop_as_bool();
+        if (!expected_top_type_classification(Type::Classification::BOOL)) {
+            report_unexpected_type(
+                "EQUAL lhs op",
+                Type::Classification::BOOL,
+                type_stk.top().classification);
+            return false;
+        }
+        bool lhs = pop_as_bool();
+        push_classification(lhs == rhs, Type::Classification::BOOL);
+    }
+    return false;
+}
+
+bool decaf::VirtualMachine::op_NOT_EQUAL() {
+    if (expected_top_type_classification(Type::Classification::INT)) {
+        // Must both INT then
+        int rhs = pop_as_int();
+        if (!expected_top_type_classification(Type::Classification::INT)) {
+            report_unexpected_type(
+                "NOT_EQUAL lhs op",
+                Type::Classification::INT,
+                type_stk.top().classification);
+            return false;
+        }
+        int lhs = pop_as_int();
+        push_classification(lhs != rhs, Type::Classification::BOOL);
+        return true;
+    } else if (expected_top_type_classification(Type::Classification::BOOL)) {
+        // Must both BOOL then
+        bool rhs = pop_as_bool();
+        if (!expected_top_type_classification(Type::Classification::BOOL)) {
+            report_unexpected_type(
+                "NOT_EQUAL lhs op",
+                Type::Classification::BOOL,
+                type_stk.top().classification);
+            return false;
+        }
+        bool lhs = pop_as_bool();
+        push_classification(lhs != rhs, Type::Classification::BOOL);
+    }
+    return false;
+}

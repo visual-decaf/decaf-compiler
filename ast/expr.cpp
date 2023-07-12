@@ -221,3 +221,22 @@ boost::json::value decaf::ast::RationalBinary::to_json() {
         {"resultType", this->type.to_json()}};
     return result;
 }
+
+bool decaf::ast::EqualityBinary::equals(std::shared_ptr<Expr> ptr) {
+    auto rhs = std::dynamic_pointer_cast<EqualityBinary>(ptr);
+
+    if (rhs == nullptr) {
+        return false;
+    }
+
+    return this->left->equals(rhs->left)
+           && this->op == rhs->op
+           && this->right->equals(rhs->right);
+}
+
+decaf::Type::Classification decaf::ast::EqualityBinary::result_type_of(decaf::Type left, decaf::Type right) {
+    if (left.classification == right.classification && left.classification != Type::Classification::INVALID) {
+        return Type::Classification::BOOL;
+    }
+    return Type::Classification::INVALID;
+}

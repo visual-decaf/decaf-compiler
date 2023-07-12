@@ -46,6 +46,10 @@ bool decaf::ByteCodeDriver::produce_instruction() {
             return visitor.op_GREATER();
         case Instruction ::GREATER_EQUAL:
             return visitor.op_GREATER_EQUAL();
+        case Instruction ::EQUAL:
+            return visitor.op_EQUAL();
+        case Instruction ::NOT_EQUAL:
+            return visitor.op_NOT_EQUAL();
 
             // 1 Operand
         case Instruction ::GET_INSTANT:

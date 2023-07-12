@@ -37,6 +37,8 @@ public:
             LOGIC_AND,
             LOGIC_OR,
             LOGIC_NOT,
+            EQUAL,
+            NOT_EQUAL,
             LESS,
             LESS_EQUAL,
             GREATER,
