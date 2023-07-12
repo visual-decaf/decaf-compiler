@@ -23,6 +23,7 @@ public:
     std::any visitIntConstant(std::shared_ptr<ast::IntConstant> constant) override;
     std::any visitGroup(std::shared_ptr<ast::Group> group) override;
     std::any visitLogicBinary(std::shared_ptr<ast::LogicBinary> logicBinary) override;
+    std::any visitRationalBinary(std::shared_ptr<ast::RationalBinary> ptr) override;
     std::any visitBoolConstant(std::shared_ptr<ast::BoolConstant> boolConstant) override;
     std::any visitArithmeticUnary(std::shared_ptr<ast::ArithmeticUnary> ptr) override;
     std::any visitLogicUnary(std::shared_ptr<ast::LogicUnary> log_unary) override;

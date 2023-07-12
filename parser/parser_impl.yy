@@ -27,6 +27,7 @@
 %nterm <std::shared_ptr<decaf::ast::Expr>> logicBinaryExpr
 %nterm <std::shared_ptr<decaf::ast::Expr>> logicUnaryExpr
 %nterm <std::shared_ptr<decaf::ast::Expr>> boolConstant
+%nterm <std::shared_ptr<decaf::ast::Expr>> rationalBinary
 
 %token <int> INTEGER
 %token <int> HEX_INTEGER
@@ -35,6 +36,8 @@
 %token LEFT_PAREN "(" RIGHT_PAREN ")"
 %token LOGIC_AND "&&" LOGIC_OR "||"
 %token LOGIC_NOT "!"
+%token LESS "<" LESS_EQUAL "<="
+%token GREATER ">" GREATER_EQUAL ">="
 %token EOL
 %token INVALID
 
@@ -44,6 +47,7 @@
 /* Expressions */
 %left LOGIC_OR
 %left LOGIC_AND
+%nonassoc LESS LESS_EQUAL GREATER GREATER_EQUAL
 %left PLUS MINUS
 %left STAR SLASH PERCENT
 %left UNARY_MINUS LOGIC_NOT
@@ -62,6 +66,7 @@ expression:
     | arithmeticUnaryExpr
     | logicBinaryExpr
     | logicUnaryExpr
+    | rationalBinary
     | group
     | intConstant
     | boolConstant
@@ -141,6 +146,36 @@ group:
             nullptr
         );
         yyerrok;
+    }
+
+rationalBinary:
+    expression "<" expression {
+        $$ = std::make_shared<RationalBinary>(
+            $1,
+            RationalBinary::Operation::LESS,
+            $3
+        );
+    }
+    | expression "<=" expression {
+        $$ = std::make_shared<RationalBinary>(
+            $1,
+            RationalBinary::Operation::LESS_EQUAL,
+            $3
+        );
+    }
+    | expression ">" expression {
+        $$ = std::make_shared<RationalBinary>(
+            $1,
+            RationalBinary::Operation::GREATER,
+            $3
+        );
+    }
+    | expression ">=" expression {
+        $$ = std::make_shared<RationalBinary>(
+            $1,
+            RationalBinary::Operation::GREATER_EQUAL,
+            $3
+        );
     }
 
 intConstant:

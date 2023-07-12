@@ -259,3 +259,83 @@ TEST_CASE("vm_logic_not_combined", "[vm]") {
     REQUIRE(result_ptr != nullptr);
     REQUIRE(*result_ptr == false);
 }
+
+TEST_CASE("vm_rational_less", "[vm]") {
+    auto input_prog = Program{
+        ByteCode{
+            Instruction ::GET_INSTANT,
+            1,
+            Instruction ::GET_INSTANT,
+            2,
+            Instruction ::LESS,
+        }};
+    input_prog.set_result_type_classification(Type::Classification::BOOL);
+
+    decaf::VirtualMachine vm{input_prog};
+    vm.run();
+
+    auto result = vm.get_result();
+    auto result_ptr = std::get_if<bool>(&result);
+    REQUIRE(result_ptr != nullptr);
+    REQUIRE(*result_ptr == true);
+}
+
+TEST_CASE("vm_rational_less_equal", "[vm]") {
+    auto input_prog = Program{
+        ByteCode{
+            Instruction ::GET_INSTANT,
+            1,
+            Instruction ::GET_INSTANT,
+            2,
+            Instruction ::LESS_EQUAL,
+        }};
+    input_prog.set_result_type_classification(Type::Classification::BOOL);
+
+    decaf::VirtualMachine vm{input_prog};
+    vm.run();
+
+    auto result = vm.get_result();
+    auto result_ptr = std::get_if<bool>(&result);
+    REQUIRE(result_ptr != nullptr);
+    REQUIRE(*result_ptr == true);
+}
+
+TEST_CASE("vm_rational_greater", "[vm]") {
+    auto input_prog = Program{
+        ByteCode{
+            Instruction ::GET_INSTANT,
+            1,
+            Instruction ::GET_INSTANT,
+            2,
+            Instruction ::GREATER,
+        }};
+    input_prog.set_result_type_classification(Type::Classification::BOOL);
+
+    decaf::VirtualMachine vm{input_prog};
+    vm.run();
+
+    auto result = vm.get_result();
+    auto result_ptr = std::get_if<bool>(&result);
+    REQUIRE(result_ptr != nullptr);
+    REQUIRE(*result_ptr == false);
+}
+
+TEST_CASE("vm_rational_greater_equal", "[vm]") {
+    auto input_prog = Program{
+        ByteCode{
+            Instruction ::GET_INSTANT,
+            1,
+            Instruction ::GET_INSTANT,
+            1,
+            Instruction ::GREATER_EQUAL,
+        }};
+    input_prog.set_result_type_classification(Type::Classification::BOOL);
+
+    decaf::VirtualMachine vm{input_prog};
+    vm.run();
+
+    auto result = vm.get_result();
+    auto result_ptr = std::get_if<bool>(&result);
+    REQUIRE(result_ptr != nullptr);
+    REQUIRE(*result_ptr == true);
+}
