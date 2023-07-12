@@ -38,6 +38,7 @@
 %token LOGIC_NOT "!"
 %token LESS "<" LESS_EQUAL "<="
 %token GREATER ">" GREATER_EQUAL ">="
+%token EQUAL "==" NOT_EQUAL "!="
 %token EOL
 %token INVALID
 
