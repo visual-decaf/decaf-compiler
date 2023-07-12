@@ -38,13 +38,15 @@ TEST_CASE("arithmetic_binary_json", "[ast]") {
             "type": "IntConstant",
             "value": 2,
             "resultType": "INT"
-        }
+        },
+        "resultType": "INT"
     },
     "right": {
         "type": "IntConstant",
         "value": 3,
         "resultType": "INT"
-    }
+    },
+    "resultType": "INT"
 }
     )");
     REQUIRE(expect_json == ast_root->to_json());
@@ -71,26 +73,32 @@ TEST_CASE("group_json", "[ast]") {
             "type": "IntConstant",
             "value": 2,
             "resultType": "INT"
-        }
-    }
+        },
+        "resultType": "INT"
+    },
+    "resultType": "INT"
 }
     )");
     REQUIRE(expect_json == group->to_json());
 }
 
-TEST_CASE("group_null_content_json", "[ast]") {
+TEST_CASE("group_invalid_content_json", "[ast]") {
     auto group = std::make_shared<ast::Group>(
         nullptr);
     boost::json::value expect_json = boost::json::parse(R"(
 {
     "type": "Group",
-    "content": null
+    "content": {
+        "type": "INVALID",
+        "resultType": "INVALID"
+    },
+    "resultType": "INVALID"
 }
     )");
     REQUIRE(expect_json == group->to_json());
 }
 
-TEST_CASE("null_node_json", "[ast]") {
+TEST_CASE("invalid_node_json", "[ast]") {
     auto ast_root = std::make_shared<ast::ArithmeticBinary>(
         std::make_shared<ast::IntConstant>(20),
         ast::ArithmeticBinary::Operation::MOD,
@@ -106,8 +114,13 @@ TEST_CASE("null_node_json", "[ast]") {
     },
     "right": {
         "type": "Group",
-        "content": null
-    }
+        "content": {
+            "type": "INVALID",
+            "resultType": "INVALID"
+        },
+        "resultType": "INVALID"
+    },
+    "resultType": "INVALID"
 }
 )");
     REQUIRE(expect_json == ast_root->to_json());
@@ -126,6 +139,27 @@ TEST_CASE("arithmetic_unary_json", "[ast]") {
         "resultType": "INT"
     },
     "resultType": "INT"
+}
+)");
+    REQUIRE(expect_json == ast_root->to_json());
+}
+
+TEST_CASE("arithmetic_unary_invalid_right_json", "[ast]") {
+    auto ast_root = std::make_shared<ast::ArithmeticUnary>(
+        std::make_shared<ast::Group>(nullptr));
+    auto expect_json = boost::json::parse(R"(
+{
+    "type": "ArithmeticUnary",
+    "operation": "NEGATE",
+    "right": {
+        "type": "Group",
+        "content": {
+            "type": "INVALID",
+            "resultType": "INVALID"
+        },
+        "resultType": "INVALID"
+    },
+    "resultType": "INVALID"
 }
 )");
     REQUIRE(expect_json == ast_root->to_json());

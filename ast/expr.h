@@ -133,12 +133,15 @@ struct LogicBinary: Expr, std::enable_shared_from_this<LogicBinary> {
         type.classification = result_type_of(left->type, right->type);
     }
 
+    static const std::map<Operation, std::string> operation_name_of;
     static Type::Classification result_type_of(Type left, Type right);
 
     std::any accept(ExprVisitor& visitor) override {
         return visitor.visitLogicBinary(shared_from_this());
     }
     bool equals(std::shared_ptr<Expr> ptr) override;
+
+    boost::json::value to_json() override;
 };
 
 struct LogicUnary: Expr, std::enable_shared_from_this<LogicUnary> {
@@ -148,6 +151,7 @@ struct LogicUnary: Expr, std::enable_shared_from_this<LogicUnary> {
     };
     Operation op = Operation::LOGIC_NOT;
 
+    static const std::map<Operation, std::string> operation_name_of;
     static Type::Classification result_type_of(Type right);
 
     explicit LogicUnary(std::shared_ptr<Expr> _right):
@@ -159,6 +163,8 @@ struct LogicUnary: Expr, std::enable_shared_from_this<LogicUnary> {
         return visitor.visitLogicUnary(shared_from_this());
     }
     bool equals(std::shared_ptr<Expr> ptr) override;
+
+    boost::json::value to_json() override;
 };
 
 struct BoolConstant: Expr, std::enable_shared_from_this<BoolConstant> {
@@ -174,6 +180,8 @@ struct BoolConstant: Expr, std::enable_shared_from_this<BoolConstant> {
     }
 
     bool equals(std::shared_ptr<Expr> ptr) override;
+
+    boost::json::value to_json() override;
 };
 
 } // namespace decaf::ast
