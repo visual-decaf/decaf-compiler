@@ -38,6 +38,7 @@ public:
     bool op_LOGIC_AND() override;
     bool op_EQUAL() override;
     bool op_NOT_EQUAL() override;
+    bool op_GET_FLOAT_CONSTANT(uint8_t index) override;
     bool op_LOGIC_OR() override;
 
     result_type get_result();

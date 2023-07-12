@@ -473,3 +473,7 @@ bool decaf::VirtualMachine::op_NOT_EQUAL() {
     }
     return false;
 }
+
+bool decaf::VirtualMachine::op_GET_FLOAT_CONSTANT(uint8_t index) {
+    return false;
+}
