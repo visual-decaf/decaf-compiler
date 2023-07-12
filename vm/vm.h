@@ -42,7 +42,7 @@ public:
     void run();
 
     [[nodiscard]] bool is_error() const;
-    void clear_error();
+    void clear();
     std::vector<std::string> get_error_messages();
 
 private:

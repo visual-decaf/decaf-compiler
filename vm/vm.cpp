@@ -375,9 +375,13 @@ bool decaf::VirtualMachine::is_error() const {
     return has_error;
 }
 
-void decaf::VirtualMachine::clear_error() {
+void decaf::VirtualMachine::clear() {
     has_error = false;
     error_messages.clear();
+    while (!stk.empty())
+        stk.pop();
+    while (!type_stk.empty())
+        type_stk.pop();
 }
 
 std::vector<std::string> decaf::VirtualMachine::get_error_messages() {
