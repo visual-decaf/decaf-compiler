@@ -118,3 +118,15 @@ void decaf::VirtualMachine::op_LOGIC_NOT() {
     stk.pop();
     stk.emplace(!rhs);
 }
+
+void decaf::VirtualMachine::push(std::any val, decaf::Type::Classification type_classification) {
+    stk.emplace(std::move(val));
+    type_stk.emplace(type_classification);
+}
+
+std::pair<std::any, decaf::Type::Classification> decaf::VirtualMachine::pop() {
+    auto top = std::make_pair(stk.top(), type_stk.top().classification);
+    stk.pop();
+    type_stk.pop();
+    return top;
+}
