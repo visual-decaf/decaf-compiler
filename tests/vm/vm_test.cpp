@@ -372,6 +372,7 @@ TEST_CASE("vm_type_mismatch_report", "[vm]") {
     REQUIRE(vm.is_error());
     auto err_msgs = vm.get_error_messages();
     REQUIRE(err_msgs.size() == 1);
+    std::cout << err_msgs[0] << std::endl;
 }
 
 TEST_CASE("vm_input_program_type_mismatch_report", "[vm]") {
@@ -387,6 +388,6 @@ TEST_CASE("vm_input_program_type_mismatch_report", "[vm]") {
 
     REQUIRE(vm.is_error());
     auto err_msgs = vm.get_error_messages();
-    std::cout << err_msgs[0] << std::endl;
     REQUIRE(err_msgs.size() == 1);
+    std::cout << err_msgs[0] << std::endl;
 }
