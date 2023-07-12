@@ -1,76 +1,87 @@
 #include "vm.h"
 #include "byte_code_driver.h"
 
-void decaf::VirtualMachine::op_PLUS() {
+bool decaf::VirtualMachine::op_PLUS() {
     int rhs = std::any_cast<int>(stk.top());
     stk.pop();
     int lhs = std::any_cast<int>(stk.top());
     stk.pop();
     stk.emplace(lhs + rhs);
+    return true;
 }
 
-void decaf::VirtualMachine::op_MINUS() {
+bool decaf::VirtualMachine::op_MINUS() {
     int rhs = std::any_cast<int>(stk.top());
     stk.pop();
     int lhs = std::any_cast<int>(stk.top());
     stk.pop();
     stk.emplace(lhs - rhs);
+    return true;
 }
 
-void decaf::VirtualMachine::op_MULTIPLY() {
+bool decaf::VirtualMachine::op_MULTIPLY() {
     int rhs = std::any_cast<int>(stk.top());
     stk.pop();
     int lhs = std::any_cast<int>(stk.top());
     stk.pop();
     stk.emplace(lhs * rhs);
+    return true;
 }
 
-void decaf::VirtualMachine::op_DIVIDE() {
+bool decaf::VirtualMachine::op_DIVIDE() {
     int rhs = std::any_cast<int>(stk.top());
     stk.pop();
     int lhs = std::any_cast<int>(stk.top());
     stk.pop();
     stk.emplace(lhs / rhs);
+    return true;
 }
 
-void decaf::VirtualMachine::op_MOD() {
+bool decaf::VirtualMachine::op_MOD() {
     int rhs = std::any_cast<int>(stk.top());
     stk.pop();
     int lhs = std::any_cast<int>(stk.top());
     stk.pop();
     stk.emplace(lhs % rhs);
+    return true;
 }
 
-void decaf::VirtualMachine::op_GET_INSTANT(uint8_t instant) {
+bool decaf::VirtualMachine::op_GET_INSTANT(uint8_t instant) {
     stk.emplace(static_cast<int>(instant));
+    return true;
 }
 
-void decaf::VirtualMachine::op_GET_INT_CONSTANT(uint8_t index) {
+bool decaf::VirtualMachine::op_GET_INT_CONSTANT(uint8_t index) {
     stk.emplace(prog.pool.get_int_constant(index));
+    return true;
 }
 
-void decaf::VirtualMachine::op_GET_TRUE() {
+bool decaf::VirtualMachine::op_GET_TRUE() {
     stk.emplace(true);
+    return true;
 }
 
-void decaf::VirtualMachine::op_GET_FALSE() {
+bool decaf::VirtualMachine::op_GET_FALSE() {
     stk.emplace(false);
+    return true;
 }
 
-void decaf::VirtualMachine::op_LOGIC_AND() {
+bool decaf::VirtualMachine::op_LOGIC_AND() {
     bool rhs = std::any_cast<bool>(stk.top());
     stk.pop();
     bool lhs = std::any_cast<bool>(stk.top());
     stk.pop();
     stk.emplace(lhs && rhs);
+    return true;
 }
 
-void decaf::VirtualMachine::op_LOGIC_OR() {
+bool decaf::VirtualMachine::op_LOGIC_OR() {
     bool rhs = std::any_cast<bool>(stk.top());
     stk.pop();
     bool lhs = std::any_cast<bool>(stk.top());
     stk.pop();
     stk.emplace(lhs || rhs);
+    return true;
 }
 
 void decaf::VirtualMachine::run() {
@@ -107,46 +118,52 @@ decaf::VirtualMachine::result_type decaf::VirtualMachine::get_result() {
     return result;
 }
 
-void decaf::VirtualMachine::op_NEGATE() {
+bool decaf::VirtualMachine::op_NEGATE() {
     int rhs = std::any_cast<int>(stk.top());
     stk.pop();
     stk.emplace(-rhs);
+    return true;
 }
 
-void decaf::VirtualMachine::op_LOGIC_NOT() {
+bool decaf::VirtualMachine::op_LOGIC_NOT() {
     bool rhs = std::any_cast<bool>(stk.top());
     stk.pop();
     stk.emplace(!rhs);
+    return true;
 }
 
-void decaf::VirtualMachine::op_LESS() {
+bool decaf::VirtualMachine::op_LESS() {
     int rhs = std::any_cast<int>(stk.top());
     stk.pop();
     int lhs = std::any_cast<int>(stk.top());
     stk.pop();
     stk.emplace(lhs < rhs);
+    return true;
 }
 
-void decaf::VirtualMachine::op_LESS_EQUAL() {
+bool decaf::VirtualMachine::op_LESS_EQUAL() {
     int rhs = std::any_cast<int>(stk.top());
     stk.pop();
     int lhs = std::any_cast<int>(stk.top());
     stk.pop();
     stk.emplace(lhs <= rhs);
+    return true;
 }
 
-void decaf::VirtualMachine::op_GREATER() {
+bool decaf::VirtualMachine::op_GREATER() {
     int rhs = std::any_cast<int>(stk.top());
     stk.pop();
     int lhs = std::any_cast<int>(stk.top());
     stk.pop();
     stk.emplace(lhs > rhs);
+    return true;
 }
 
-void decaf::VirtualMachine::op_GREATER_EQUAL() {
+bool decaf::VirtualMachine::op_GREATER_EQUAL() {
     int rhs = std::any_cast<int>(stk.top());
     stk.pop();
     int lhs = std::any_cast<int>(stk.top());
     stk.pop();
     stk.emplace(lhs >= rhs);
+    return true;
 }

@@ -2,74 +2,91 @@
 
 using namespace decaf;
 
-void Disassembler::op_PLUS() {
+bool Disassembler::op_PLUS() {
     this->assembly_code.emplace_back("PLUS");
+    return true;
 }
 
-void Disassembler::op_MINUS() {
+bool Disassembler::op_MINUS() {
     this->assembly_code.emplace_back("MINUS");
+    return true;
 }
 
-void Disassembler::op_MULTIPLY() {
+bool Disassembler::op_MULTIPLY() {
     this->assembly_code.emplace_back("MULTIPLY");
+    return true;
 }
 
-void Disassembler::op_DIVIDE() {
+bool Disassembler::op_DIVIDE() {
     this->assembly_code.emplace_back("DIVIDE");
+    return true;
 }
 
-void Disassembler::op_MOD() {
+bool Disassembler::op_MOD() {
     this->assembly_code.emplace_back("MOD");
+    return true;
 }
 
-void Disassembler::op_GET_INSTANT(uint8_t instant) {
+bool Disassembler::op_GET_INSTANT(uint8_t instant) {
     this->assembly_code.emplace_back("GET_INSTANT " + std::to_string(static_cast<int>(instant)));
+    return true;
 }
 
-void decaf::Disassembler::op_GET_INT_CONSTANT(uint8_t index) {
+bool decaf::Disassembler::op_GET_INT_CONSTANT(uint8_t index) {
     this->assembly_code.emplace_back("GET_INT_CONSTANT " + std::to_string(static_cast<int>(index)));
+    return true;
 }
 
-void Disassembler::op_GET_TRUE() {
+bool Disassembler::op_GET_TRUE() {
     this->assembly_code.emplace_back("GET_TRUE");
+    return true;
 }
 
-void Disassembler::op_GET_FALSE() {
+bool Disassembler::op_GET_FALSE() {
     this->assembly_code.emplace_back("GET_FALSE");
+    return true;
 }
 
 Disassembler::assembly_code_type Disassembler::get_code() {
     return this->assembly_code;
 }
 
-void Disassembler::op_LOGIC_AND() {
+bool Disassembler::op_LOGIC_AND() {
     this->assembly_code.emplace_back("LOGIC_AND");
+    return true;
 }
 
-void Disassembler::op_LOGIC_OR() {
+bool Disassembler::op_LOGIC_OR() {
     this->assembly_code.emplace_back("LOGIC_OR");
+    return true;
 }
 
-void Disassembler::op_NEGATE() {
+bool Disassembler::op_NEGATE() {
     this->assembly_code.emplace_back("NEGATE");
+    return true;
 }
 
-void Disassembler::op_LOGIC_NOT() {
+bool Disassembler::op_LOGIC_NOT() {
     this->assembly_code.emplace_back("LOGIC_NOT");
+    return true;
 }
 
-void Disassembler::op_LESS() {
+bool Disassembler::op_LESS() {
     this->assembly_code.emplace_back("LESS");
+    return true;
 }
 
-void Disassembler::op_LESS_EQUAL() {
+bool Disassembler::op_LESS_EQUAL() {
     this->assembly_code.emplace_back("LESS_EQUAL");
+    return true;
 }
 
-void Disassembler::op_GREATER() {
+bool Disassembler::op_GREATER() {
     this->assembly_code.emplace_back("GREATER");
+    return true;
 }
 
-void Disassembler::op_GREATER_EQUAL() {
+bool Disassembler::op_GREATER_EQUAL() {
     this->assembly_code.emplace_back("GREATER_EQUAL");
+    return true;
 }

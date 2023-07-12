@@ -14,7 +14,7 @@ public:
     using iterator_type = code_stream_type::iterator;
 
 private:
-    void produce_instruction();
+    bool produce_instruction();
     bool check_expected_byte(int count);
 
     ByteCode& code;
