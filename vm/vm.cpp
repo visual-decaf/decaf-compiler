@@ -3,10 +3,18 @@
 
 bool decaf::VirtualMachine::op_PLUS() {
     if (!expected_top_type_classification(Type::Classification::INT)) {
+        report_unexpected_type(
+            "PLUS rhs op",
+            Type::Classification::INT,
+            type_stk.top().classification);
         return false;
     }
     int rhs = pop_as_int();
     if (!expected_top_type_classification(Type::Classification::INT)) {
+        report_unexpected_type(
+            "PLUS lhs op",
+            Type::Classification::INT,
+            type_stk.top().classification);
         return false;
     }
     int lhs = pop_as_int();
@@ -16,10 +24,18 @@ bool decaf::VirtualMachine::op_PLUS() {
 
 bool decaf::VirtualMachine::op_MINUS() {
     if (!expected_top_type_classification(Type::Classification::INT)) {
+        report_unexpected_type(
+            "MINUS rhs op",
+            Type::Classification::INT,
+            type_stk.top().classification);
         return false;
     }
     int rhs = pop_as_int();
     if (!expected_top_type_classification(Type::Classification::INT)) {
+        report_unexpected_type(
+            "MINUS lhs op",
+            Type::Classification::INT,
+            type_stk.top().classification);
         return false;
     }
     int lhs = pop_as_int();
@@ -29,10 +45,18 @@ bool decaf::VirtualMachine::op_MINUS() {
 
 bool decaf::VirtualMachine::op_MULTIPLY() {
     if (!expected_top_type_classification(Type::Classification::INT)) {
+        report_unexpected_type(
+            "MULTIPLY rhs op",
+            Type::Classification::INT,
+            type_stk.top().classification);
         return false;
     }
     int rhs = pop_as_int();
     if (!expected_top_type_classification(Type::Classification::INT)) {
+        report_unexpected_type(
+            "MULTIPLY lhs op",
+            Type::Classification::INT,
+            type_stk.top().classification);
         return false;
     }
     int lhs = pop_as_int();
@@ -42,10 +66,18 @@ bool decaf::VirtualMachine::op_MULTIPLY() {
 
 bool decaf::VirtualMachine::op_DIVIDE() {
     if (!expected_top_type_classification(Type::Classification::INT)) {
+        report_unexpected_type(
+            "DIVIDE rhs op",
+            Type::Classification::INT,
+            type_stk.top().classification);
         return false;
     }
     int rhs = pop_as_int();
     if (!expected_top_type_classification(Type::Classification::INT)) {
+        report_unexpected_type(
+            "DIVIDE lhs op",
+            Type::Classification::INT,
+            type_stk.top().classification);
         return false;
     }
     int lhs = pop_as_int();
@@ -55,10 +87,18 @@ bool decaf::VirtualMachine::op_DIVIDE() {
 
 bool decaf::VirtualMachine::op_MOD() {
     if (!expected_top_type_classification(Type::Classification::INT)) {
+        report_unexpected_type(
+            "MOD rhs op",
+            Type::Classification::INT,
+            type_stk.top().classification);
         return false;
     }
     int rhs = pop_as_int();
     if (!expected_top_type_classification(Type::Classification::INT)) {
+        report_unexpected_type(
+            "MOD lhs op",
+            Type::Classification::INT,
+            type_stk.top().classification);
         return false;
     }
     int lhs = pop_as_int();
@@ -88,10 +128,18 @@ bool decaf::VirtualMachine::op_GET_FALSE() {
 
 bool decaf::VirtualMachine::op_LOGIC_AND() {
     if (!expected_top_type_classification(Type::Classification::BOOL)) {
+        report_unexpected_type(
+            "LOGIC_AND rhs op",
+            Type::Classification::BOOL,
+            type_stk.top().classification);
         return false;
     }
     bool rhs = pop_as_bool();
     if (!expected_top_type_classification(Type::Classification::BOOL)) {
+        report_unexpected_type(
+            "LOGIC_AND lhs op",
+            Type::Classification::BOOL,
+            type_stk.top().classification);
         return false;
     }
     bool lhs = pop_as_bool();
@@ -101,10 +149,18 @@ bool decaf::VirtualMachine::op_LOGIC_AND() {
 
 bool decaf::VirtualMachine::op_LOGIC_OR() {
     if (!expected_top_type_classification(Type::Classification::BOOL)) {
+        report_unexpected_type(
+            "LOGIC_OR rhs op",
+            Type::Classification::BOOL,
+            type_stk.top().classification);
         return false;
     }
     bool rhs = pop_as_bool();
     if (!expected_top_type_classification(Type::Classification::BOOL)) {
+        report_unexpected_type(
+            "LOGIC_OR lhs op",
+            Type::Classification::BOOL,
+            type_stk.top().classification);
         return false;
     }
     bool lhs = pop_as_bool();
@@ -148,6 +204,10 @@ decaf::VirtualMachine::result_type decaf::VirtualMachine::get_result() {
 
 bool decaf::VirtualMachine::op_NEGATE() {
     if (!expected_top_type_classification(Type::Classification::INT)) {
+        report_unexpected_type(
+            "NEGATE rhs op",
+            Type::Classification::INT,
+            type_stk.top().classification);
         return false;
     }
     int rhs = pop_as_int();
@@ -158,6 +218,10 @@ bool decaf::VirtualMachine::op_NEGATE() {
 
 bool decaf::VirtualMachine::op_LOGIC_NOT() {
     if (!expected_top_type_classification(Type::Classification::BOOL)) {
+        report_unexpected_type(
+            "LOGIC_NOT rhs op",
+            Type::Classification::BOOL,
+            type_stk.top().classification);
         return false;
     }
     bool rhs = pop_as_bool();
@@ -168,10 +232,18 @@ bool decaf::VirtualMachine::op_LOGIC_NOT() {
 
 bool decaf::VirtualMachine::op_LESS() {
     if (!expected_top_type_classification(Type::Classification::INT)) {
+        report_unexpected_type(
+            "LESS rhs op",
+            Type::Classification::INT,
+            type_stk.top().classification);
         return false;
     }
     int rhs = pop_as_int();
     if (!expected_top_type_classification(Type::Classification::INT)) {
+        report_unexpected_type(
+            "LESS lhs op",
+            Type::Classification::INT,
+            type_stk.top().classification);
         return false;
     }
     int lhs = pop_as_int();
@@ -181,10 +253,18 @@ bool decaf::VirtualMachine::op_LESS() {
 
 bool decaf::VirtualMachine::op_LESS_EQUAL() {
     if (!expected_top_type_classification(Type::Classification::INT)) {
+        report_unexpected_type(
+            "LESS_EQUAL rhs op",
+            Type::Classification::INT,
+            type_stk.top().classification);
         return false;
     }
     int rhs = pop_as_int();
     if (!expected_top_type_classification(Type::Classification::INT)) {
+        report_unexpected_type(
+            "LESS_EQUAL lhs op",
+            Type::Classification::INT,
+            type_stk.top().classification);
         return false;
     }
     int lhs = pop_as_int();
@@ -194,10 +274,18 @@ bool decaf::VirtualMachine::op_LESS_EQUAL() {
 
 bool decaf::VirtualMachine::op_GREATER() {
     if (!expected_top_type_classification(Type::Classification::INT)) {
+        report_unexpected_type(
+            "GREATER rhs op",
+            Type::Classification::INT,
+            type_stk.top().classification);
         return false;
     }
     int rhs = pop_as_int();
     if (!expected_top_type_classification(Type::Classification::INT)) {
+        report_unexpected_type(
+            "GREATER lhs op",
+            Type::Classification::INT,
+            type_stk.top().classification);
         return false;
     }
     int lhs = pop_as_int();
@@ -207,10 +295,18 @@ bool decaf::VirtualMachine::op_GREATER() {
 
 bool decaf::VirtualMachine::op_GREATER_EQUAL() {
     if (!expected_top_type_classification(Type::Classification::INT)) {
+        report_unexpected_type(
+            "GREATER_EQUAL rhs op",
+            Type::Classification::INT,
+            type_stk.top().classification);
         return false;
     }
     int rhs = pop_as_int();
     if (!expected_top_type_classification(Type::Classification::INT)) {
+        report_unexpected_type(
+            "GREATER_EQUAL lhs op",
+            Type::Classification::INT,
+            type_stk.top().classification);
         return false;
     }
     int lhs = pop_as_int();
@@ -291,4 +387,11 @@ std::vector<std::string> decaf::VirtualMachine::get_error_messages() {
 void decaf::VirtualMachine::report(const std::string& msg) {
     has_error = true;
     error_messages.push_back(msg);
+}
+
+void decaf::VirtualMachine::report_unexpected_type(const std::string& object, decaf::Type::Classification expect, decaf::Type::Classification unexpect) {
+    report(
+        object
+        + " expected type [" + Type::type_name_of.at(expect) + "]"
+        + " but got type [" + Type::type_name_of.at(unexpect) + "] instead");
 }

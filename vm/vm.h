@@ -68,6 +68,9 @@ private:
     result_type result;
 
     void report(const std::string& msg);
+    void report_unexpected_type(const std::string& object,
+                                Type::Classification expect,
+                                Type::Classification unexpect);
 
     bool has_error = false;
     std::vector<std::string> error_messages;
