@@ -22,6 +22,7 @@ TEST_CASE("vm_main", "[vm]") {
     decaf::VirtualMachine vm{input_prog};
     vm.run();
 
+    REQUIRE(!vm.is_error());
     auto result = vm.get_result();
     auto result_ptr = std::get_if<int>(&result);
     REQUIRE(result_ptr != nullptr);
@@ -45,6 +46,7 @@ TEST_CASE("vm_plus_deep", "[vm]") {
     decaf::VirtualMachine vm{input_prog};
     vm.run();
 
+    REQUIRE(!vm.is_error());
     auto result = vm.get_result();
     auto result_ptr = std::get_if<int>(&result);
     REQUIRE(result_ptr != nullptr);
@@ -68,6 +70,7 @@ TEST_CASE("vm_plus_multiply", "[vm]") {
     decaf::VirtualMachine vm{input_prog};
     vm.run();
 
+    REQUIRE(!vm.is_error());
     auto result = vm.get_result();
     auto result_ptr = std::get_if<int>(&result);
     REQUIRE(result_ptr != nullptr);
@@ -91,6 +94,7 @@ TEST_CASE("vm_plus_minus", "[vm]") {
     decaf::VirtualMachine vm{input_prog};
     vm.run();
 
+    REQUIRE(!vm.is_error());
     auto result = vm.get_result();
     auto result_ptr = std::get_if<int>(&result);
     REQUIRE(result_ptr != nullptr);
@@ -114,6 +118,7 @@ TEST_CASE("vm_multiply_divide", "[vm]") {
     decaf::VirtualMachine vm{input_prog};
     vm.run();
 
+    REQUIRE(!vm.is_error());
     auto result = vm.get_result();
     auto result_ptr = std::get_if<int>(&result);
     REQUIRE(result_ptr != nullptr);
@@ -137,6 +142,7 @@ TEST_CASE("vm_mod", "[vm]") {
     decaf::VirtualMachine vm{input_prog};
     vm.run();
 
+    REQUIRE(!vm.is_error());
     auto result = vm.get_result();
     auto result_ptr = std::get_if<int>(&result);
     REQUIRE(result_ptr != nullptr);
@@ -157,6 +163,7 @@ TEST_CASE("vm_logic_binary", "[vm]") {
     decaf::VirtualMachine vm{input_prog};
     vm.run();
 
+    REQUIRE(!vm.is_error());
     auto result = vm.get_result();
     auto result_ptr = std::get_if<bool>(&result);
     REQUIRE(result_ptr != nullptr);
@@ -175,6 +182,7 @@ TEST_CASE("vm_arithmetic_unary", "[vm]") {
     decaf::VirtualMachine vm{input_prog};
     vm.run();
 
+    REQUIRE(!vm.is_error());
     auto result = vm.get_result();
     auto result_ptr = std::get_if<int>(&result);
     REQUIRE(result_ptr != nullptr);
@@ -196,6 +204,7 @@ TEST_CASE("vm_arithmetic_unary_binary_combined", "[vm]") {
     decaf::VirtualMachine vm{input_prog};
     vm.run();
 
+    REQUIRE(!vm.is_error());
     auto result = vm.get_result();
     auto result_ptr = std::get_if<int>(&result);
     REQUIRE(result_ptr != nullptr);
@@ -218,6 +227,7 @@ TEST_CASE("vm_arithmetic_unary_binary_complex_combined", "[vm]") {
     decaf::VirtualMachine vm{input_prog};
     vm.run();
 
+    REQUIRE(!vm.is_error());
     auto result = vm.get_result();
     auto result_ptr = std::get_if<int>(&result);
     REQUIRE(result_ptr != nullptr);
@@ -235,6 +245,7 @@ TEST_CASE("vm_logic_not", "[vm]") {
     decaf::VirtualMachine vm{input_prog};
     vm.run();
 
+    REQUIRE(!vm.is_error());
     auto result = vm.get_result();
     auto result_ptr = std::get_if<bool>(&result);
     REQUIRE(result_ptr != nullptr);
@@ -254,6 +265,7 @@ TEST_CASE("vm_logic_not_combined", "[vm]") {
     decaf::VirtualMachine vm{input_prog};
     vm.run();
 
+    REQUIRE(!vm.is_error());
     auto result = vm.get_result();
     auto result_ptr = std::get_if<bool>(&result);
     REQUIRE(result_ptr != nullptr);
@@ -274,6 +286,7 @@ TEST_CASE("vm_rational_less", "[vm]") {
     decaf::VirtualMachine vm{input_prog};
     vm.run();
 
+    REQUIRE(!vm.is_error());
     auto result = vm.get_result();
     auto result_ptr = std::get_if<bool>(&result);
     REQUIRE(result_ptr != nullptr);
@@ -294,6 +307,7 @@ TEST_CASE("vm_rational_less_equal", "[vm]") {
     decaf::VirtualMachine vm{input_prog};
     vm.run();
 
+    REQUIRE(!vm.is_error());
     auto result = vm.get_result();
     auto result_ptr = std::get_if<bool>(&result);
     REQUIRE(result_ptr != nullptr);
@@ -314,6 +328,7 @@ TEST_CASE("vm_rational_greater", "[vm]") {
     decaf::VirtualMachine vm{input_prog};
     vm.run();
 
+    REQUIRE(!vm.is_error());
     auto result = vm.get_result();
     auto result_ptr = std::get_if<bool>(&result);
     REQUIRE(result_ptr != nullptr);
@@ -334,6 +349,7 @@ TEST_CASE("vm_rational_greater_equal", "[vm]") {
     decaf::VirtualMachine vm{input_prog};
     vm.run();
 
+    REQUIRE(!vm.is_error());
     auto result = vm.get_result();
     auto result_ptr = std::get_if<bool>(&result);
     REQUIRE(result_ptr != nullptr);
