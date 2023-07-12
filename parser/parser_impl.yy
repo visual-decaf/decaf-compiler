@@ -28,6 +28,7 @@
 %nterm <std::shared_ptr<decaf::ast::Expr>> logicUnaryExpr
 %nterm <std::shared_ptr<decaf::ast::Expr>> boolConstant
 %nterm <std::shared_ptr<decaf::ast::Expr>> rationalBinary
+%nterm <std::shared_ptr<decaf::ast::Expr>> equalityBinary
 
 %token <int> INTEGER
 %token <int> HEX_INTEGER
@@ -68,6 +69,7 @@ expression:
     | logicBinaryExpr
     | logicUnaryExpr
     | rationalBinary
+    | equalityBinary
     | group
     | intConstant
     | boolConstant
@@ -175,6 +177,22 @@ rationalBinary:
         $$ = std::make_shared<RationalBinary>(
             $1,
             RationalBinary::Operation::GREATER_EQUAL,
+            $3
+        );
+    }
+
+equalityBinary:
+    expression "==" expression {
+        $$ = std::make_shared<EqualityBinary>(
+            $1,
+            EqualityBinary::Operation::EQUAL,
+            $3
+        );
+    }
+    | expression "!=" expression {
+        $$ = std::make_shared<EqualityBinary>(
+            $1,
+            EqualityBinary::Operation::NOT_EQUAL,
             $3
         );
     }
