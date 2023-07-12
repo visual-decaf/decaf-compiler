@@ -2,7 +2,9 @@
 
 void decaf::ByteCodeDriver::produce() {
     while (current_byte != code_stream.end()) {
-        produce_instruction();
+        bool success = produce_instruction();
+        if (!success)
+            break;
         current_byte++;
     }
 }
@@ -10,67 +12,51 @@ void decaf::ByteCodeDriver::produce() {
 // Contract
 // PreCondition: current_byte is set to the beginning of next instruction
 // PostCondition: current_byte is set to the end of produced instruction
-void decaf::ByteCodeDriver::produce_instruction() {
+bool decaf::ByteCodeDriver::produce_instruction() {
     using Instruction = ByteCode::Instruction;
     switch (*current_byte) {
             // No Operands
         case Instruction ::PLUS:
-            visitor.op_PLUS();
-            break;
+            return visitor.op_PLUS();
         case Instruction ::MINUS:
-            visitor.op_MINUS();
-            break;
+            return visitor.op_MINUS();
         case Instruction ::MULTIPLY:
-            visitor.op_MULTIPLY();
-            break;
+            return visitor.op_MULTIPLY();
         case Instruction ::DIVIDE:
-            visitor.op_DIVIDE();
-            break;
+            return visitor.op_DIVIDE();
         case Instruction ::MOD:
-            visitor.op_MOD();
-            break;
+            return visitor.op_MOD();
         case Instruction ::NEGATE:
-            visitor.op_NEGATE();
-            break;
+            return visitor.op_NEGATE();
         case Instruction ::LOGIC_NOT:
-            visitor.op_LOGIC_NOT();
-            break;
+            return visitor.op_LOGIC_NOT();
         case Instruction ::GET_TRUE:
-            visitor.op_GET_TRUE();
-            break;
+            return visitor.op_GET_TRUE();
         case Instruction ::GET_FALSE:
-            visitor.op_GET_FALSE();
-            break;
+            return visitor.op_GET_FALSE();
         case Instruction ::LOGIC_AND:
-            visitor.op_LOGIC_AND();
-            break;
+            return visitor.op_LOGIC_AND();
         case Instruction ::LOGIC_OR:
-            visitor.op_LOGIC_OR();
-            break;
+            return visitor.op_LOGIC_OR();
         case Instruction ::LESS:
-            visitor.op_LESS();
-            break;
+            return visitor.op_LESS();
         case Instruction ::LESS_EQUAL:
-            visitor.op_LESS_EQUAL();
-            break;
+            return visitor.op_LESS_EQUAL();
         case Instruction ::GREATER:
-            visitor.op_GREATER();
-            break;
+            return visitor.op_GREATER();
         case Instruction ::GREATER_EQUAL:
-            visitor.op_GREATER_EQUAL();
-            break;
+            return visitor.op_GREATER_EQUAL();
 
             // 1 Operand
         case Instruction ::GET_INSTANT:
             check_expected_byte(1);
-            visitor.op_GET_INSTANT(*(++current_byte));
-            break;
+            return visitor.op_GET_INSTANT(*(++current_byte));
         case Instruction ::GET_INT_CONSTANT:
             check_expected_byte(1);
-            visitor.op_GET_INT_CONSTANT(*(++current_byte));
-            break;
+            return visitor.op_GET_INT_CONSTANT(*(++current_byte));
     }
 }
+
 bool decaf::ByteCodeDriver::check_expected_byte(int count) {
     return count <= std::distance(current_byte, code_stream.end());
 }
