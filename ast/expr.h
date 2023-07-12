@@ -19,6 +19,7 @@ struct ExprVisitor {
     virtual std::any visitLogicUnary(std::shared_ptr<ast::LogicUnary>) = 0;
     virtual std::any visitBoolConstant(std::shared_ptr<ast::BoolConstant>) = 0;
     virtual std::any visitRationalBinary(std::shared_ptr<ast::RationalBinary>) = 0;
+    virtual std::any visitEqualityBinary(std::shared_ptr<ast::EqualityBinary>) = 0;
 };
 } // namespace decaf
 
@@ -209,6 +210,29 @@ struct RationalBinary: Expr, std::enable_shared_from_this<RationalBinary> {
     }
     bool equals(std::shared_ptr<Expr> rational_bin) override;
     boost::json::value to_json() override;
+};
+
+struct EqualityBinary: Expr, std::enable_shared_from_this<EqualityBinary> {
+    std::shared_ptr<Expr> left;
+    enum class Operation {
+        EQUAL,
+        NOT_EQUAL,
+    };
+    Operation op;
+    std::shared_ptr<Expr> right;
+
+    static Type::Classification result_type_of(Type left, Type right);
+
+    EqualityBinary(std::shared_ptr<Expr> _left, Operation op, std::shared_ptr<Expr> _right):
+        left{std::move(_left)}, op{op}, right{std::move(_right)} {
+        type.classification = result_type_of(left->type, right->type);
+    }
+
+    std::any accept(ExprVisitor& visitor) override {
+        return visitor.visitEqualityBinary(shared_from_this());
+    }
+
+    bool equals(std::shared_ptr<Expr> ptr) override;
 };
 
 } // namespace decaf::ast
