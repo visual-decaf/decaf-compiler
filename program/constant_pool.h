@@ -22,6 +22,11 @@ public:
     ConstantPool(std::initializer_list<int> list):
         i_pool(list) {
     }
+    ConstantPool(std::initializer_list<int> i_list,
+                 std::initializer_list<double> l_list):
+        i_pool(i_list),
+        f_pool(l_list) {
+    }
 
     index_type add_constant(const int& val);
     int get_int_constant(index_type index);
@@ -29,7 +34,7 @@ public:
     double get_double_constant(index_type index);
 
     bool operator==(const ConstantPool& rhs) {
-        return i_pool == rhs.i_pool;
+        return i_pool == rhs.i_pool && f_pool == rhs.f_pool;
     }
 
     boost::json::value to_json() override;
