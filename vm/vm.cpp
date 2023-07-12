@@ -165,7 +165,7 @@ void decaf::VirtualMachine::run() {
         if (!expected_top_type_classification(Type::Classification::FLOAT)) {
             report_unexpected_type(
                 "Input Program",
-                Type::Classification::BOOL,
+                Type::Classification::FLOAT,
                 type_stk.top().classification);
             return;
         }
