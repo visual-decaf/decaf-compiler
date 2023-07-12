@@ -47,6 +47,18 @@ void decaf::ByteCodeDriver::produce_instruction() {
         case Instruction ::LOGIC_OR:
             visitor.op_LOGIC_OR();
             break;
+        case Instruction ::LESS:
+            visitor.op_LESS();
+            break;
+        case Instruction ::LESS_EQUAL:
+            visitor.op_LESS_EQUAL();
+            break;
+        case Instruction ::GREATER:
+            visitor.op_GREATER();
+            break;
+        case Instruction ::GREATER_EQUAL:
+            visitor.op_GREATER_EQUAL();
+            break;
 
             // 1 Operand
         case Instruction ::GET_INSTANT:

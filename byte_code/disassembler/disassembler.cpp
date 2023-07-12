@@ -57,3 +57,19 @@ void Disassembler::op_NEGATE() {
 void Disassembler::op_LOGIC_NOT() {
     this->assembly_code.emplace_back("LOGIC_NOT");
 }
+
+void Disassembler::op_LESS() {
+    this->assembly_code.emplace_back("LESS");
+}
+
+void Disassembler::op_LESS_EQUAL() {
+    this->assembly_code.emplace_back("LESS_EQUAL");
+}
+
+void Disassembler::op_GREATER() {
+    this->assembly_code.emplace_back("GREATER");
+}
+
+void Disassembler::op_GREATER_EQUAL() {
+    this->assembly_code.emplace_back("GREATER_EQUAL");
+}
