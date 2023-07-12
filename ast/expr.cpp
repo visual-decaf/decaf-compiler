@@ -200,7 +200,8 @@ boost::json::value decaf::ast::LogicUnary::to_json() {
 }
 
 decaf::Type::Classification decaf::ast::RationalBinary::result_type_of(decaf::Type left, decaf::Type right) {
-    if (left.classification == Type::Classification::INT && right.classification == Type::Classification::INT) {
+    if (left.classification == Type::Classification::INT
+        && right.classification == Type::Classification::INT) {
         return Type::Classification::BOOL;
     }
     if (left.classification == Type::Classification::FLOAT
@@ -245,7 +246,8 @@ bool decaf::ast::EqualityBinary::equals(std::shared_ptr<Expr> ptr) {
 }
 
 decaf::Type::Classification decaf::ast::EqualityBinary::result_type_of(decaf::Type left, decaf::Type right) {
-    if (left.classification == right.classification && left.classification != Type::Classification::INVALID) {
+    if (left.classification == right.classification
+        && left.classification != Type::Classification::INVALID) {
         return Type::Classification::BOOL;
     }
     return Type::Classification::INVALID;
