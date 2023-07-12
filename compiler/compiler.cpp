@@ -106,3 +106,17 @@ std::any decaf::Compiler::visitRationalBinary(std::shared_ptr<ast::RationalBinar
     prog.emit(code_for[rational_bin->op]);
     return {};
 }
+
+std::any decaf::Compiler::visitEqualityBinary(std::shared_ptr<ast::EqualityBinary> equal_bin) {
+    equal_bin->left->accept(*this);
+    equal_bin->right->accept(*this);
+
+    using Operation = ast::EqualityBinary::Operation;
+    using Instruction = ByteCode::Instruction;
+    static std::map<Operation, ByteCode::code_type> code_for{
+        {Operation ::EQUAL, Instruction ::EQUAL},
+        {Operation ::NOT_EQUAL, Instruction ::NOT_EQUAL}};
+
+    prog.emit(code_for[equal_bin->op]);
+    return {};
+}
