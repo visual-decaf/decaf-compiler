@@ -3,6 +3,7 @@
 #include "byte_code_visitor.h"
 #include "program.h"
 #include <any>
+#include <optional>
 #include <stack>
 #include <utility>
 #include <variant>
@@ -57,6 +58,8 @@ private:
 
     [[nodiscard]] bool expected_top_type(const decaf::Type&) const;
     [[nodiscard]] bool expected_top_type_classification(decaf::Type::Classification) const;
+    std::optional<std::pair<int, int>> expected_two_integer();
+    std::optional<std::pair<bool, bool>> expected_two_bool();
 
     int pop_as_int();
     bool pop_as_bool();
