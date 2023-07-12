@@ -356,3 +356,22 @@ bool decaf::VirtualMachine::op_GET_FLOAT_CONSTANT(uint8_t index) {
     push_classification(prog.pool.get_double_constant(index), Type::Classification::FLOAT);
     return false;
 }
+std::optional<std::pair<double, double>> decaf::VirtualMachine::expected_two_double() {
+    if (!expected_top_type_classification(Type::Classification::FLOAT)) {
+        return std::nullopt;
+    }
+    double rhs = pop_as_double();
+    if (!expected_top_type_classification(Type::Classification::FLOAT)) {
+        push_classification(rhs, Type::Classification::FLOAT);
+        return std::nullopt;
+    }
+    double lhs = pop_as_double();
+    return std::make_pair(lhs, rhs);
+}
+
+double decaf::VirtualMachine::pop_as_double() {
+    auto top = std::any_cast<double>(stk.top());
+    stk.pop();
+    type_stk.pop();
+    return top;
+}
