@@ -391,3 +391,43 @@ TEST_CASE("vm_input_program_type_mismatch_report", "[vm]") {
     REQUIRE(err_msgs.size() == 1);
     std::cout << err_msgs[0] << std::endl;
 }
+
+TEST_CASE("vm_equality_equal", "[equality]") {
+    auto input_prog = Program{
+        ByteCode{
+            Instruction ::GET_INSTANT,
+            1,
+            Instruction ::GET_INSTANT,
+            2,
+            Instruction ::EQUAL}};
+    input_prog.set_result_type_classification(Type::Classification::BOOL);
+
+    decaf::VirtualMachine vm{input_prog};
+    vm.run();
+
+    REQUIRE(!vm.is_error());
+    auto result = vm.get_result();
+    auto result_ptr = std::get_if<bool>(&result);
+    REQUIRE(result_ptr != nullptr);
+    REQUIRE(*result_ptr == false);
+}
+
+TEST_CASE("vm_equality_not_equal", "[equality]") {
+    auto input_prog = Program{
+        ByteCode{
+            Instruction ::GET_INSTANT,
+            1,
+            Instruction ::GET_INSTANT,
+            2,
+            Instruction ::NOT_EQUAL}};
+    input_prog.set_result_type_classification(Type::Classification::BOOL);
+
+    decaf::VirtualMachine vm{input_prog};
+    vm.run();
+
+    REQUIRE(!vm.is_error());
+    auto result = vm.get_result();
+    auto result_ptr = std::get_if<bool>(&result);
+    REQUIRE(result_ptr != nullptr);
+    REQUIRE(*result_ptr == true);
+}
