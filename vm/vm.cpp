@@ -431,7 +431,7 @@ std::optional<std::pair<bool, bool>> decaf::VirtualMachine::expected_two_bool() 
 
 bool decaf::VirtualMachine::op_GET_FLOAT_CONSTANT(uint8_t index) {
     push_classification(prog.pool.get_double_constant(index), Type::Classification::FLOAT);
-    return false;
+    return true;
 }
 std::optional<std::pair<double, double>> decaf::VirtualMachine::expected_two_double() {
     if (!expected_top_type_classification(Type::Classification::FLOAT)) {
