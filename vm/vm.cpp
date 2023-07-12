@@ -161,6 +161,19 @@ void decaf::VirtualMachine::run() {
         set_bool_result(stk_top);
         return;
     }
+    if (prog.result_type.classification == Type::Classification::FLOAT) {
+        if (!expected_top_type_classification(Type::Classification::FLOAT)) {
+            report_unexpected_type(
+                "Input Program",
+                Type::Classification::BOOL,
+                type_stk.top().classification);
+            return;
+        }
+        auto stk_top = std::any_cast<double>(stk.top());
+        stk.pop();
+        set_double_result(stk_top);
+        return;
+    }
 }
 
 void decaf::VirtualMachine::set_int_result(int val) {
