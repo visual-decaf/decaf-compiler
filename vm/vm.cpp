@@ -167,3 +167,29 @@ std::pair<std::any, decaf::Type> decaf::VirtualMachine::pop() {
     type_stk.pop();
     return top;
 }
+
+decaf::VirtualMachine::combined_int decaf::VirtualMachine::pop_combined_int() {
+    auto top = std::make_pair(
+        std::any_cast<int>(stk.top()),
+        type_stk.top().classification);
+    stk.pop();
+    type_stk.pop();
+    return top;
+}
+
+decaf::VirtualMachine::combined_bool decaf::VirtualMachine::pop_combined_bool() {
+    auto top = std::make_pair(
+        std::any_cast<bool>(stk.top()),
+        type_stk.top().classification);
+    stk.pop();
+    type_stk.pop();
+    return top;
+}
+
+bool decaf::VirtualMachine::expected_top_type(const decaf::Type& type) const {
+    return type_stk.top() == type;
+}
+
+bool decaf::VirtualMachine::expected_top_type_classification(decaf::Type::Classification cls) const {
+    return type_stk.top().classification == cls;
+}
