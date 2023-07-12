@@ -21,6 +21,8 @@ public:
     virtual bool op_LESS_EQUAL() = 0;
     virtual bool op_GREATER() = 0;
     virtual bool op_GREATER_EQUAL() = 0;
+    virtual bool op_EQUAL() = 0;
+    virtual bool op_NOT_EQUAL() = 0;
     virtual bool op_GET_TRUE() = 0;
     virtual bool op_GET_FALSE() = 0;
 
