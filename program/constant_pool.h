@@ -25,6 +25,8 @@ public:
 
     index_type add_constant(const int& val);
     int get_int_constant(index_type index);
+    index_type add_constant(const double& val);
+    double get_double_constant(index_type index);
 
     bool operator==(const ConstantPool& rhs) {
         return i_pool == rhs.i_pool;
@@ -34,6 +36,7 @@ public:
 
 private:
     std::vector<int> i_pool;
+    std::vector<double> f_pool;
 };
 
 } // namespace decaf
