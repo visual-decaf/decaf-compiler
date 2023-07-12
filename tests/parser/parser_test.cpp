@@ -487,3 +487,47 @@ TEST_CASE("parser_rational_non_associative", "[parser]") {
     auto err_msgs = parser.get_err_messages();
     REQUIRE(err_msgs.size() == 1);
 }
+
+TEST_CASE("parser_equality", "[parser]") {
+    TokenStream tokenStream{
+        {token_type ::INTEGER, "1"},
+        {token_type ::EQUAL, "=="},
+        {token_type ::INTEGER, "2"},
+        {token_type ::EOL},
+    };
+
+    decaf::Parser parser{tokenStream};
+    parser.parse();
+
+    REQUIRE(!parser.is_error());
+    auto result = parser.get_ast();
+
+    REQUIRE(result->type.classification == decaf::Type::Classification::BOOL);
+    auto expect = std::make_shared<ast::EqualityBinary>(
+        std::make_shared<ast::IntConstant>(1),
+        ast::EqualityBinary::Operation::EQUAL,
+        std::make_shared<ast::IntConstant>(2));
+    REQUIRE(expect->equals(result));
+}
+
+TEST_CASE("parser_not_equality", "[parser]") {
+    TokenStream tokenStream{
+        {token_type ::INTEGER, "1"},
+        {token_type ::NOT_EQUAL, "!="},
+        {token_type ::INTEGER, "2"},
+        {token_type ::EOL},
+    };
+
+    decaf::Parser parser{tokenStream};
+    parser.parse();
+
+    REQUIRE(!parser.is_error());
+    auto result = parser.get_ast();
+
+    REQUIRE(result->type.classification == decaf::Type::Classification::BOOL);
+    auto expect = std::make_shared<ast::EqualityBinary>(
+        std::make_shared<ast::IntConstant>(1),
+        ast::EqualityBinary::Operation::NOT_EQUAL,
+        std::make_shared<ast::IntConstant>(2));
+    REQUIRE(expect->equals(result));
+}
