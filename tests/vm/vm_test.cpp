@@ -355,3 +355,22 @@ TEST_CASE("vm_rational_greater_equal", "[vm]") {
     REQUIRE(result_ptr != nullptr);
     REQUIRE(*result_ptr == true);
 }
+
+TEST_CASE("vm_type_mismatch_report", "[vm]") {
+    auto input_prog = Program{
+        ByteCode{
+            Instruction ::GET_INSTANT,
+            1,
+            Instruction ::GET_TRUE,
+            Instruction ::GREATER_EQUAL,
+        }};
+    input_prog.set_result_type_classification(Type::Classification::BOOL);
+
+    decaf::VirtualMachine vm{input_prog};
+    vm.run();
+
+    REQUIRE(vm.is_error());
+    auto err_msgs = vm.get_error_messages();
+    std::cout << err_msgs[0];
+    REQUIRE(err_msgs.size() == 1);
+}
