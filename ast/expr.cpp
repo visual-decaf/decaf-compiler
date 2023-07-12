@@ -23,6 +23,10 @@ const std::map<decaf::ast::RationalBinary::Operation, std::string> decaf::ast::R
     {Operation::LESS, "LESS"},
     {Operation::LESS_EQUAL, "LESS_EQUAL"}};
 
+const std::map<decaf::ast::EqualityBinary::Operation, std::string> decaf::ast::EqualityBinary::operation_name_of{
+    {Operation::EQUAL, "EQUAL"},
+    {Operation::NOT_EQUAL, "NOT_EQUAL"}};
+
 bool decaf::ast::ArithmeticBinary::equals(std::shared_ptr<Expr> ptr) {
     auto arith = std::dynamic_pointer_cast<ArithmeticBinary>(ptr);
 
@@ -239,4 +243,13 @@ decaf::Type::Classification decaf::ast::EqualityBinary::result_type_of(decaf::Ty
         return Type::Classification::BOOL;
     }
     return Type::Classification::INVALID;
+}
+boost::json::value decaf::ast::EqualityBinary::to_json() {
+    boost::json::object result{
+        {"type", "EqualityBinary"},
+        {"operation", operation_name_of.at(this->op)},
+        {"left", this->left->to_json()},
+        {"right", this->right->to_json()},
+        {"resultType", this->type.to_json()}};
+    return result;
 }

@@ -221,6 +221,7 @@ struct EqualityBinary: Expr, std::enable_shared_from_this<EqualityBinary> {
     Operation op;
     std::shared_ptr<Expr> right;
 
+    static const std::map<Operation, std::string> operation_name_of;
     static Type::Classification result_type_of(Type left, Type right);
 
     EqualityBinary(std::shared_ptr<Expr> _left, Operation op, std::shared_ptr<Expr> _right):
@@ -233,6 +234,7 @@ struct EqualityBinary: Expr, std::enable_shared_from_this<EqualityBinary> {
     }
 
     bool equals(std::shared_ptr<Expr> ptr) override;
+    boost::json::value to_json() override;
 };
 
 } // namespace decaf::ast

@@ -226,3 +226,78 @@ TEST_CASE("rational_binary_json", "[ast]") {
 )");
     REQUIRE(expect_json == ast_root->to_json());
 }
+
+TEST_CASE("equal_json", "[ast]") {
+    auto ast_root = std::make_shared<ast::EqualityBinary>(
+        std::make_shared<ast::IntConstant>(1),
+        ast::EqualityBinary::Operation::EQUAL,
+        std::make_shared<ast::IntConstant>(2));
+    auto expect_json = boost::json::parse(R"(
+{
+    "type": "EqualityBinary",
+    "operation": "EQUAL",
+    "left": {
+        "type": "IntConstant",
+        "value": 1,
+        "resultType": "INT"
+    },
+    "right": {
+        "type": "IntConstant",
+        "value": 2,
+        "resultType": "INT"
+    },
+    "resultType": "BOOL"
+}
+)");
+    REQUIRE(expect_json == ast_root->to_json());
+}
+
+TEST_CASE("not_equal_json", "[ast]") {
+    auto ast_root = std::make_shared<ast::EqualityBinary>(
+        std::make_shared<ast::IntConstant>(1),
+        ast::EqualityBinary::Operation::NOT_EQUAL,
+        std::make_shared<ast::IntConstant>(2));
+    auto expect_json = boost::json::parse(R"(
+{
+    "type": "EqualityBinary",
+    "operation": "NOT_EQUAL",
+    "left": {
+        "type": "IntConstant",
+        "value": 1,
+        "resultType": "INT"
+    },
+    "right": {
+        "type": "IntConstant",
+        "value": 2,
+        "resultType": "INT"
+    },
+    "resultType": "BOOL"
+}
+)");
+    REQUIRE(expect_json == ast_root->to_json());
+}
+
+TEST_CASE("equality_diff_type_json", "[ast]") {
+    auto ast_root = std::make_shared<ast::EqualityBinary>(
+        std::make_shared<ast::IntConstant>(1),
+        ast::EqualityBinary::Operation::EQUAL,
+        std::make_shared<ast::BoolConstant>(true));
+    auto expect_json = boost::json::parse(R"(
+{
+    "type": "EqualityBinary",
+    "operation": "EQUAL",
+    "left": {
+        "type": "IntConstant",
+        "value": 1,
+        "resultType": "INT"
+    },
+    "right": {
+        "type": "BoolConstant",
+        "value": true,
+        "resultType": "BOOL"
+    },
+    "resultType": "INVALID"
+}
+)");
+    REQUIRE(expect_json == ast_root->to_json());
+}
