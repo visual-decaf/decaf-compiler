@@ -210,3 +210,17 @@ bool decaf::VirtualMachine::expected_top_type(const decaf::Type& type) const {
 bool decaf::VirtualMachine::expected_top_type_classification(decaf::Type::Classification cls) const {
     return type_stk.top().classification == cls;
 }
+
+int decaf::VirtualMachine::pop_as_int() {
+    int top = std::any_cast<int>(stk.top());
+    stk.pop();
+    type_stk.pop();
+    return top;
+}
+
+bool decaf::VirtualMachine::pop_as_bool() {
+    bool top = std::any_cast<bool>(stk.top());
+    stk.pop();
+    type_stk.pop();
+    return top;
+}

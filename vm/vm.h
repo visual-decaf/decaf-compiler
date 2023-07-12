@@ -55,6 +55,8 @@ private:
     [[nodiscard]] bool expected_top_type_classification(decaf::Type::Classification) const;
     combined_int pop_combined_int();
     combined_bool pop_combined_bool();
+    int pop_as_int();
+    bool pop_as_bool();
 
     Program prog;
     stack_type stk;
