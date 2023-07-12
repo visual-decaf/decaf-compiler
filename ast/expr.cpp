@@ -49,6 +49,10 @@ decaf::Type::Classification decaf::ast::ArithmeticBinary::result_type_of(decaf::
         && right.classification == Type::Classification::INT) {
         return Type::Classification::INT;
     }
+    if (left.classification == Type::Classification::FLOAT
+        && right.classification == Type::Classification::FLOAT) {
+        return Type::Classification::FLOAT;
+    }
     return Type::Classification::INVALID;
 }
 
