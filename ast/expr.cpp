@@ -1,11 +1,27 @@
 #include "expr.h"
 
-const std::map<decaf::ast::ArithmeticBinary::Operation, std::string> decaf::ast::ArithmeticBinary::operation_name_of = {
+const std::map<decaf::ast::ArithmeticUnary::Operation, std::string> decaf::ast::ArithmeticUnary::operation_name_of{
+    {Operation::NEGATE, "NEGATE"}};
+
+const std::map<decaf::ast::ArithmeticBinary::Operation, std::string> decaf::ast::ArithmeticBinary::operation_name_of{
     {Operation::PLUS, "PLUS"},
     {Operation::MINUS, "MINUS"},
     {Operation::MULTIPLY, "MULTIPLY"},
     {Operation::DIVIDE, "DIVIDE"},
     {Operation::MOD, "MOD"}};
+
+const std::map<decaf::ast::LogicUnary::Operation, std::string> decaf::ast::LogicUnary::operation_name_of{
+    {Operation::LOGIC_NOT, "LOGIC_NOT"}};
+
+const std::map<decaf::ast::LogicBinary::Operation, std::string> decaf::ast::LogicBinary::operation_name_of{
+    {Operation::LOGIC_AND, "LOGIC_AND"},
+    {Operation::LOGIC_OR, "LOGIC_OR"}};
+
+const std::map<decaf::ast::RationalBinary::Operation, std::string> decaf::ast::RationalBinary::operation_name_of{
+    {Operation::GREATER, "GREATER"},
+    {Operation::GREATER_EQUAL, "GREATER_EQUAL"},
+    {Operation::LESS, "LESS"},
+    {Operation::LESS_EQUAL, "LESS_EQUAL"}};
 
 bool decaf::ast::ArithmeticBinary::equals(std::shared_ptr<Expr> ptr) {
     auto arith = std::dynamic_pointer_cast<ArithmeticBinary>(ptr);
@@ -19,11 +35,12 @@ bool decaf::ast::ArithmeticBinary::equals(std::shared_ptr<Expr> ptr) {
 }
 
 boost::json::value decaf::ast::ArithmeticBinary::to_json() {
-    boost::json::object result;
-    result["type"] = "ArithmeticBinary";
-    result["operation"] = operation_name_of.at(this->op);
-    result["left"] = this->left->to_json();
-    result["right"] = this->right->to_json();
+    boost::json::object result{
+        {"type", "ArithmeticBinary"},
+        {"operation", operation_name_of.at(this->op)},
+        {"left", this->left->to_json()},
+        {"right", this->right->to_json()},
+        {"resultType", this->type.to_json()}};
     return result;
 }
 
@@ -48,7 +65,8 @@ bool decaf::ast::IntConstant::equals(std::shared_ptr<Expr> ptr) {
 boost::json::value decaf::ast::IntConstant::to_json() {
     boost::json::value result = {
         {"type", "IntConstant"},
-        {"value", this->value}};
+        {"value", this->value},
+        {"resultType", this->type.to_json()}};
     return result;
 }
 
@@ -68,12 +86,16 @@ bool decaf::ast::Group::equals(std::shared_ptr<Expr> ptr) {
 
 boost::json::value decaf::ast::Group::to_json() {
     boost::json::object result{
-        {"type", "Group"}};
+        {"type", "Group"},
+    };
     if (this->content == nullptr) {
-        result["content"] = nullptr;
+        result["content"] = boost::json::object{
+            {"type", "INVALID"},
+            {"resultType", "INVALID"}};
     } else {
         result["content"] = this->content->to_json();
     }
+    result["resultType"] = this->type.to_json();
     return result;
 }
 
@@ -94,6 +116,15 @@ decaf::Type::Classification decaf::ast::LogicBinary::result_type_of(decaf::Type 
 
     return Type::Classification::INVALID;
 }
+boost::json::value decaf::ast::LogicBinary::to_json() {
+    boost::json::object result{
+        {"type", "LogicBinary"},
+        {"operation", operation_name_of.at(this->op)},
+        {"left", this->left->to_json()},
+        {"right", this->right->to_json()},
+        {"resultType", this->type.to_json()}};
+    return result;
+}
 
 bool decaf::ast::BoolConstant::equals(std::shared_ptr<Expr> ptr) {
     auto rhs = std::dynamic_pointer_cast<BoolConstant>(ptr);
@@ -104,11 +135,26 @@ bool decaf::ast::BoolConstant::equals(std::shared_ptr<Expr> ptr) {
 
     return this->value == rhs->value;
 }
+boost::json::value decaf::ast::BoolConstant::to_json() {
+    boost::json::value result{
+        {"type", "BoolConstant"},
+        {"value", this->value},
+        {"resultType", this->type.to_json()}};
+    return result;
+}
 
 decaf::Type::Classification decaf::ast::ArithmeticUnary::result_type_of(decaf::Type right) {
     if (right.classification == Type::Classification::INT)
         return Type::Classification::INT;
     return Type::Classification::INVALID;
+}
+boost::json::value decaf::ast::ArithmeticUnary::to_json() {
+    boost::json::object result{
+        {"type", "ArithmeticUnary"},
+        {"operation", operation_name_of.at(this->op)},
+        {"right", this->right->to_json()},
+        {"resultType", this->type.to_json()}};
+    return result;
 }
 
 bool decaf::ast::ArithmeticUnary::equals(std::shared_ptr<Expr> ptr) {
@@ -138,6 +184,14 @@ decaf::Type::Classification decaf::ast::LogicUnary::result_type_of(decaf::Type r
 
     return Type::Classification::INVALID;
 }
+boost::json::value decaf::ast::LogicUnary::to_json() {
+    boost::json::object result{
+        {"type", "LogicUnary"},
+        {"operation", operation_name_of.at(this->op)},
+        {"right", this->right->to_json()},
+        {"resultType", this->type.to_json()}};
+    return result;
+}
 
 decaf::Type::Classification decaf::ast::RationalBinary::result_type_of(decaf::Type left, decaf::Type right) {
     if (left.classification == Type::Classification::INT && right.classification == Type::Classification::INT) {
@@ -157,4 +211,13 @@ bool decaf::ast::RationalBinary::equals(std::shared_ptr<Expr> rational_bin) {
     return this->left->equals(rhs->left)
            && this->op == rhs->op
            && this->right->equals(rhs->right);
+}
+boost::json::value decaf::ast::RationalBinary::to_json() {
+    boost::json::object result{
+        {"type", "RationalBinary"},
+        {"operation", operation_name_of.at(this->op)},
+        {"left", this->left->to_json()},
+        {"right", this->right->to_json()},
+        {"resultType", this->type.to_json()}};
+    return result;
 }
