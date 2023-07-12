@@ -203,6 +203,10 @@ decaf::Type::Classification decaf::ast::RationalBinary::result_type_of(decaf::Ty
     if (left.classification == Type::Classification::INT && right.classification == Type::Classification::INT) {
         return Type::Classification::BOOL;
     }
+    if (left.classification == Type::Classification::FLOAT
+        && right.classification == Type::Classification::FLOAT) {
+        return Type::Classification::FLOAT;
+    }
 
     return Type::Classification::INVALID;
 }
