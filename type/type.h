@@ -4,7 +4,7 @@
 #include <string>
 namespace decaf {
 
-struct Type: public serializable {
+struct Type: public Serializable {
     enum class Classification {
         INVALID,
         INT,

@@ -6,10 +6,10 @@
 
 namespace decaf {
 
-class token_stream: public std::vector<token>, serializable {
+class TokenStream: public std::vector<Token>, Serializable {
 public:
     // use vector's constructors
-    using std::vector<token>::vector;
+    using std::vector<Token>::vector;
 
     boost::json::value to_json() override;
 };

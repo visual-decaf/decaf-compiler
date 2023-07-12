@@ -3,7 +3,7 @@
 #include <catch2/catch_test_macros.hpp>
 
 TEST_CASE("token_json", "[token]") {
-    decaf::token tok = {
+    decaf::Token tok = {
         decaf::token_type::INTEGER, "3"};
     boost::json::value expect_json = boost::json::parse(R"(
 {
@@ -15,7 +15,7 @@ TEST_CASE("token_json", "[token]") {
 }
 
 TEST_CASE("token_stream_json", "[token]") {
-    decaf::token_stream tokens = {
+    decaf::TokenStream tokens = {
         {decaf::token_type::INTEGER, "12"},
         {decaf::token_type::INTEGER, "34"},
         {decaf::token_type::INTEGER, "56"},

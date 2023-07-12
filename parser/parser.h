@@ -23,15 +23,15 @@ public:
     void clear_error();
     [[nodiscard]] std::vector<std::string> get_err_messages() const;
 
-    explicit Parser(decaf::token_stream _token_stream):
+    explicit Parser(decaf::TokenStream _token_stream):
         token_stream{std::move(_token_stream)},
         next_token{token_stream.begin()} {
     }
 
 private:
     yy::parser parser_impl{*this};
-    decaf::token_stream token_stream;
-    decaf::token_stream::iterator next_token;
+    decaf::TokenStream token_stream;
+    decaf::TokenStream::iterator next_token;
     ast_ptr ast_root{nullptr};
 
     bool has_error = false;

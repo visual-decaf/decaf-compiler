@@ -4,10 +4,10 @@
 
 namespace decaf {
 
-class serializable {
+class Serializable {
 public:
     virtual boost::json::value to_json() = 0;
-    virtual ~serializable() = default;
+    virtual ~Serializable() = default;
 };
 
 } // namespace decaf
