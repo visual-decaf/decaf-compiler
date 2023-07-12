@@ -28,6 +28,7 @@ public:
     std::any visitArithmeticUnary(std::shared_ptr<ast::ArithmeticUnary> ptr) override;
     std::any visitLogicUnary(std::shared_ptr<ast::LogicUnary> log_unary) override;
     std::any visitEqualityBinary(std::shared_ptr<ast::EqualityBinary> ptr) override;
+    std::any visitFloatConstant(std::shared_ptr<ast::FloatConstant> ptr) override;
 
 private:
     std::shared_ptr<ast::Expr> ast_root;
