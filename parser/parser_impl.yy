@@ -49,6 +49,7 @@
 /* Expressions */
 %left LOGIC_OR
 %left LOGIC_AND
+%left EQUAL NOT_EQUAL
 %nonassoc LESS LESS_EQUAL GREATER GREATER_EQUAL
 %left PLUS MINUS
 %left STAR SLASH PERCENT
