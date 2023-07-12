@@ -274,3 +274,21 @@ bool decaf::VirtualMachine::pop_as_bool() {
     type_stk.pop();
     return top;
 }
+
+bool decaf::VirtualMachine::is_error() const {
+    return has_error;
+}
+
+void decaf::VirtualMachine::clear_error() {
+    has_error = false;
+    error_messages.clear();
+}
+
+std::vector<std::string> decaf::VirtualMachine::get_error_messages() {
+    return error_messages;
+}
+
+void decaf::VirtualMachine::report(const std::string& msg) {
+    has_error = true;
+    error_messages.push_back(msg);
+}

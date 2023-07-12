@@ -41,6 +41,10 @@ public:
     result_type get_result();
     void run();
 
+    [[nodiscard]] bool is_error() const;
+    void clear_error();
+    std::vector<std::string> get_error_messages();
+
 private:
     void set_int_result(int);
     void set_double_result(double);
@@ -62,6 +66,11 @@ private:
     stack_type stk;
     type_stack_type type_stk;
     result_type result;
+
+    void report(const std::string& msg);
+
+    bool has_error = false;
+    std::vector<std::string> error_messages;
 };
 
 } // namespace decaf
