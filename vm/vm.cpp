@@ -173,12 +173,26 @@ void decaf::VirtualMachine::run() {
     driver.produce();
 
     if (prog.result_type.classification == Type::Classification::INT) {
+        if (!expected_top_type_classification(Type::Classification::INT)) {
+            report_unexpected_type(
+                "Input Program",
+                Type::Classification::INT,
+                type_stk.top().classification);
+            return;
+        }
         int stk_top = std::any_cast<int>(stk.top());
         stk.pop();
         set_int_result(stk_top);
         return;
     }
     if (prog.result_type.classification == Type::Classification::BOOL) {
+        if (!expected_top_type_classification(Type::Classification::BOOL)) {
+            report_unexpected_type(
+                "Input Program",
+                Type::Classification::BOOL,
+                type_stk.top().classification);
+            return;
+        }
         bool stk_top = std::any_cast<bool>(stk.top());
         stk.pop();
         set_bool_result(stk_top);
