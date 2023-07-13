@@ -12,4 +12,6 @@ struct BoolConstant;
 struct RationalBinary;
 struct EqualityBinary;
 struct FloatConstant;
+
+struct Stmt;
 } // namespace decaf::ast
