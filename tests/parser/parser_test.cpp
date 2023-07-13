@@ -641,3 +641,47 @@ TEST_CASE("parser_float_rational", "[parser]") {
         std::make_shared<ast::FloatConstant>(1.48));
     REQUIRE(expect->equals(result_expr));
 }
+
+TEST_CASE("parser_print_stmt", "[parser]") {
+    TokenStream tokenStream{
+        {token_type ::PRINT, "Print"},
+        {token_type ::LEFT_PAREN, "("},
+        {token_type ::INTEGER, "1"},
+        {token_type ::RIGHT_PAREN, ")"},
+        {token_type ::SEMICOLON, ";"}};
+
+    decaf::Parser parser{tokenStream};
+    parser.parse();
+
+    REQUIRE(!parser.is_error());
+    auto result = parser.get_ast();
+    auto expr_list = std::make_shared<ast::ExpressionList>();
+    expr_list->expressions.emplace_back(
+        std::make_shared<ast::IntConstant>(1));
+    auto expect = std::make_shared<ast::PrintStmt>(expr_list);
+    REQUIRE(expect->equal(result));
+}
+
+TEST_CASE("parser_print_stmt_multi", "[parser]") {
+    TokenStream tokenStream{
+        {token_type ::PRINT, "Print"},
+        {token_type ::LEFT_PAREN, "("},
+        {token_type ::INTEGER, "1"},
+        {token_type ::COMMA, ","},
+        {token_type ::INTEGER, "2"},
+        {token_type ::RIGHT_PAREN, ")"},
+        {token_type ::SEMICOLON, ";"}};
+
+    decaf::Parser parser{tokenStream};
+    parser.parse();
+
+    REQUIRE(!parser.is_error());
+    auto result = parser.get_ast();
+    auto expr_list = std::make_shared<ast::ExpressionList>();
+    expr_list->expressions.emplace_back(
+        std::make_shared<ast::IntConstant>(1));
+    expr_list->expressions.emplace_back(
+        std::make_shared<ast::IntConstant>(2));
+    auto expect = std::make_shared<ast::PrintStmt>(expr_list);
+    REQUIRE(expect->equal(result));
+}
