@@ -11,3 +11,7 @@ boost::json::value decaf::Type::to_json() {
     boost::json::string result{type_name_of.at(this->classification)};
     return result;
 }
+
+std::string decaf::Type::name() const {
+    return type_name_of.at(this->classification);
+}
