@@ -25,6 +25,7 @@ TEST_CASE("compiler_main", "[compiler]") {
             Instruction ::PLUS,
         }};
 
+    expect.emit(Instruction ::DISCARD);
     REQUIRE(expect == result);
 }
 
@@ -54,6 +55,7 @@ TEST_CASE("compiler_plus_deep", "[compiler]") {
             Instruction ::PLUS,
         }};
 
+    expect.emit(Instruction ::DISCARD);
     REQUIRE(expect == result);
 }
 
@@ -82,6 +84,7 @@ TEST_CASE("compiler_plus_multiply", "[compiler]") {
             Instruction ::PLUS,
         }};
 
+    expect.emit(Instruction ::DISCARD);
     REQUIRE(expect == result);
 }
 
@@ -111,6 +114,7 @@ TEST_CASE("compiler_plus_minus", "[compiler]") {
             Instruction ::MINUS,
         }};
 
+    expect.emit(Instruction ::DISCARD);
     REQUIRE(expect == result);
 }
 
@@ -140,6 +144,7 @@ TEST_CASE("compiler_multiply_divide", "[compiler]") {
             Instruction ::DIVIDE,
         }};
 
+    expect.emit(Instruction ::DISCARD);
     REQUIRE(expect == result);
 }
 
@@ -162,6 +167,7 @@ TEST_CASE("compiler_mod", "[compiler]") {
             7,
             Instruction ::MOD,
         }};
+    expect.emit(Instruction ::DISCARD);
     REQUIRE(expect == result);
 }
 
@@ -187,6 +193,7 @@ TEST_CASE("compiler_int_constant_pool", "[compiler]") {
             10000,
             2345,
         }};
+    expect.emit(Instruction ::DISCARD);
     REQUIRE(expect == result);
 }
 
@@ -204,6 +211,7 @@ TEST_CASE("compiler_group", "[compiler]") {
             Instruction ::GET_INSTANT,
             1,
         }};
+    expect.emit(Instruction ::DISCARD);
     REQUIRE(expect == result);
 }
 
@@ -224,6 +232,7 @@ TEST_CASE("compiler_logic_binary_simple_and", "[compiler]") {
             Instruction ::GET_FALSE,
             Instruction ::LOGIC_AND,
         }};
+    expect.emit(Instruction ::DISCARD);
     REQUIRE(expect == result);
 }
 
@@ -244,6 +253,7 @@ TEST_CASE("compiler_logic_binary_simple_or", "[compiler]") {
             Instruction ::GET_FALSE,
             Instruction ::LOGIC_OR,
         }};
+    expect.emit(Instruction ::DISCARD);
     REQUIRE(expect == result);
 }
 
@@ -269,6 +279,7 @@ TEST_CASE("compiler_logic_binary_combined", "[compiler]") {
             Instruction ::LOGIC_OR,
             Instruction ::LOGIC_AND,
         }};
+    expect.emit(Instruction ::DISCARD);
     REQUIRE(expect == result);
 }
 
@@ -287,6 +298,7 @@ TEST_CASE("compiler_arithmetic_unary", "[compiler]") {
             1,
             Instruction ::NEGATE,
         }};
+    expect.emit(Instruction ::DISCARD);
     REQUIRE(expect == result);
 }
 
@@ -311,6 +323,7 @@ TEST_CASE("compiler_arithmetic_unary_binary_combined", "[compiler]") {
             2,
             Instruction ::MINUS,
         }};
+    expect.emit(Instruction ::DISCARD);
     REQUIRE(expect == result);
 }
 
@@ -337,6 +350,7 @@ TEST_CASE("compiler_arithmetic_unary_binary_complex_combined", "[compiler]") {
             Instruction ::NEGATE,
             Instruction ::MINUS,
         }};
+    expect.emit(Instruction ::DISCARD);
     REQUIRE(expect == result);
 }
 
@@ -354,6 +368,7 @@ TEST_CASE("compiler_logic_not", "[compiler]") {
             Instruction ::GET_TRUE,
             Instruction ::LOGIC_NOT,
         }};
+    expect.emit(Instruction ::DISCARD);
     REQUIRE(expect == result);
 }
 
@@ -376,6 +391,7 @@ TEST_CASE("compiler_logic_not_combined", "[compiler]") {
             Instruction ::LOGIC_NOT,
             Instruction ::LOGIC_OR,
         }};
+    expect.emit(Instruction ::DISCARD);
     REQUIRE(expect == result);
 }
 
@@ -398,6 +414,7 @@ TEST_CASE("compiler_rational_less", "[compiler]") {
             2,
             Instruction ::LESS,
         }};
+    expect.emit(Instruction ::DISCARD);
     REQUIRE(expect == result);
 }
 
@@ -420,6 +437,7 @@ TEST_CASE("compiler_rational_less_equal", "[compiler]") {
             2,
             Instruction ::LESS_EQUAL,
         }};
+    expect.emit(Instruction ::DISCARD);
     REQUIRE(expect == result);
 }
 
@@ -442,6 +460,7 @@ TEST_CASE("compiler_rational_greater", "[compiler]") {
             2,
             Instruction ::GREATER,
         }};
+    expect.emit(Instruction ::DISCARD);
     REQUIRE(expect == result);
 }
 
@@ -464,6 +483,7 @@ TEST_CASE("compiler_rational_greater_equal", "[compiler]") {
             2,
             Instruction ::GREATER_EQUAL,
         }};
+    expect.emit(Instruction ::DISCARD);
     REQUIRE(expect == result);
 }
 
@@ -485,6 +505,7 @@ TEST_CASE("compiler_equality_equal", "[equality]") {
             Instruction ::GET_INSTANT,
             2,
             Instruction ::EQUAL}};
+    expect.emit(Instruction ::DISCARD);
     REQUIRE(expect == result);
 }
 
@@ -506,6 +527,7 @@ TEST_CASE("compiler_equality_not_equal", "[equality]") {
             Instruction ::GET_INSTANT,
             2,
             Instruction ::NOT_EQUAL}};
+    expect.emit(Instruction ::DISCARD);
     REQUIRE(expect == result);
 }
 
@@ -535,5 +557,6 @@ TEST_CASE("compiler_float_rational", "[compiler]") {
                 1.48,
             },
         }};
+    expect.emit(Instruction ::DISCARD);
     REQUIRE(expect == result);
 }
