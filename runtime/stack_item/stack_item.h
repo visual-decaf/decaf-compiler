@@ -3,6 +3,7 @@
 #include "type.h"
 #include <memory>
 #include <stdexcept>
+#include <utility>
 
 namespace decaf {
 
@@ -37,6 +38,10 @@ struct StackItem {
             std::runtime_error("Operation [" + operation + "] Expect Type [" + expect_type + "]") {
         }
     };
+
+    explicit StackItem(Type _type):
+        type(std::move(_type)) {
+    }
 
     Type type;
 };
