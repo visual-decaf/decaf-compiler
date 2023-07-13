@@ -15,7 +15,7 @@ TEST_CASE("compiler_main", "[compiler]") {
     compiler.compile();
 
     auto result = compiler.get_program();
-    REQUIRE(result.get_result_type_classification() ==Type::Classification::VOID);
+    REQUIRE(result.get_result_type_classification() == Type::Classification::VOID);
     auto expect = Program{
         ByteCode{
             Instruction ::GET_INSTANT,
@@ -41,7 +41,7 @@ TEST_CASE("compiler_plus_deep", "[compiler]") {
     compiler.compile();
 
     auto result = compiler.get_program();
-    REQUIRE(result.get_result_type_classification() ==Type::Classification::VOID);
+    REQUIRE(result.get_result_type_classification() == Type::Classification::VOID);
     auto expect = Program{
         ByteCode{
             Instruction ::GET_INSTANT,
@@ -69,7 +69,7 @@ TEST_CASE("compiler_plus_multiply", "[compiler]") {
     compiler.compile();
 
     auto result = compiler.get_program();
-    REQUIRE(result.get_result_type_classification() ==Type::Classification::VOID);
+    REQUIRE(result.get_result_type_classification() == Type::Classification::VOID);
     auto expect = Program{
         ByteCode{
             Instruction ::GET_INSTANT,
@@ -98,7 +98,7 @@ TEST_CASE("compiler_plus_minus", "[compiler]") {
     compiler.compile();
 
     auto result = compiler.get_program();
-    REQUIRE(result.get_result_type_classification() ==Type::Classification::VOID);
+    REQUIRE(result.get_result_type_classification() == Type::Classification::VOID);
     auto expect = Program{
         ByteCode{
             Instruction ::GET_INSTANT,
@@ -127,7 +127,7 @@ TEST_CASE("compiler_multiply_divide", "[compiler]") {
     compiler.compile();
 
     auto result = compiler.get_program();
-    REQUIRE(result.get_result_type_classification() ==Type::Classification::VOID);
+    REQUIRE(result.get_result_type_classification() == Type::Classification::VOID);
     auto expect = Program{
         ByteCode{
             Instruction ::GET_INSTANT,
@@ -153,7 +153,7 @@ TEST_CASE("compiler_mod", "[compiler]") {
     compiler.compile();
 
     auto result = compiler.get_program();
-    REQUIRE(result.get_result_type_classification() ==Type::Classification::VOID);
+    REQUIRE(result.get_result_type_classification() == Type::Classification::VOID);
     auto expect = Program{
         ByteCode{
             Instruction ::GET_INSTANT,
@@ -174,7 +174,7 @@ TEST_CASE("compiler_int_constant_pool", "[compiler]") {
     compiler.compile();
 
     auto result = compiler.get_program();
-    REQUIRE(result.get_result_type_classification() ==Type::Classification::VOID);
+    REQUIRE(result.get_result_type_classification() == Type::Classification::VOID);
     auto expect = Program{
         ByteCode{
             Instruction ::GET_INT_CONSTANT,
@@ -198,7 +198,7 @@ TEST_CASE("compiler_group", "[compiler]") {
     compiler.compile();
 
     auto result = compiler.get_program();
-    REQUIRE(result.get_result_type_classification() ==Type::Classification::VOID);
+    REQUIRE(result.get_result_type_classification() == Type::Classification::VOID);
     auto expect = Program{
         ByteCode{
             Instruction ::GET_INSTANT,
@@ -217,7 +217,7 @@ TEST_CASE("compiler_logic_binary_simple_and", "[compiler]") {
     compiler.compile();
 
     auto result = compiler.get_program();
-    REQUIRE(result.get_result_type_classification() ==Type::Classification::VOID);
+    REQUIRE(result.get_result_type_classification() == Type::Classification::VOID);
     auto expect = Program{
         ByteCode{
             Instruction ::GET_TRUE,
@@ -237,7 +237,7 @@ TEST_CASE("compiler_logic_binary_simple_or", "[compiler]") {
     compiler.compile();
 
     auto result = compiler.get_program();
-    REQUIRE(result.get_result_type_classification() ==Type::Classification::VOID);
+    REQUIRE(result.get_result_type_classification() == Type::Classification::VOID);
     auto expect = Program{
         ByteCode{
             Instruction ::GET_TRUE,
@@ -260,7 +260,7 @@ TEST_CASE("compiler_logic_binary_combined", "[compiler]") {
     compiler.compile();
 
     auto result = compiler.get_program();
-    REQUIRE(result.get_result_type_classification() ==Type::Classification::VOID);
+    REQUIRE(result.get_result_type_classification() == Type::Classification::VOID);
     auto expect = Program{
         ByteCode{
             Instruction ::GET_TRUE,
@@ -280,7 +280,7 @@ TEST_CASE("compiler_arithmetic_unary", "[compiler]") {
     compiler.compile();
 
     auto result = compiler.get_program();
-    REQUIRE(result.get_result_type_classification() ==Type::Classification::VOID);
+    REQUIRE(result.get_result_type_classification() == Type::Classification::VOID);
     auto expect = Program{
         ByteCode{
             Instruction ::GET_INSTANT,
@@ -301,7 +301,7 @@ TEST_CASE("compiler_arithmetic_unary_binary_combined", "[compiler]") {
     compiler.compile();
 
     auto result = compiler.get_program();
-    REQUIRE(result.get_result_type_classification() ==Type::Classification::VOID);
+    REQUIRE(result.get_result_type_classification() == Type::Classification::VOID);
     auto expect = Program{
         ByteCode{
             Instruction ::GET_INSTANT,
@@ -326,7 +326,7 @@ TEST_CASE("compiler_arithmetic_unary_binary_complex_combined", "[compiler]") {
     compiler.compile();
 
     auto result = compiler.get_program();
-    REQUIRE(result.get_result_type_classification() ==Type::Classification::VOID);
+    REQUIRE(result.get_result_type_classification() == Type::Classification::VOID);
     auto expect = Program{
         ByteCode{
             Instruction ::GET_INSTANT,
@@ -348,7 +348,7 @@ TEST_CASE("compiler_logic_not", "[compiler]") {
     compiler.compile();
 
     auto result = compiler.get_program();
-    REQUIRE(result.get_result_type_classification() ==Type::Classification::VOID);
+    REQUIRE(result.get_result_type_classification() == Type::Classification::VOID);
     auto expect = Program{
         ByteCode{
             Instruction ::GET_TRUE,
@@ -368,7 +368,7 @@ TEST_CASE("compiler_logic_not_combined", "[compiler]") {
     compiler.compile();
 
     auto result = compiler.get_program();
-    REQUIRE(result.get_result_type_classification() ==Type::Classification::VOID);
+    REQUIRE(result.get_result_type_classification() == Type::Classification::VOID);
     auto expect = Program{
         ByteCode{
             Instruction ::GET_FALSE,
@@ -389,7 +389,7 @@ TEST_CASE("compiler_rational_less", "[compiler]") {
     compiler.compile();
 
     auto result = compiler.get_program();
-    REQUIRE(result.get_result_type_classification() ==Type::Classification::VOID);
+    REQUIRE(result.get_result_type_classification() == Type::Classification::VOID);
     auto expect = Program{
         ByteCode{
             Instruction ::GET_INSTANT,
@@ -411,7 +411,7 @@ TEST_CASE("compiler_rational_less_equal", "[compiler]") {
     compiler.compile();
 
     auto result = compiler.get_program();
-    REQUIRE(result.get_result_type_classification() ==Type::Classification::VOID);
+    REQUIRE(result.get_result_type_classification() == Type::Classification::VOID);
     auto expect = Program{
         ByteCode{
             Instruction ::GET_INSTANT,
@@ -433,7 +433,7 @@ TEST_CASE("compiler_rational_greater", "[compiler]") {
     compiler.compile();
 
     auto result = compiler.get_program();
-    REQUIRE(result.get_result_type_classification() ==Type::Classification::VOID);
+    REQUIRE(result.get_result_type_classification() == Type::Classification::VOID);
     auto expect = Program{
         ByteCode{
             Instruction ::GET_INSTANT,
@@ -455,7 +455,7 @@ TEST_CASE("compiler_rational_greater_equal", "[compiler]") {
     compiler.compile();
 
     auto result = compiler.get_program();
-    REQUIRE(result.get_result_type_classification() ==Type::Classification::VOID);
+    REQUIRE(result.get_result_type_classification() == Type::Classification::VOID);
     auto expect = Program{
         ByteCode{
             Instruction ::GET_INSTANT,
@@ -477,7 +477,7 @@ TEST_CASE("compiler_equality_equal", "[equality]") {
     compiler.compile();
 
     auto result = compiler.get_program();
-    REQUIRE(result.get_result_type_classification() ==Type::Classification::VOID);
+    REQUIRE(result.get_result_type_classification() == Type::Classification::VOID);
     auto expect = Program{
         ByteCode{
             Instruction ::GET_INSTANT,
@@ -498,7 +498,7 @@ TEST_CASE("compiler_equality_not_equal", "[equality]") {
     compiler.compile();
 
     auto result = compiler.get_program();
-    REQUIRE(result.get_result_type_classification() ==Type::Classification::VOID);
+    REQUIRE(result.get_result_type_classification() == Type::Classification::VOID);
     auto expect = Program{
         ByteCode{
             Instruction ::GET_INSTANT,
@@ -519,7 +519,7 @@ TEST_CASE("compiler_float_rational", "[compiler]") {
     compiler.compile();
 
     auto result = compiler.get_program();
-    REQUIRE(result.get_result_type_classification() ==Type::Classification::VOID);
+    REQUIRE(result.get_result_type_classification() == Type::Classification::VOID);
     auto expect = Program{
         ByteCode{
             Instruction ::GET_FLOAT_CONSTANT,
