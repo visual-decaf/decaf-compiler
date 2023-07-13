@@ -5,14 +5,16 @@
 #include "byte_code.h"
 #include "expr.h"
 #include "program.h"
+#include "stmt.h"
 
 namespace decaf {
 
 class Compiler:
-    public ExprVisitor {
+    public ExprVisitor,
+    public StmtVisitor {
 public:
     // Compiler doesn't own the root
-    explicit Compiler(std::shared_ptr<ast::Expr> root):
+    explicit Compiler(std::shared_ptr<ast::Stmt> root):
         ast_root{std::move(root)} {
     }
 
@@ -29,9 +31,10 @@ public:
     std::any visitLogicUnary(std::shared_ptr<ast::LogicUnary> log_unary) override;
     std::any visitEqualityBinary(std::shared_ptr<ast::EqualityBinary> ptr) override;
     std::any visitFloatConstant(std::shared_ptr<ast::FloatConstant> ptr) override;
+    std::any visitExpressionStmt(std::shared_ptr<ast::ExpressionStmt> ptr) override;
 
 private:
-    std::shared_ptr<ast::Expr> ast_root;
+    std::shared_ptr<ast::Stmt> ast_root;
     Program prog{};
 };
 

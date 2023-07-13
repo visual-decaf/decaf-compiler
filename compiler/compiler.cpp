@@ -128,3 +128,8 @@ std::any decaf::Compiler::visitFloatConstant(std::shared_ptr<ast::FloatConstant>
         index);
     return {};
 }
+
+std::any decaf::Compiler::visitExpressionStmt(std::shared_ptr<ast::ExpressionStmt> expressionStmt) {
+    expressionStmt->expr->accept(*this);
+    return {};
+}
