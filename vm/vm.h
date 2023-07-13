@@ -42,7 +42,10 @@ public:
     bool op_GET_FLOAT_CONSTANT(uint8_t index) override;
     bool op_LOGIC_OR() override;
 
+    bool op_DISCARD() override;
+
     result_type get_result();
+    combined_item_type get_latest_discarded();
     void run();
 
     [[nodiscard]] bool is_error() const;
@@ -71,6 +74,7 @@ private:
     stack_type stk;
     type_stack_type type_stk;
     result_type result;
+    combined_item_type discarded_result;
 
     void report(const std::string& msg);
     void report_unexpected_type(const std::string& object,

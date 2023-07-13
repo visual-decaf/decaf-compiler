@@ -3,6 +3,7 @@
 #include "expr.h"
 #include "parser_impl.h"
 #include "scanner.h"
+#include "stmt.h"
 #include <memory>
 #include <string>
 #include <vector>
@@ -15,7 +16,7 @@ class Parser {
     friend class yy::parser;
 
 public:
-    using ast_ptr = std::shared_ptr<ast::Expr>;
+    using ast_ptr = std::shared_ptr<ast::Stmt>;
     void parse();
     ast_ptr get_ast();
 

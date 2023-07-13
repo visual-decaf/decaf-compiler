@@ -51,6 +51,8 @@ bool decaf::ByteCodeDriver::produce_instruction() {
             return visitor.op_EQUAL();
         case Instruction ::NOT_EQUAL:
             return visitor.op_NOT_EQUAL();
+        case Instruction ::DISCARD:
+            return visitor.op_DISCARD();
 
             // 1 Operand
         case Instruction ::GET_INSTANT:

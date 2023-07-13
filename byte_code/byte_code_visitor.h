@@ -27,6 +27,8 @@ public:
     virtual bool op_GET_FALSE() = 0;
     virtual bool op_GET_FLOAT_CONSTANT(uint8_t index) = 0;
 
+    virtual bool op_DISCARD() = 0;
+
     virtual ~ByteCodeVisitor() = default;
 };
 

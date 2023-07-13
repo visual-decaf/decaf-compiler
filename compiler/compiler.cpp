@@ -76,7 +76,7 @@ std::any decaf::Compiler::visitArithmeticUnary(std::shared_ptr<ast::ArithmeticUn
 
 void decaf::Compiler::compile() {
     ast_root->accept(*this);
-    prog.set_result_type(ast_root->type);
+    prog.set_result_type_classification(Type::Classification::VOID);
 }
 
 decaf::Program decaf::Compiler::get_program() {
@@ -126,5 +126,11 @@ std::any decaf::Compiler::visitFloatConstant(std::shared_ptr<ast::FloatConstant>
     prog.emit_bytes(
         ByteCode::Instruction::GET_FLOAT_CONSTANT,
         index);
+    return {};
+}
+
+std::any decaf::Compiler::visitExpressionStmt(std::shared_ptr<ast::ExpressionStmt> expressionStmt) {
+    expressionStmt->expr->accept(*this);
+    prog.emit(ByteCode::Instruction::DISCARD);
     return {};
 }

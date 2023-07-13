@@ -725,3 +725,26 @@ TEST_CASE("vm_float_not_equal", "[vm]") {
     REQUIRE(result_ptr != nullptr);
     REQUIRE(*result_ptr == true);
 }
+
+TEST_CASE("vm_expression_stmt", "[vm]") {
+    auto input_prog = Program{
+        ByteCode{
+            Instruction ::GET_INSTANT,
+            1,
+            Instruction ::GET_INSTANT,
+            2,
+            Instruction ::PLUS,
+            Instruction ::DISCARD,
+        }};
+    input_prog.set_result_type_classification(Type::Classification::VOID);
+
+    decaf::VirtualMachine vm{input_prog};
+    vm.run();
+
+    REQUIRE(!vm.is_error());
+    auto discarded_result = vm.get_latest_discarded();
+    int result = std::any_cast<int>(discarded_result.first);
+    Type result_type = discarded_result.second;
+    REQUIRE(result == 3);
+    REQUIRE(result_type.classification == decaf::Type::Classification::INT);
+}
