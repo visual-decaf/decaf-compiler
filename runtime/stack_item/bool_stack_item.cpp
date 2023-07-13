@@ -2,7 +2,6 @@
 
 decaf::StackItem::ptr_type decaf::BoolStackItem::perform_LOGIC_AND_with(decaf::StackItem::ptr_type rhs) {
     auto bool_rhs = std::dynamic_pointer_cast<BoolStackItem>(rhs);
-
     if (!bool_rhs) {
         throw TypeMismatch("LOGIC_AND", type.name());
     }
@@ -13,7 +12,6 @@ decaf::StackItem::ptr_type decaf::BoolStackItem::perform_LOGIC_AND_with(decaf::S
 
 decaf::StackItem::ptr_type decaf::BoolStackItem::perform_LOGIC_OR_with(decaf::StackItem::ptr_type rhs) {
     auto bool_rhs = std::dynamic_pointer_cast<BoolStackItem>(rhs);
-
     if (!bool_rhs) {
         throw TypeMismatch("LOGIC_OR", type.name());
     }
@@ -24,7 +22,6 @@ decaf::StackItem::ptr_type decaf::BoolStackItem::perform_LOGIC_OR_with(decaf::St
 
 decaf::StackItem::ptr_type decaf::BoolStackItem::perform_EQUAL_with(decaf::StackItem::ptr_type rhs) {
     auto bool_rhs = std::dynamic_pointer_cast<BoolStackItem>(rhs);
-
     if (!bool_rhs) {
         throw TypeMismatch("EQUAL", type.name());
     }
@@ -35,7 +32,6 @@ decaf::StackItem::ptr_type decaf::BoolStackItem::perform_EQUAL_with(decaf::Stack
 
 decaf::StackItem::ptr_type decaf::BoolStackItem::perform_NOT_EQUAL_with(decaf::StackItem::ptr_type rhs) {
     auto bool_rhs = std::dynamic_pointer_cast<BoolStackItem>(rhs);
-
     if (!bool_rhs) {
         throw TypeMismatch("NOT_EQUAL", type.name());
     }
