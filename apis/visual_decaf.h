@@ -4,9 +4,9 @@ extern "C" {
 
 int get_id();
 void compile(const char* code, int id);
-const char* get_token_stream(int id);
-const char* get_ast(int id);
-const char* get_program(int id);
+char* get_token_stream(int id);
+char* get_ast(int id);
+char* get_program(int id);
 
 #ifdef __cplusplus
 }

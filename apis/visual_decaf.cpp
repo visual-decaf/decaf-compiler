@@ -1,14 +1,17 @@
 #include "visual_decaf.h"
 #include "compiler.h"
 #include "parser.h"
+#include "vm.h"
+#include <cstring>
 #include <map>
 #include <random>
 #include <sstream>
 #include <string>
 
-std::map<int, const char*> token_streams;
-std::map<int, const char*> asts;
-std::map<int, const char*> programs;
+std::map<int, decaf::TokenStream> token_streams;
+std::map<int, std::shared_ptr<decaf::ast::Expr>> asts;
+std::map<int, decaf::Program> programs;
+std::map<int, decaf::VirtualMachine> vms;
 
 std::uniform_int_distribution<int> dist(1, 2147483647);
 
@@ -30,19 +33,29 @@ void compile(const char* code, int id) {
     decaf::Compiler compiler{ast};
     compiler.compile();
     auto program = compiler.get_program();
-    token_streams.insert(std::make_pair(id, boost::json::serialize(token_stream.to_json()).c_str()));
-    asts.insert(std::make_pair(id, boost::json::serialize(ast->to_json()).c_str()));
-    programs.insert(std::make_pair(id, boost::json::serialize(program.to_json()).c_str()));
+    token_streams.insert_or_assign(id, token_stream);
+    asts.insert_or_assign(id, ast);
+    programs.insert_or_assign(id, program);
+    vms.insert_or_assign(id, decaf::VirtualMachine{program});
 }
 
-const char* get_token_stream(int id) {
-    return token_streams.at(id);
+char* get_token_stream(int id) {
+    auto json = boost::json::serialize(token_streams.at(id).to_json());
+    char* token_stream = (char*) malloc((json.length() + 1) * sizeof(char));
+    strcpy(token_stream, json.c_str());
+    return token_stream;
 }
 
-const char* get_ast(int id) {
-    return asts.at(id);
+char* get_ast(int id) {
+    auto json = boost::json::serialize(asts.at(id)->to_json());
+    char* ast = (char*) malloc((json.length() + 1) * sizeof(char));
+    strcpy(ast, json.c_str());
+    return ast;
 }
 
-const char* get_program(int id) {
-    return programs.at(id);
+char* get_program(int id) {
+    auto json = boost::json::serialize(programs.at(id).to_json());
+    char* program = (char*) malloc((json.length() + 1) * sizeof(char));
+    strcpy(program, json.c_str());
+    return program;
 }
