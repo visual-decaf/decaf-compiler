@@ -49,6 +49,7 @@
 %token EQUAL "==" NOT_EQUAL "!="
 %token EOL
 %token SEMICOLON ";"
+%token COMMA ","
 %token INVALID
 
 /* Keywords */
@@ -81,6 +82,16 @@ expressionStmt:
     expression ";" {
         $$ = std::make_shared<ExpressionStmt>($1);
     }
+
+expressionList:
+    expression {
+        $$.expressions.push_back($1);
+    }
+    | expressionList "," expression {
+        $1.expressions.push_back($3);
+        $$ = std::move($1);
+    }
+    ;
 
 expression:
     arithmeticBinaryExpr
