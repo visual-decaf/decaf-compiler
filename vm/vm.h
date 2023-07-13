@@ -43,6 +43,7 @@ public:
     bool op_LOGIC_OR() override;
 
     bool op_DISCARD() override;
+    bool op_PRINT(uint8_t count) override;
 
     result_type get_result();
     combined_item_type get_latest_discarded();

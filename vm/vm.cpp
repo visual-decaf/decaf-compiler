@@ -478,3 +478,8 @@ bool decaf::VirtualMachine::op_DISCARD() {
 decaf::VirtualMachine::combined_item_type decaf::VirtualMachine::get_latest_discarded() {
     return discarded_result;
 }
+
+bool decaf::VirtualMachine::op_PRINT(uint8_t count) {
+
+    return true;
+}
