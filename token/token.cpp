@@ -9,6 +9,7 @@ std::ostream& operator<<(std::ostream& os, const decaf::Token& tok) {
 std::map<decaf::token_type, std::string> decaf::token_name_of{
     {token_type ::INTEGER, "INTEGER"},
     {token_type ::HEX_INTEGER, "HEX_INTEGER"},
+    {token_type ::FLOAT, "FLOAT"},
     {token_type ::PLUS, "PLUS"},
     {token_type ::MINUS, "MINUS"},
     {token_type ::STAR, "STAR"},
@@ -25,6 +26,8 @@ std::map<decaf::token_type, std::string> decaf::token_name_of{
     {token_type ::GREATER_EQUAL, "GREATER_EQUAL"},
     {token_type ::EQUAL, "EQUAL"},
     {token_type ::NOT_EQUAL, "NOT_EQUAL"},
+    {token_type ::TRUE, "TRUE"},
+    {token_type ::FALSE, "FALSE"},
     {token_type ::EOL, "EOL"},
     {token_type ::INVALID, "INVALID"},
     {token_type ::YYEOF, "YYEOF"}};
