@@ -3,6 +3,7 @@
 #include "expr.h"
 #include "parser_impl.h"
 #include "scanner.h"
+#include "stmt.h"
 #include <memory>
 #include <string>
 #include <vector>
