@@ -54,9 +54,9 @@ FLOAT {NORMAL_FLOAT}{EXPONENT}?
 [ \t] {}
 
 "\n" {
-    emit({token_type::EOL, YYText()});
+    // emit({token_type::EOL, YYText()});
     return token_type::EOL;
- }
+}
 
 <<EOF>> {
     emit({token_type::YYEOF});
