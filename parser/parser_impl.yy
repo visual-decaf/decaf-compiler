@@ -2,6 +2,7 @@
 %define api.value.type variant
 /* %define api.token.constructor */
 %define parse.error verbose
+%define lr.type ielr
 %define parse.trace
 %define parse.lac full
 
