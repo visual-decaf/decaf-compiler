@@ -20,7 +20,18 @@ struct Stmt {
     virtual ~Stmt() = default;
 };
 
-struct ExpressionStmt {
+struct ExpressionStmt: Stmt, std::enable_shared_from_this<ExpressionStmt> {
+    std::shared_ptr<Expr> expr;
+
+    explicit ExpressionStmt(std::shared_ptr<Expr> _expr):
+        expr{std::move(_expr)} {
+    }
+
+    std::any accept(StmtVisitor& visitor) override {
+        return visitor.visitExpressionStmt(shared_from_this());
+    }
+
+    bool equal(std::shared_ptr<Stmt> rhs) override;
 };
 
 } // namespace decaf::ast
