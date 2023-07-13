@@ -1,0 +1,3 @@
+add_executable(byte_code_test byte_code_test.cpp)
+target_link_libraries(byte_code_test PRIVATE byte_code Catch2::Catch2WithMain)
+catch_discover_tests(byte_code_test)

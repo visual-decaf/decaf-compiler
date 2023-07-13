@@ -1,0 +1,3 @@
+add_executable(parser_test parser_test.cpp)
+target_link_libraries(parser_test PRIVATE parser Catch2::Catch2WithMain)
+catch_discover_tests(parser_test)

@@ -1,0 +1,13 @@
+add_subdirectory(token)
+add_subdirectory(type)
+add_subdirectory(scanner)
+add_subdirectory(ast)
+add_subdirectory(parser)
+add_subdirectory(compiler)
+add_subdirectory(disassembler)
+add_subdirectory(byte_code)
+add_subdirectory(program)
+add_subdirectory(vm)
+
+add_executable(simple_driver simple_driver.cpp)
+target_link_libraries(simple_driver PUBLIC token scanner ast)

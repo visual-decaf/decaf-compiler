@@ -1,4 +1,4 @@
-name: C++ Build and Unit Test
+name: Code Format Test
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build_and_unit_test:
+  format_test:
     runs-on: ubuntu-latest
     # using latest development file
     container: 
@@ -17,12 +17,6 @@ jobs:
       - name: Checkout this Repo
         uses: actions/checkout@v3
 
-      - name: Configure CMake
-        run: cmake --preset "debug" -S . -B build
-
-      - name: Build All Targets
-        run: cmake --build build
-      
-      - name: Run Unit Tests
-        run: ctest
-        working-directory: ./build
+      - name: Find all C++ code and run format test
+        run: find . -name "*.cpp" -or -name "*.h" |
+             xargs clang-format --dry-run --Werror

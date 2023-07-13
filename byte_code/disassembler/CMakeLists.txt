@@ -1,0 +1,3 @@
+add_library(disassembler disassembler.cpp)
+target_include_directories(disassembler PUBLIC .)
+target_link_libraries(disassembler PUBLIC byte_code_visitor)
