@@ -134,3 +134,13 @@ std::any decaf::Compiler::visitExpressionStmt(std::shared_ptr<ast::ExpressionStm
     prog.emit(ByteCode::Instruction::DISCARD);
     return {};
 }
+
+std::any decaf::Compiler::visitPrintStmt(std::shared_ptr<ast::PrintStmt> printStmt) {
+    for (auto& expr: printStmt->list->expressions) {
+        expr->accept(*this);
+    }
+    prog.emit_bytes(
+        ByteCode::Instruction::PRINT,
+        printStmt->list->expressions.size());
+    return {};
+}
