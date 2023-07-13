@@ -33,6 +33,9 @@
 %nterm <std::shared_ptr<decaf::ast::Expr>> equalityBinary
 %nterm <std::shared_ptr<decaf::ast::Expr>> floatConstant
 
+%nterm <std::shared_ptr<decaf::ast::Stmt>> statement
+%nterm <std::shared_ptr<decaf::ast::Stmt>> expressionStmt
+
 %token <int> INTEGER
 %token <int> HEX_INTEGER
 %token <double> FLOAT
@@ -64,10 +67,19 @@
 
 input: 
     %empty
-    | input expression EOL {
+    | input statement {
         driver.ast_root = $2;
     }
     ;
+
+statement:
+    expressionStmt
+    ;
+
+expressionStmt:
+    expression ";" {
+        $$ = std::make_shared<ExpressionStmt>($1);
+    }
 
 expression:
     arithmeticBinaryExpr

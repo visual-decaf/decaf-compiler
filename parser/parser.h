@@ -15,7 +15,7 @@ class Parser {
     friend class yy::parser;
 
 public:
-    using ast_ptr = std::shared_ptr<ast::Expr>;
+    using ast_ptr = std::shared_ptr<ast::Stmt>;
     void parse();
     ast_ptr get_ast();
 
