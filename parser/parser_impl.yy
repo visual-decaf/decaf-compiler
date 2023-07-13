@@ -45,6 +45,7 @@
 %token GREATER ">" GREATER_EQUAL ">="
 %token EQUAL "==" NOT_EQUAL "!="
 %token EOL
+%token SEMICOLON ";"
 %token INVALID
 
 /* Keywords */
