@@ -25,7 +25,7 @@ struct FloatStackItem: StackItem {
     ptr_type perform_NEGATE() override;
     // ptr_type perform_LOGIC_NOT() override;
 
-    double value
+    double value;
 };
 
 } // namespace decaf
