@@ -35,7 +35,8 @@
 
 %nterm <std::shared_ptr<decaf::ast::Stmt>> statement
 %nterm <std::shared_ptr<decaf::ast::Stmt>> expressionStmt
-%nterm <decaf::ast::ExpressionList> expressionList
+%nterm <std::shared_ptr<decaf::ast::ExpressionList>> expressionList
+%nterm <std::shared_ptr<decaf::ast::Stmt>> printStmt
 
 %token <int> INTEGER
 %token <int> HEX_INTEGER
@@ -77,6 +78,7 @@ input:
 
 statement:
     expressionStmt
+    | printStmt
     ;
 
 expressionStmt:
@@ -86,13 +88,19 @@ expressionStmt:
 
 expressionList:
     expression {
-        $$.expressions.push_back($1);
+        $$ = std::make_shared<ExpressionList>();
+        $$->expressions.push_back($1);
     }
     | expressionList "," expression {
-        $1.expressions.push_back($3);
-        $$ = std::move($1);
+        $1->expressions.push_back($3);
+        $$ = $1;
     }
     ;
+
+printStmt:
+    "Print" "(" expressionList ")" ";" {
+        $$ = std::make_shared<PrintStmt>($3);
+    }
 
 expression:
     arithmeticBinaryExpr

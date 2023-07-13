@@ -4,10 +4,12 @@
 #include "expr.h"
 #include <any>
 #include <memory>
+#include <utility>
 
 namespace decaf {
 struct StmtVisitor {
     virtual std::any visitExpressionStmt(std::shared_ptr<ast::ExpressionStmt>) = 0;
+    virtual std::any visitPrintStmt(std::shared_ptr<ast::PrintStmt>) = 0;
 };
 } // namespace decaf
 
@@ -36,6 +38,24 @@ struct ExpressionStmt: Stmt, std::enable_shared_from_this<ExpressionStmt> {
 
 struct ExpressionList {
     std::vector<std::shared_ptr<Expr>> expressions;
+
+    ExpressionList() = default;
+
+    bool equal(const ExpressionList& list);
+};
+
+struct PrintStmt: Stmt, std::enable_shared_from_this<PrintStmt> {
+    std::shared_ptr<ExpressionList> list;
+
+    explicit PrintStmt(std::shared_ptr<ExpressionList> _list):
+        list{std::move(_list)} {
+    }
+
+    std::any accept(StmtVisitor& visitor) override {
+        return visitor.visitPrintStmt(shared_from_this());
+    }
+
+    bool equal(std::shared_ptr<Stmt> rhs) override;
 };
 
 } // namespace decaf::ast
