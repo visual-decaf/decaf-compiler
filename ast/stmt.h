@@ -40,6 +40,9 @@ struct ExpressionList {
     std::vector<std::shared_ptr<Expr>> expressions;
 
     ExpressionList() = default;
+    ExpressionList(std::initializer_list<std::shared_ptr<Expr>> list):
+        expressions{list} {
+    }
 
     bool equal(const ExpressionList& list);
 };

@@ -655,10 +655,10 @@ TEST_CASE("parser_print_stmt", "[parser]") {
 
     REQUIRE(!parser.is_error());
     auto result = parser.get_ast();
-    auto expr_list = std::make_shared<ast::ExpressionList>();
-    expr_list->expressions.emplace_back(
-        std::make_shared<ast::IntConstant>(1));
-    auto expect = std::make_shared<ast::PrintStmt>(expr_list);
+    auto expect = std::make_shared<ast::PrintStmt>(
+        std::make_shared<ast::ExpressionList>(
+            std::initializer_list<std::shared_ptr<ast::Expr>>{
+                std::make_shared<ast::IntConstant>(1)}));
     REQUIRE(expect->equal(result));
 }
 
@@ -677,11 +677,10 @@ TEST_CASE("parser_print_stmt_multi", "[parser]") {
 
     REQUIRE(!parser.is_error());
     auto result = parser.get_ast();
-    auto expr_list = std::make_shared<ast::ExpressionList>();
-    expr_list->expressions.emplace_back(
-        std::make_shared<ast::IntConstant>(1));
-    expr_list->expressions.emplace_back(
-        std::make_shared<ast::IntConstant>(2));
-    auto expect = std::make_shared<ast::PrintStmt>(expr_list);
+    auto expect = std::make_shared<ast::PrintStmt>(
+        std::make_shared<ast::ExpressionList>(
+            std::initializer_list<std::shared_ptr<ast::Expr>>{
+                std::make_shared<ast::IntConstant>(1),
+                std::make_shared<ast::IntConstant>(2)}));
     REQUIRE(expect->equal(result));
 }
