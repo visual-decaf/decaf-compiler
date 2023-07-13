@@ -47,6 +47,7 @@ FLOAT {NORMAL_FLOAT}{EXPONENT}?
 "==" { emit({token_type::EQUAL, YYText()}); }
 "!=" { emit({token_type::NOT_EQUAL, YYText()}); }
 ";" { emit({token_type::SEMICOLON, YYText()}); }
+"," { emit({token_type::COMMA, YYText()}); }
 
 "true" { emit({token_type::TRUE, YYText()}); }
 "false" { emit({token_type::FALSE, YYText()}); }
