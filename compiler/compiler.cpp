@@ -76,7 +76,7 @@ std::any decaf::Compiler::visitArithmeticUnary(std::shared_ptr<ast::ArithmeticUn
 
 void decaf::Compiler::compile() {
     ast_root->accept(*this);
-    prog.set_result_type(ast_root->type);
+    prog.set_result_type_classification(Type::Classification::VOID);
 }
 
 decaf::Program decaf::Compiler::get_program() {
