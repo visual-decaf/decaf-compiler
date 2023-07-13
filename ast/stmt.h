@@ -7,6 +7,9 @@
 namespace decaf {
 struct StmtVisitor {
 };
+} // namespace decaf
+
+namespace decaf::ast {
 
 struct Stmt {
     virtual std::any accept(StmtVisitor& visitor) = 0;
@@ -15,4 +18,4 @@ struct Stmt {
     virtual ~Stmt() = default;
 };
 
-} // namespace decaf
+} // namespace decaf::ast
