@@ -34,6 +34,8 @@ public:
     bool op_NEGATE() override;
     bool op_LOGIC_OR() override;
 
+    bool op_DISCARD() override;
+
     assembly_code_type get_code();
 
 private:

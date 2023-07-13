@@ -46,6 +46,7 @@ FLOAT {NORMAL_FLOAT}{EXPONENT}?
 ">=" { emit({token_type::GREATER_EQUAL, YYText()}); }
 "==" { emit({token_type::EQUAL, YYText()}); }
 "!=" { emit({token_type::NOT_EQUAL, YYText()}); }
+";" { emit({token_type::SEMICOLON, YYText()}); }
 
 "true" { emit({token_type::TRUE, YYText()}); }
 "false" { emit({token_type::FALSE, YYText()}); }
@@ -53,9 +54,9 @@ FLOAT {NORMAL_FLOAT}{EXPONENT}?
 [ \t] {}
 
 "\n" {
-    emit({token_type::EOL, YYText()});
+    // emit({token_type::EOL, YYText()});
     return token_type::EOL;
- }
+}
 
 <<EOF>> {
     emit({token_type::YYEOF});

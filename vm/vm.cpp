@@ -467,3 +467,14 @@ double decaf::VirtualMachine::pop_as_double() {
     type_stk.pop();
     return top;
 }
+
+bool decaf::VirtualMachine::op_DISCARD() {
+    if (stk.empty())
+        return false;
+    discarded_result = pop();
+    return true;
+}
+
+decaf::VirtualMachine::combined_item_type decaf::VirtualMachine::get_latest_discarded() {
+    return discarded_result;
+}

@@ -9,7 +9,8 @@ struct Type: public Serializable {
         INVALID,
         INT,
         FLOAT,
-        BOOL
+        BOOL,
+        VOID
     };
 
     static const std::map<Classification, std::string> type_name_of;

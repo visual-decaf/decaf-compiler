@@ -191,3 +191,16 @@ TEST_CASE("scanner_float", "[scanner]") {
     REQUIRE(std::stod("0012.") == 12.);
     REQUIRE(std::stod("12.2E+2") == 12.2E+2);
 }
+
+TEST_CASE("scanner_semicolon", "[scanner]") {
+    auto result_token = scan_for("; ");
+    decaf::TokenStream expected_token{
+        {token_type ::SEMICOLON, ";"},
+        {token_type ::YYEOF},
+    };
+
+    REQUIRE(result_token.size() == expected_token.size());
+    for (int i = 0; i < result_token.size(); i++) {
+        REQUIRE(result_token[i] == expected_token[i]);
+    }
+}
