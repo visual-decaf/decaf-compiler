@@ -301,3 +301,15 @@ TEST_CASE("equality_diff_type_json", "[ast]") {
 )");
     REQUIRE(expect_json == ast_root->to_json());
 }
+
+TEST_CASE("float_constant_json", "[ast]") {
+    auto ast_root = std::make_shared<ast::FloatConstant>(3.14);
+    auto expect_json = boost::json::parse(R"(
+{
+    "type": "FloatConstant",
+    "value": 3.14,
+    "resultType": "FLOAT"
+}
+)");
+    REQUIRE(expect_json == ast_root->to_json());
+}

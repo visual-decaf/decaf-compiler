@@ -275,3 +275,10 @@ bool decaf::ast::FloatConstant::equals(std::shared_ptr<Expr> ptr) {
 
     return this->value == rhs->value;
 }
+boost::json::value decaf::ast::FloatConstant::to_json() {
+    boost::json::object result{
+        {"type", "FloatConstant"},
+        {"value", this->value},
+        {"resultType", this->type.to_json()}};
+    return result;
+}
