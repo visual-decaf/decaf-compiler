@@ -14,4 +14,5 @@ struct EqualityBinary;
 struct FloatConstant;
 
 struct Stmt;
+struct ExpressionStmt;
 } // namespace decaf::ast
