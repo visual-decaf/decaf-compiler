@@ -131,5 +131,6 @@ std::any decaf::Compiler::visitFloatConstant(std::shared_ptr<ast::FloatConstant>
 
 std::any decaf::Compiler::visitExpressionStmt(std::shared_ptr<ast::ExpressionStmt> expressionStmt) {
     expressionStmt->expr->accept(*this);
+    prog.emit(ByteCode::Instruction::DISCARD);
     return {};
 }
