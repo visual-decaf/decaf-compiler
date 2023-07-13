@@ -27,11 +27,16 @@ struct StackItem {
     virtual ptr_type perform_LOGIC_NOT();
 
     struct OperationNotImplemented: std::runtime_error {
-        explicit OperationNotImplemented(const std::string& operation):
-            std::runtime_error("Type Does Not Implement Operation [" + operation + "]") {
+        explicit OperationNotImplemented(const std::string& type_name, const std::string& operation):
+            std::runtime_error("Type [" + type_name + "] Does Not Implement Operation [" + operation + "]") {
         }
     };
-    struct TypeMismatch: std::runtime_error {};
+
+    struct TypeMismatch: std::runtime_error {
+        TypeMismatch(const std::string& operation, const std::string& expect_type):
+            std::runtime_error("Operation [" + operation + "] Expect Type [" + expect_type + "]") {
+        }
+    };
 
     Type type;
 };
