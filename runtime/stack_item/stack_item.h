@@ -44,6 +44,8 @@ struct StackItem {
     }
 
     Type type;
+
+    virtual ~StackItem() = default;
 };
 
 } // namespace decaf
