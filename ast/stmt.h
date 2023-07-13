@@ -34,4 +34,8 @@ struct ExpressionStmt: Stmt, std::enable_shared_from_this<ExpressionStmt> {
     bool equal(std::shared_ptr<Stmt> rhs) override;
 };
 
+struct ExpressionList {
+    std::vector<std::shared_ptr<Expr>> expressions;
+};
+
 } // namespace decaf::ast

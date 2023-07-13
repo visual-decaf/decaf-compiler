@@ -15,4 +15,5 @@ struct FloatConstant;
 
 struct Stmt;
 struct ExpressionStmt;
+struct ExpressionList;
 } // namespace decaf::ast

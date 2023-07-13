@@ -35,6 +35,7 @@
 
 %nterm <std::shared_ptr<decaf::ast::Stmt>> statement
 %nterm <std::shared_ptr<decaf::ast::Stmt>> expressionStmt
+%nterm <decaf::ast::ExpressionList> expressionList
 
 %token <int> INTEGER
 %token <int> HEX_INTEGER
