@@ -9,22 +9,22 @@ namespace decaf {
 struct StackItem {
     using ptr_type = std::shared_ptr<StackItem>;
 
-    virtual void perform_PLUS_with(ptr_type rhs);
-    virtual void perform_MINUS_with(ptr_type rhs);
-    virtual void perform_MULTIPLY_with(ptr_type rhs);
-    virtual void perform_DIVIDE_with(ptr_type rhs);
-    virtual void perform_MOD_with(ptr_type rhs);
-    virtual void perform_LESS_with(ptr_type rhs);
-    virtual void perform_GREATER_with(ptr_type rhs);
-    virtual void perform_LESS_EQUAL_with(ptr_type rhs);
-    virtual void perform_GREATER_EQUAL_with(ptr_type rhs);
-    virtual void perform_LOGIC_AND_with(ptr_type rhs);
-    virtual void perform_LOGIC_OR_with(ptr_type rhs);
-    virtual void perform_EQUAL_with(ptr_type rhs);
-    virtual void perform_NOT_EQUAL_with(ptr_type rhs);
+    virtual ptr_type perform_PLUS_with(ptr_type rhs);
+    virtual ptr_type perform_MINUS_with(ptr_type rhs);
+    virtual ptr_type perform_MULTIPLY_with(ptr_type rhs);
+    virtual ptr_type perform_DIVIDE_with(ptr_type rhs);
+    virtual ptr_type perform_MOD_with(ptr_type rhs);
+    virtual ptr_type perform_LESS_with(ptr_type rhs);
+    virtual ptr_type perform_GREATER_with(ptr_type rhs);
+    virtual ptr_type perform_LESS_EQUAL_with(ptr_type rhs);
+    virtual ptr_type perform_GREATER_EQUAL_with(ptr_type rhs);
+    virtual ptr_type perform_LOGIC_AND_with(ptr_type rhs);
+    virtual ptr_type perform_LOGIC_OR_with(ptr_type rhs);
+    virtual ptr_type perform_EQUAL_with(ptr_type rhs);
+    virtual ptr_type perform_NOT_EQUAL_with(ptr_type rhs);
 
-    virtual void perform_NEGATE();
-    virtual void perform_LOGIC_NOT();
+    virtual ptr_type perform_NEGATE();
+    virtual ptr_type perform_LOGIC_NOT();
 
     struct OperationNotImplemented: std::runtime_error {
         explicit OperationNotImplemented(const std::string& operation):
