@@ -53,6 +53,7 @@
 
 /* Keywords */
 %token TRUE "true" FALSE "false"
+%token PRINT "Print"
 
 /* Expressions */
 %left LOGIC_OR
