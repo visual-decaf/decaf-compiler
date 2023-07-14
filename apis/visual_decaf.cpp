@@ -9,7 +9,7 @@
 #include <string>
 
 std::map<int, decaf::TokenStream> token_streams;
-std::map<int, std::shared_ptr<decaf::ast::Expr>> asts;
+std::map<int, std::shared_ptr<decaf::ast::Stmt>> asts;
 std::map<int, decaf::Program> programs;
 std::map<int, decaf::VirtualMachine> vms;
 
