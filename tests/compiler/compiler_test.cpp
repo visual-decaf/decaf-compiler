@@ -597,9 +597,9 @@ TEST_CASE("compiler_print_stmt_multi", "[compiler]") {
     auto expect = Program{
         ByteCode{
             Instruction ::GET_INSTANT,
-            1,
-            Instruction ::GET_INSTANT,
             2,
+            Instruction ::GET_INSTANT,
+            1,
             Instruction ::PRINT,
             2,
         }};
