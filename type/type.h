@@ -29,6 +29,7 @@ struct Type: public Serializable {
     }
 
     boost::json::value to_json() override;
+    std::string name() const;
 };
 
 } // namespace decaf
