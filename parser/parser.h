@@ -29,6 +29,10 @@ public:
         next_token{token_stream.begin()} {
     }
 
+    Parser():
+        token_stream({}), next_token{token_stream.begin()} {
+    }
+
     void set_token_stream(decaf::TokenStream token_stream);
 
 private:
