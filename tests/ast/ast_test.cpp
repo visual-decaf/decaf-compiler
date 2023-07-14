@@ -1,4 +1,5 @@
 #include "expr.h"
+#include "stmt.h"
 #include <catch2/catch_test_macros.hpp>
 using namespace decaf;
 
@@ -340,5 +341,5 @@ TEST_CASE("expr_stmt_json", "[ast]") {
     }
 }
 )");
-    REQUIRE(expect_json == ast_root.to_json());
+    REQUIRE(expect_json == ast_root->to_json());
 }
