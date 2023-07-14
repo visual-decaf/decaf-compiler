@@ -28,9 +28,10 @@ int get_id() {
 }
 
 void compile(const char* code, int id) {
-    delete stream_scanners.at(id);
-    auto stream_scanner = new decaf::StreamScanner{code};
-    stream_scanners.insert_or_assign(id, stream_scanner);
+    if (stream_scanners.find(id) != stream_scanners.end()) {
+        delete stream_scanners.at(id);
+    }
+    stream_scanners.insert_or_assign(id, new decaf::StreamScanner{code});
 }
 
 char* get_token_stream(int id) {
@@ -57,8 +58,9 @@ char* get_token_stream(int id) {
 }
 
 char* get_ast(int id) {
-    auto parser = parsers.at(id);
-    parser->clear_error();
+    if (parsers.find(id) != parsers.end()) {
+        delete parsers.at(id);
+    }
     char* response = nullptr;
     if (stream_scanners.at(id)->is_error()) {
         boost::json::object response_object{
@@ -69,7 +71,8 @@ char* get_ast(int id) {
         strcpy(response, response_json.c_str());
         return response;
     }
-    parser->set_token_stream(stream_scanners.at(id)->get_tokens());
+    auto parser = new decaf::Parser{stream_scanners.at(id)->get_tokens()};
+    parsers.insert_or_assign(id, parser);
     parser->parse();
     if (parser->is_error()) {
         boost::json::array err_msg_arr{};
@@ -97,8 +100,10 @@ char* get_ast(int id) {
 }
 
 char* get_program(int id) {
+    if (compilers.find(id) != compilers.end()) {
+        delete compilers.at(id);
+    }
     char* response = nullptr;
-    auto compiler = compilers.at(id);
     if (parsers.at(id)->is_error()) {
         boost::json::object response_object{
             {"code", 5},
@@ -108,7 +113,8 @@ char* get_program(int id) {
         strcpy(response, response_json.c_str());
         return response;
     }
-    compiler->set_ast_root(parsers.at(id)->get_ast());
+    auto compiler = new decaf::Compiler{parsers.at(id)->get_ast()};
+    compilers.insert_or_assign(id, compiler);
     compiler->compile();
     boost::json::object response_object{
         {"code", 1},
