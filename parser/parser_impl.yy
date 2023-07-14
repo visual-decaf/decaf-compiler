@@ -35,6 +35,8 @@
 
 %nterm <std::shared_ptr<decaf::ast::Stmt>> statement
 %nterm <std::shared_ptr<decaf::ast::Stmt>> expressionStmt
+%nterm <std::shared_ptr<decaf::ast::ExpressionList>> expressionList
+%nterm <std::shared_ptr<decaf::ast::Stmt>> printStmt
 
 %token <int> INTEGER
 %token <int> HEX_INTEGER
@@ -49,10 +51,12 @@
 %token EQUAL "==" NOT_EQUAL "!="
 %token EOL
 %token SEMICOLON ";"
+%token COMMA ","
 %token INVALID
 
 /* Keywords */
 %token TRUE "true" FALSE "false"
+%token PRINT "Print"
 
 /* Expressions */
 %left LOGIC_OR
@@ -74,11 +78,28 @@ input:
 
 statement:
     expressionStmt
+    | printStmt
     ;
 
 expressionStmt:
     expression ";" {
         $$ = std::make_shared<ExpressionStmt>($1);
+    }
+
+expressionList:
+    expression {
+        $$ = std::make_shared<ExpressionList>();
+        $$->expressions.push_back($1);
+    }
+    | expressionList "," expression {
+        $1->expressions.push_back($3);
+        $$ = $1;
+    }
+    ;
+
+printStmt:
+    "Print" "(" expressionList ")" ";" {
+        $$ = std::make_shared<PrintStmt>($3);
     }
 
 expression:

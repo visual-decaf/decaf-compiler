@@ -109,3 +109,8 @@ bool Disassembler::op_DISCARD() {
     this->assembly_code.emplace_back("DISCARD");
     return true;
 }
+
+bool Disassembler::op_PRINT(uint8_t count) {
+    this->assembly_code.emplace_back("PRINT " + std::to_string(static_cast<int>(count)));
+    return true;
+}

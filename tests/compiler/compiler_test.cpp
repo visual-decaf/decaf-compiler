@@ -560,3 +560,48 @@ TEST_CASE("compiler_float_rational", "[compiler]") {
     expect.emit(Instruction ::DISCARD);
     REQUIRE(expect == result);
 }
+
+TEST_CASE("compiler_print_stmt", "[compiler]") {
+    auto input_prog = std::make_shared<ast::PrintStmt>(
+        std::make_shared<ast::ExpressionList>(
+            std::initializer_list<std::shared_ptr<ast::Expr>>{
+                std::make_shared<ast::IntConstant>(1)}));
+
+    decaf::Compiler compiler{input_prog};
+    compiler.compile();
+
+    auto result = compiler.get_program();
+    REQUIRE(result.get_result_type_classification() == decaf::Type::Classification::VOID);
+    auto expect = Program{
+        ByteCode{
+            Instruction ::GET_INSTANT,
+            1,
+            Instruction ::PRINT,
+            1,
+        }};
+    REQUIRE(expect == result);
+}
+
+TEST_CASE("compiler_print_stmt_multi", "[compiler]") {
+    auto input_prog = std::make_shared<ast::PrintStmt>(
+        std::make_shared<ast::ExpressionList>(
+            std::initializer_list<std::shared_ptr<ast::Expr>>{
+                std::make_shared<ast::IntConstant>(1),
+                std::make_shared<ast::IntConstant>(2)}));
+
+    decaf::Compiler compiler{input_prog};
+    compiler.compile();
+
+    auto result = compiler.get_program();
+    REQUIRE(result.get_result_type_classification() == decaf::Type::Classification::VOID);
+    auto expect = Program{
+        ByteCode{
+            Instruction ::GET_INSTANT,
+            2,
+            Instruction ::GET_INSTANT,
+            1,
+            Instruction ::PRINT,
+            2,
+        }};
+    REQUIRE(expect == result);
+}

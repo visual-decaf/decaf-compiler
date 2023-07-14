@@ -35,6 +35,7 @@ public:
     bool op_LOGIC_OR() override;
 
     bool op_DISCARD() override;
+    bool op_PRINT(uint8_t count) override;
 
     assembly_code_type get_code();
 
