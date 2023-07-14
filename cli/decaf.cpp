@@ -10,6 +10,7 @@ void print_result(decaf::StackItem::ptr_type result) {
     if (result == nullptr) {
         return;
     }
+    std::cout << *result << std::endl;
 }
 
 void run_repl() {
