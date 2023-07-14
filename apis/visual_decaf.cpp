@@ -6,7 +6,6 @@
 #include <cstring>
 #include <map>
 #include <random>
-#include <sstream>
 #include <string>
 
 std::map<int, decaf::StreamScanner*> stream_scanners;
@@ -20,18 +19,22 @@ int get_id() {
     unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
     std::default_random_engine gen(seed);
     int id = dist(gen);
-    stream_scanners.insert_or_assign(id, new decaf::StreamScanner{""});
-    parsers.insert_or_assign(id, new decaf::Parser{decaf::TokenStream{}});
-    compilers.insert_or_assign(id, new decaf::Compiler{nullptr});
-    vms.insert_or_assign(id, new decaf::VirtualMachine{decaf::Program{}});
     return id;
 }
 
-void compile(const char* code, int id) {
+char* upload_code(const char* code, int id) {
+    char* response = nullptr;
     if (stream_scanners.find(id) != stream_scanners.end()) {
         delete stream_scanners.at(id);
     }
     stream_scanners.insert_or_assign(id, new decaf::StreamScanner{code});
+    boost::json::object response_object{
+        {"code", 1},
+        {"msg", "Success"}};
+    auto response_json = boost::json::serialize(response_object);
+    response = (char*) malloc((response_json.length() + 1) * sizeof(char));
+    strcpy(response, response_json.c_str());
+    return response;
 }
 
 char* get_token_stream(int id) {
@@ -104,7 +107,7 @@ char* get_program(int id) {
         delete compilers.at(id);
     }
     char* response = nullptr;
-    if (parsers.at(id)->is_error()) {
+    if (stream_scanners.at(id)->is_error() || parsers.at(id)->is_error()) {
         boost::json::object response_object{
             {"code", 5},
             {"msg", "There are some wrongs at parse phase"}};
