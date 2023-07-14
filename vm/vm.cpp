@@ -5,8 +5,24 @@ void decaf::VirtualMachine::run() {
     ByteCodeDriver driver{prog.code, *this};
     try {
         driver.produce();
-    } catch (const StackItem::OperationNotImplemented&) {
-    } catch (const StackItem::TypeMismatch&) {
+    } catch (const StackItem::OperationNotImplemented& e) {
+        report(e.what());
+        return;
+    } catch (const StackItem::TypeMismatch& e) {
+        report(e.what());
+        return;
+    }
+    if (stk.empty() && prog.result_type.classification != Type::Classification::VOID) {
+        report_unexpected_type("Input program",
+                               prog.result_type.classification,
+                               Type::Classification::VOID);
+        return;
+    }
+    auto result = stk.top();
+    if (result->type != prog.result_type) {
+        report_unexpected_type("Input program",
+                               prog.result_type.classification,
+                               result->type.classification);
     }
 }
 
