@@ -12,10 +12,14 @@ void decaf::VirtualMachine::run() {
         report(e.what());
         return;
     }
-    if (stk.empty() && prog.result_type.classification != Type::Classification::VOID) {
-        report_unexpected_type("Input program",
-                               prog.result_type.classification,
-                               Type::Classification::VOID);
+    if (stk.empty()) {
+        if (prog.result_type.classification != Type::Classification::VOID) {
+            report_unexpected_type("Input program",
+                                   prog.result_type.classification,
+                                   Type::Classification::VOID);
+            return;
+        }
+        // FINE
         return;
     }
     auto result = stk.top();
