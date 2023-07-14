@@ -25,6 +25,10 @@ struct BoolStackItem: StackItem {
         StackItem(Type(Type::Classification::BOOL)), value(val) {
     }
 
+    bool equal_to_bool(bool rhs) {
+        return value == rhs;
+    }
+
     bool value;
 };
 

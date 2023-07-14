@@ -25,6 +25,10 @@ struct IntStackItem: StackItem {
     ptr_type perform_NEGATE() override;
     // ptr_type perform_LOGIC_NOT() override;
 
+    bool equal_to_int(int rhs) override {
+        return value == rhs;
+    }
+
     int value;
 };
 

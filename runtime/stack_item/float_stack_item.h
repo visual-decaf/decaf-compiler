@@ -25,6 +25,10 @@ struct FloatStackItem: StackItem {
     ptr_type perform_NEGATE() override;
     // ptr_type perform_LOGIC_NOT() override;
 
+    bool equal_to_double(double rhs) {
+        return value == rhs;
+    }
+
     double value;
 };
 
