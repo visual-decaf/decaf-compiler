@@ -136,7 +136,9 @@ std::any decaf::Compiler::visitExpressionStmt(std::shared_ptr<ast::ExpressionStm
 }
 
 std::any decaf::Compiler::visitPrintStmt(std::shared_ptr<ast::PrintStmt> printStmt) {
-    for (auto& expr: printStmt->list->expressions) {
+    auto& expressions = printStmt->list->expressions;
+    for (auto it = expressions.rbegin(); it != expressions.rend(); it++) {
+        auto expr = *it;
         expr->accept(*this);
     }
     prog.emit_bytes(
