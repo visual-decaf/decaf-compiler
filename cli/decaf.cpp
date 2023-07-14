@@ -6,18 +6,9 @@
 
 #include <iostream>
 
-void print_result(decaf::VirtualMachine::result_type& result) {
-    int* ptr_int = std::get_if<int>(&result);
-    bool* ptr_bool = std::get_if<bool>(&result);
-    auto* ptr_double = std::get_if<double>(&result);
-    if (ptr_int) {
-        std::cout << *ptr_int << std::endl;
-    }
-    if (ptr_bool) {
-        std::cout << std::boolalpha << *ptr_bool << std::endl;
-    }
-    if (ptr_double) {
-        std::cout << *ptr_double << std::endl;
+void print_result(decaf::StackItem::ptr_type result) {
+    if (result == nullptr) {
+        return;
     }
 }
 
@@ -42,7 +33,7 @@ void run_repl() {
 
         decaf::VirtualMachine vm{program};
         vm.run();
-        auto result = vm.get_result();
+        auto result = vm.get_stack_top();
         print_result(result);
     }
 }
