@@ -26,6 +26,10 @@ struct IntStackItem: StackItem {
     // ptr_type perform_LOGIC_NOT() override;
 
     int value;
+
+    void print(std::ostream& os) const override {
+        os << value;
+    }
 };
 
 } // namespace decaf
