@@ -46,7 +46,7 @@ TEST_CASE("parser_hex_integer", "[parser]") {
     auto expect = std::make_shared<ast::ArithmeticBinary>(
         std::make_shared<ast::IntConstant>(0),
         ast::ArithmeticBinary::Operation::PLUS,
-        std::make_shared<ast::IntConstant>(4782));
+        std::make_shared<ast::IntConstant>(0x12ae));
 
     REQUIRE(expect->equals(result_expr));
 }
