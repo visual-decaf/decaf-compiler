@@ -64,6 +64,9 @@ bool decaf::ByteCodeDriver::produce_instruction() {
         case Instruction ::GET_FLOAT_CONSTANT:
             check_expected_byte(1);
             return visitor.op_GET_FLOAT_CONSTANT(*(++current_byte));
+        case Instruction ::PRINT:
+            check_expected_byte(1);
+            return visitor.op_PRINT(*(++current_byte));
     }
 
     // No such Instruction
