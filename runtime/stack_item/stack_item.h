@@ -56,6 +56,11 @@ struct StackItem {
     Type type;
 
     virtual ~StackItem() = default;
+
+    virtual void print(std::ostream& os) const {
+    }
 };
 
 } // namespace decaf
+
+std::ostream& operator<<(std::ostream& os, const decaf::StackItem& stackItem);

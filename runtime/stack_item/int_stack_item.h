@@ -30,6 +30,10 @@ struct IntStackItem: StackItem {
     }
 
     int value;
+
+    void print(std::ostream& os) const override {
+        os << value;
+    }
 };
 
 } // namespace decaf

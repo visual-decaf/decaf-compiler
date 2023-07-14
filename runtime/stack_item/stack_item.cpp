@@ -59,3 +59,8 @@ decaf::StackItem::ptr_type decaf::StackItem::perform_NEGATE() {
 decaf::StackItem::ptr_type decaf::StackItem::perform_LOGIC_NOT() {
     throw OperationNotImplemented(type.name(), "LOGIC_NOT");
 }
+
+std::ostream& operator<<(std::ostream& os, const decaf::StackItem& stackItem) {
+    stackItem.print(os);
+    return os;
+}

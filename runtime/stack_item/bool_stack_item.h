@@ -30,6 +30,10 @@ struct BoolStackItem: StackItem {
     }
 
     bool value;
+
+    void print(std::ostream& os) const {
+        os << std::boolalpha << value;
+    }
 };
 
 } // namespace decaf

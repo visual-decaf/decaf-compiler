@@ -30,6 +30,10 @@ struct FloatStackItem: StackItem {
     }
 
     double value;
+
+    void print(std::ostream& os) const override {
+        os << value;
+    }
 };
 
 } // namespace decaf
