@@ -16,8 +16,8 @@ class VirtualMachine:
 public:
     using stack_type = std::stack<StackItem::ptr_type>;
 
-    explicit VirtualMachine(Program _prog):
-        prog{std::move(_prog)} {
+    explicit VirtualMachine(Program _prog, std::ostream& os):
+        prog{std::move(_prog)}, output{os} {
     }
     bool op_NEGATE() override;
     bool op_PLUS() override;
@@ -59,6 +59,7 @@ protected:
 private:
     Program prog;
     stack_type stk;
+    std::ostream& output;
 
     StackItem::ptr_type last_discarded;
 
