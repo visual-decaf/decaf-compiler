@@ -16,7 +16,7 @@ class VirtualMachine:
 public:
     using stack_type = std::stack<StackItem::ptr_type>;
 
-    explicit VirtualMachine(Program _prog, std::ostream& os):
+    explicit VirtualMachine(Program _prog, std::ostream& os = std::cout):
         prog{std::move(_prog)}, output{os} {
     }
     bool op_NEGATE() override;
