@@ -29,6 +29,7 @@ std::map<decaf::token_type, std::string> decaf::token_name_of{
     {token_type ::TRUE, "TRUE"},
     {token_type ::FALSE, "FALSE"},
     {token_type ::EOL, "EOL"},
+    {token_type ::SEMICOLON, "SEMICOLON"},
     {token_type ::INVALID, "INVALID"},
     {token_type ::YYEOF, "YYEOF"}};
 
