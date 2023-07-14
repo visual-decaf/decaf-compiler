@@ -18,10 +18,6 @@ public:
         ast_root{std::move(root)} {
     }
 
-    void set_ast_root(std::shared_ptr<ast::Stmt> root) {
-        this->ast_root = std::move(root);
-    }
-
     void compile();
     Program get_program();
 

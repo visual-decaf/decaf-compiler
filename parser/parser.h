@@ -29,8 +29,6 @@ public:
         next_token{token_stream.begin()} {
     }
 
-    void set_token_stream(decaf::TokenStream token_stream);
-
 private:
     yy::parser parser_impl{*this};
     decaf::TokenStream token_stream;
