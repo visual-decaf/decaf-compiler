@@ -26,6 +26,10 @@ struct FloatStackItem: StackItem {
     // ptr_type perform_LOGIC_NOT() override;
 
     double value;
+
+    void print(std::ostream& os) const override {
+        os << value;
+    }
 };
 
 } // namespace decaf
