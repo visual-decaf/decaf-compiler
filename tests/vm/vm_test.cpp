@@ -1,6 +1,7 @@
 #include "program.h"
 #include "vm.h"
 #include <catch2/catch_test_macros.hpp>
+#include <sstream>
 
 using namespace decaf;
 using Instruction = ByteCode::Instruction;
@@ -715,4 +716,42 @@ TEST_CASE("vm_expression_stmt", "[vm]") {
     REQUIRE(!vm.is_error());
     auto discarded_result = vm.get_last_discarded();
     REQUIRE(discarded_result->equal_to_int(3));
+}
+
+TEST_CASE("vm_print_stmt", "[vm]") {
+    auto input_prog = Program{
+        ByteCode{
+            Instruction ::GET_INSTANT,
+            1,
+            Instruction ::PRINT,
+            1,
+        }};
+    input_prog.set_result_type_classification(Type::Classification::VOID);
+
+    std::ostringstream os;
+    decaf::VirtualMachine vm{input_prog, os};
+    vm.run();
+
+    REQUIRE(!vm.is_error());
+    REQUIRE(os.str() == "1\n");
+}
+
+TEST_CASE("vm_print_stmt_multi", "[vm]") {
+    auto input_prog = Program{
+        ByteCode{
+            Instruction ::GET_INSTANT,
+            2,
+            Instruction ::GET_INSTANT,
+            1,
+            Instruction ::PRINT,
+            2,
+        }};
+    input_prog.set_result_type_classification(Type::Classification::VOID);
+
+    std::ostringstream os;
+    decaf::VirtualMachine vm{input_prog, os};
+    vm.run();
+
+    REQUIRE(!vm.is_error());
+    REQUIRE(os.str() == "1 2\n");
 }
