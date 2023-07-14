@@ -210,7 +210,7 @@ bool decaf::VirtualMachine::op_PRINT(uint8_t count) {
             report("Not Enough StackItem to Print");
             return false;
         }
-        output << *stk.top() << ' ';
+        output << *stk.top() << (wait_to_print > 1 ? " " : "");
         stk.pop();
     }
     output << std::endl;
