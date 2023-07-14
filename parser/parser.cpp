@@ -52,8 +52,3 @@ void decaf::Parser::clear_error() {
 std::vector<std::string> decaf::Parser::get_err_messages() const {
     return err_messages;
 }
-
-void decaf::Parser::set_token_stream(decaf::TokenStream _token_stream) {
-    this->token_stream = std::move(_token_stream);
-    this->next_token = this->token_stream.begin();
-}
