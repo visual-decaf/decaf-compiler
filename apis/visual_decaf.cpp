@@ -1,6 +1,7 @@
 #include "visual_decaf.h"
 #include "compiler.h"
 #include "parser.h"
+#include "stream_scanner.h"
 #include "vm.h"
 #include <cstring>
 #include <map>
@@ -8,9 +9,10 @@
 #include <sstream>
 #include <string>
 
+std::map<int, bool> scan_results;
 std::map<int, decaf::TokenStream> token_streams;
-std::map<int, std::shared_ptr<decaf::ast::Stmt>> asts;
-std::map<int, decaf::Program> programs;
+std::map<int, decaf::Parser> parsers;
+std::map<int, decaf::Compiler> compilers;
 std::map<int, decaf::VirtualMachine> vms;
 
 std::uniform_int_distribution<int> dist(1, 2147483647);
@@ -26,31 +28,25 @@ void compile(const char* code, int id) {
     std::istringstream input{std::string(code)};
     decaf::Scanner scanner{input};
     scanner.scan();
-    auto token_stream = scanner.get_tokens();
-    decaf::Parser parser{token_stream};
-    parser.parse();
-    auto ast = parser.get_ast();
-    decaf::Compiler compiler{ast};
-    compiler.compile();
-    auto program = compiler.get_program();
-    token_streams.insert_or_assign(id, token_stream);
-    asts.insert_or_assign(id, ast);
-    programs.insert_or_assign(id, program);
-    vms.insert_or_assign(id, decaf::VirtualMachine{program});
+    scan_results.insert_or_assign(id, scanner.is_error());
+    token_streams.insert_or_assign(id, scanner.get_tokens());
 }
 
 char* get_token_stream(int id) {
-    auto json = boost::json::serialize(token_streams.at(id).to_json());
-    char* token_stream = (char*) malloc((json.length() + 1) * sizeof(char));
-    strcpy(token_stream, json.c_str());
+    char* token_stream = nullptr;
+    if (scan_results.at(id)) {
+        std::string error_msg = "Unrecognized token";
+        token_stream = (char*) malloc((error_msg.length() + 1) * sizeof(char));
+        strcpy(token_stream, error_msg.c_str());
+    } else {
+        std::string token_json = boost::json::serialize(token_streams.at(id).to_json());
+        token_stream = (char*) malloc((token_json.length() + 1) * sizeof(char));
+        strcpy(token_stream, token_json.c_str());
+    }
     return token_stream;
 }
 
 char* get_ast(int id) {
-    auto json = boost::json::serialize(asts.at(id)->to_json());
-    char* ast = (char*) malloc((json.length() + 1) * sizeof(char));
-    strcpy(ast, json.c_str());
-    return ast;
 }
 
 char* get_program(int id) {
