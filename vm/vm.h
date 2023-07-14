@@ -49,6 +49,7 @@ public:
     std::vector<std::string> get_error_messages();
 
     StackItem::ptr_type get_last_discarded();
+    StackItem::ptr_type get_stack_top();
 
 protected:
     StackItem::ptr_type pop();

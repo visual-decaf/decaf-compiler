@@ -194,3 +194,8 @@ bool decaf::VirtualMachine::op_DISCARD() {
 decaf::StackItem::ptr_type decaf::VirtualMachine::get_last_discarded() {
     return last_discarded;
 }
+decaf::StackItem::ptr_type decaf::VirtualMachine::get_result() {
+    if (stk.empty())
+        return nullptr;
+    return stk.top();
+}
