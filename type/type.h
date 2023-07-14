@@ -28,6 +28,10 @@ struct Type: public Serializable {
         return classification == rhs.classification;
     }
 
+    bool operator!=(const Type& rhs) const {
+        return !(*this == rhs);
+    }
+
     boost::json::value to_json() override;
     std::string name() const;
 };

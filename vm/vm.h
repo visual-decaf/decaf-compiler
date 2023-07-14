@@ -2,6 +2,7 @@
 
 #include "byte_code_visitor.h"
 #include "program.h"
+#include "stack_items.h"
 #include <any>
 #include <optional>
 #include <stack>
@@ -13,10 +14,7 @@ namespace decaf {
 class VirtualMachine:
     public ByteCodeVisitor {
 public:
-    using stack_type = std::stack<std::any>;
-    using result_type = std::variant<std::monostate, int, double, bool>;
-    using type_stack_type = std::stack<decaf::Type>;
-    using combined_item_type = std::pair<std::any, decaf::Type>;
+    using stack_type = std::stack<StackItem::ptr_type>;
 
     explicit VirtualMachine(Program _prog):
         prog{std::move(_prog)} {
@@ -44,37 +42,24 @@ public:
 
     bool op_DISCARD() override;
 
-    result_type get_result();
-    combined_item_type get_latest_discarded();
     void run();
 
     [[nodiscard]] bool is_error() const;
     void clear();
     std::vector<std::string> get_error_messages();
 
+    StackItem::ptr_type get_last_discarded();
+    StackItem::ptr_type get_stack_top();
+
+protected:
+    StackItem::ptr_type pop();
+    void push(StackItem::ptr_type);
+
 private:
-    void set_int_result(int);
-    void set_double_result(double);
-    void set_bool_result(bool);
-    void push(std::any val, decaf::Type type);
-    void push_classification(std::any val, decaf::Type::Classification type_classification);
-    combined_item_type pop();
-
-    [[nodiscard]] bool expected_top_type(const decaf::Type&) const;
-    [[nodiscard]] bool expected_top_type_classification(decaf::Type::Classification) const;
-    std::optional<std::pair<int, int>> expected_two_integer();
-    std::optional<std::pair<bool, bool>> expected_two_bool();
-    std::optional<std::pair<double, double>> expected_two_double();
-
-    int pop_as_int();
-    bool pop_as_bool();
-    double pop_as_double();
-
     Program prog;
     stack_type stk;
-    type_stack_type type_stk;
-    result_type result;
-    combined_item_type discarded_result;
+
+    StackItem::ptr_type last_discarded;
 
     void report(const std::string& msg);
     void report_unexpected_type(const std::string& object,
