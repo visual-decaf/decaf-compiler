@@ -205,6 +205,14 @@ decaf::StackItem::ptr_type decaf::VirtualMachine::get_stack_top() {
 }
 
 bool decaf::VirtualMachine::op_PRINT(uint8_t count) {
-
+    for (int wait_to_print = count; wait_to_print >= 1; wait_to_print--) {
+        if (stk.empty()) {
+            report("Not Enough StackItem to Print");
+            return false;
+        }
+        std::cout << *stk.top() << ' ';
+        stk.pop();
+    }
+    std::cout << std::endl;
     return true;
 }
