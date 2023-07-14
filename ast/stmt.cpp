@@ -9,3 +9,10 @@ bool decaf::ast::ExpressionStmt::equal(std::shared_ptr<Stmt> rhs) {
 
     return this->expr->equals(stmt->expr);
 }
+
+boost::json::value decaf::ast::ExpressionStmt::to_json() {
+    boost::json::object result{
+        {"type", "ExpressionStmt"},
+        {"expr", this->expr->to_json()}};
+    return result;
+}
