@@ -9,11 +9,10 @@
 #include <sstream>
 #include <string>
 
-std::map<int, bool> scan_results;
-std::map<int, decaf::TokenStream> token_streams;
-std::map<int, decaf::Parser> parsers;
-std::map<int, decaf::Compiler> compilers;
-std::map<int, decaf::VirtualMachine> vms;
+std::map<int, decaf::StreamScanner*> stream_scanners;
+std::map<int, decaf::Parser*> parsers;
+std::map<int, decaf::Compiler*> compilers;
+std::map<int, decaf::VirtualMachine*> vms;
 
 std::uniform_int_distribution<int> dist(1, 2147483647);
 
@@ -21,37 +20,102 @@ int get_id() {
     unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
     std::default_random_engine gen(seed);
     int id = dist(gen);
+    stream_scanners.insert_or_assign(id, new decaf::StreamScanner{""});
+    parsers.insert_or_assign(id, new decaf::Parser{decaf::TokenStream{}});
+    compilers.insert_or_assign(id, new decaf::Compiler{nullptr});
+    vms.insert_or_assign(id, new decaf::VirtualMachine{decaf::Program{}});
     return id;
 }
 
 void compile(const char* code, int id) {
-    std::istringstream input{std::string(code)};
-    decaf::Scanner scanner{input};
-    scanner.scan();
-    scan_results.insert_or_assign(id, scanner.is_error());
-    token_streams.insert_or_assign(id, scanner.get_tokens());
+    delete stream_scanners.at(id);
+    auto stream_scanner = new decaf::StreamScanner{code};
+    stream_scanners.insert_or_assign(id, stream_scanner);
 }
 
 char* get_token_stream(int id) {
-    char* token_stream = nullptr;
-    if (scan_results.at(id)) {
-        std::string error_msg = "Unrecognized token";
-        token_stream = (char*) malloc((error_msg.length() + 1) * sizeof(char));
-        strcpy(token_stream, error_msg.c_str());
+    auto stream_scanner = stream_scanners.at(id);
+    char* response = nullptr;
+    stream_scanner->scan();
+    if (stream_scanner->is_error()) {
+        boost::json::object response_object{
+            {"code", 2},
+            {"msg", "Unrecognized token"}};
+        std::string response_json = boost::json::serialize(response_object);
+        response = (char*) malloc((response_json.length() + 1) * sizeof(char));
+        strcpy(response, response_json.c_str());
     } else {
-        std::string token_json = boost::json::serialize(token_streams.at(id).to_json());
-        token_stream = (char*) malloc((token_json.length() + 1) * sizeof(char));
-        strcpy(token_stream, token_json.c_str());
+        boost::json::object response_object{
+            {"code", 1},
+            {"msg", "success"},
+            {"result", stream_scanner->get_tokens().to_json()}};
+        std::string response_json = boost::json::serialize(response_object);
+        response = (char*) malloc((response_json.length() + 1) * sizeof(char));
+        strcpy(response, response_json.c_str());
     }
-    return token_stream;
+    return response;
 }
 
 char* get_ast(int id) {
+    auto parser = parsers.at(id);
+    parser->clear_error();
+    char* response = nullptr;
+    if (stream_scanners.at(id)->is_error()) {
+        boost::json::object response_object{
+            {"code", 3},
+            {"msg", "There are some wrongs at scan phase"}};
+        std::string response_json = boost::json::serialize(response_object);
+        response = (char*) malloc((response_json.length() + 1) * sizeof(char));
+        strcpy(response, response_json.c_str());
+        return response;
+    }
+    parser->set_token_stream(stream_scanners.at(id)->get_tokens());
+    parser->parse();
+    if (parser->is_error()) {
+        boost::json::array err_msg_arr{};
+        auto err_msgs = parser->get_err_messages();
+        for (const auto& err_msg: err_msgs) {
+            err_msg_arr.emplace_back(err_msg);
+        }
+        boost::json::object response_object{
+            {"code", 4},
+            {"msg", err_msg_arr}};
+        std::string response_json = boost::json::serialize(response_object);
+        response = (char*) malloc((response_json.length() + 1) * sizeof(char));
+        strcpy(response, response_json.c_str());
+        return response;
+    } else {
+        boost::json::object response_object{
+            {"code", "1"},
+            {"msg", "Success"},
+            {"result", parser->get_ast()->to_json()}};
+        std::string response_json = boost::json::serialize(response_object);
+        response = (char*) malloc((response_json.length() + 1) * sizeof(char));
+        strcpy(response, response_json.c_str());
+        return response;
+    }
 }
 
 char* get_program(int id) {
-    auto json = boost::json::serialize(programs.at(id).to_json());
-    char* program = (char*) malloc((json.length() + 1) * sizeof(char));
-    strcpy(program, json.c_str());
-    return program;
+    char* response = nullptr;
+    auto compiler = compilers.at(id);
+    if (parsers.at(id)->is_error()) {
+        boost::json::object response_object{
+            {"code", 5},
+            {"msg", "There are some wrongs at parse phase"}};
+        std::string response_json = boost::json::serialize(response_object);
+        response = (char*) malloc((response_json.length() + 1) * sizeof(char));
+        strcpy(response, response_json.c_str());
+        return response;
+    }
+    compiler->set_ast_root(parsers.at(id)->get_ast());
+    compiler->compile();
+    boost::json::object response_object{
+        {"code", 1},
+        {"msg", "Success"},
+        {"result", compiler->get_program().to_json()}};
+    std::string response_json = boost::json::serialize(response_object);
+    response = (char*) malloc((response_json.length() + 1) * sizeof(char));
+    strcpy(response, response_json.c_str());
+    return response;
 }

@@ -6,6 +6,7 @@
 namespace decaf {
 
 class StreamScanner {
+public:
     std::istringstream is;
     Scanner scanner;
 
