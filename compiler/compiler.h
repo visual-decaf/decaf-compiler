@@ -15,6 +15,8 @@ class Compiler:
     public ExprVisitor,
     public StmtVisitor {
 public:
+    Compiler() = default;
+
     // Compiler doesn't own the root
     explicit Compiler(std::shared_ptr<ast::Stmt> root):
         ast_root{std::move(root)} {
@@ -38,6 +40,10 @@ public:
     std::any visitVariableDecl(std::shared_ptr<ast::VariableDecl> ptr) override;
     std::any visitIdentifierExpr(std::shared_ptr<ast::IdentifierExpr> ptr) override;
     std::any visitAssignExpr(std::shared_ptr<ast::AssignExpr> ptr) override;
+
+    void set_ast_root(std::shared_ptr<ast::Stmt> stmt) {
+        ast_root = std::move(stmt);
+    }
 
 private:
     std::shared_ptr<ast::Stmt> ast_root;
