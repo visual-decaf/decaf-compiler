@@ -44,7 +44,7 @@ boost::json::value decaf::ast::ArithmeticBinary::to_json() {
     list.emplace_back(this->right->to_json());
     boost::json::object result{
         {"type", "ArithmeticBinary"},
-        {"operation", operation_name_of.at(this->op)},
+        {"name", operation_name_of.at(this->op)},
         {"list", list},
         {"resultType", this->type.to_json()}};
     return result;
@@ -105,6 +105,7 @@ boost::json::value decaf::ast::Group::to_json() {
     }
     boost::json::object result{
         {"type", "Group"},
+        {"name", "GROUP"},
         {"list", list},
         {"resultType", this->type.to_json()}};
     return result;
@@ -133,7 +134,7 @@ boost::json::value decaf::ast::LogicBinary::to_json() {
     list.emplace_back(this->right->to_json());
     boost::json::object result{
         {"type", "LogicBinary"},
-        {"operation", operation_name_of.at(this->op)},
+        {"name", operation_name_of.at(this->op)},
         {"list", list},
         {"resultType", this->type.to_json()}};
     return result;
@@ -168,7 +169,7 @@ boost::json::value decaf::ast::ArithmeticUnary::to_json() {
     list.emplace_back(this->right->to_json());
     boost::json::object result{
         {"type", "ArithmeticUnary"},
-        {"operation", operation_name_of.at(this->op)},
+        {"name", operation_name_of.at(this->op)},
         {"list", list},
         {"resultType", this->type.to_json()}};
     return result;
@@ -206,7 +207,7 @@ boost::json::value decaf::ast::LogicUnary::to_json() {
     list.emplace_back(this->right->to_json());
     boost::json::object result{
         {"type", "LogicUnary"},
-        {"operation", operation_name_of.at(this->op)},
+        {"name", operation_name_of.at(this->op)},
         {"list", list},
         {"resultType", this->type.to_json()}};
     return result;
@@ -242,7 +243,7 @@ boost::json::value decaf::ast::RationalBinary::to_json() {
     list.emplace_back(this->right->to_json());
     boost::json::object result{
         {"type", "RationalBinary"},
-        {"operation", operation_name_of.at(this->op)},
+        {"name", operation_name_of.at(this->op)},
         {"list", list},
         {"resultType", this->type.to_json()}};
     return result;
@@ -273,7 +274,7 @@ boost::json::value decaf::ast::EqualityBinary::to_json() {
     list.emplace_back(this->right->to_json());
     boost::json::object result{
         {"type", "EqualityBinary"},
-        {"operation", operation_name_of.at(this->op)},
+        {"name", operation_name_of.at(this->op)},
         {"list", list},
         {"resultType", this->type.to_json()}};
     return result;

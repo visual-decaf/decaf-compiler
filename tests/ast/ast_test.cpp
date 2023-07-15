@@ -25,11 +25,11 @@ TEST_CASE("arithmetic_binary_json", "[ast]") {
     boost::json::value expect_json = boost::json::parse(R"(
 {
     "type": "ArithmeticBinary",
-    "operation": "DIVIDE",
+    "name": "DIVIDE",
     "list": [
         {
             "type": "ArithmeticBinary",
-            "operation": "MULTIPLY",
+            "name": "MULTIPLY",
             "list": [
                 {
                     "type": "IntConstant",
@@ -65,10 +65,11 @@ TEST_CASE("group_json", "[ast]") {
     boost::json::value expect_json = boost::json::parse(R"(
 {
     "type": "Group",
+    "name": "GROUP",
     "list": [
         {
             "type": "ArithmeticBinary",
-            "operation": "PLUS",
+            "name": "PLUS",
             "list": [
                 {
                     "type": "IntConstant",
@@ -96,6 +97,7 @@ TEST_CASE("group_invalid_content_json", "[ast]") {
     boost::json::value expect_json = boost::json::parse(R"(
 {
     "type": "Group",
+    "name": "GROUP",
     "list": [
         {
             "type": "INVALID",
@@ -116,7 +118,7 @@ TEST_CASE("invalid_node_json", "[ast]") {
     boost::json::value expect_json = boost::json::parse(R"(
 {
     "type": "ArithmeticBinary",
-    "operation": "MOD",
+    "name": "MOD",
     "list": [
         {
             "type": "IntConstant",
@@ -125,6 +127,7 @@ TEST_CASE("invalid_node_json", "[ast]") {
         },
         {
             "type": "Group",
+            "name": "GROUP",
             "list": [
                 {
                     "type": "INVALID",
@@ -146,7 +149,7 @@ TEST_CASE("arithmetic_unary_json", "[ast]") {
     auto expect_json = boost::json::parse(R"(
 {
     "type": "ArithmeticUnary",
-    "operation": "NEGATE",
+    "name": "NEGATE",
     "list": [
         {
             "type": "IntConstant",
@@ -178,7 +181,7 @@ TEST_CASE("logic_unary_json", "[ast]") {
     auto expect_json = boost::json::parse(R"(
 {
     "type": "LogicUnary",
-    "operation": "LOGIC_NOT",
+    "name": "LOGIC_NOT",
     "list": [
         {
             "type": "BoolConstant",
@@ -200,7 +203,7 @@ TEST_CASE("logic_binary_json", "[ast]") {
     auto expect_json = boost::json::parse(R"(
 {
     "type": "LogicBinary",
-    "operation": "LOGIC_OR",
+    "name": "LOGIC_OR",
     "list": [
         {
             "type": "BoolConstant",
@@ -227,10 +230,11 @@ TEST_CASE("rational_binary_json", "[ast]") {
     auto expect_json = boost::json::parse(R"(
 {
     "type": "RationalBinary",
-    "operation": "LESS_EQUAL",
+    "name": "LESS_EQUAL",
     "list": [
         {
             "type": "Group",
+            "name": "GROUP",
             "list": [
                 {
                     "type": "INVALID",
@@ -259,7 +263,7 @@ TEST_CASE("equal_json", "[ast]") {
     auto expect_json = boost::json::parse(R"(
 {
     "type": "EqualityBinary",
-    "operation": "EQUAL",
+    "name": "EQUAL",
     "list": [
         {
         "type": "IntConstant",
@@ -286,7 +290,7 @@ TEST_CASE("not_equal_json", "[ast]") {
     auto expect_json = boost::json::parse(R"(
 {
     "type": "EqualityBinary",
-    "operation": "NOT_EQUAL",
+    "name": "NOT_EQUAL",
     "list": [
         {
             "type": "IntConstant",
@@ -313,7 +317,7 @@ TEST_CASE("equality_diff_type_json", "[ast]") {
     auto expect_json = boost::json::parse(R"(
 {
     "type": "EqualityBinary",
-    "operation": "EQUAL",
+    "name": "EQUAL",
     "list": [
         {
             "type": "IntConstant",
