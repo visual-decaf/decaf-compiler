@@ -24,7 +24,7 @@ int get_id() {
 
 char* upload_code(const char* code, int id) {
     char* response = nullptr;
-    if (stream_scanners.find(id) != stream_scanners.end()) {
+    if (stream_scanners.find(id) != stream_scanners.end() && stream_scanners.at(id) != nullptr) {
         delete stream_scanners.at(id);
     }
     stream_scanners.insert_or_assign(id, new decaf::StreamScanner{code});
@@ -61,7 +61,7 @@ char* get_token_stream(int id) {
 }
 
 char* get_ast(int id) {
-    if (parsers.find(id) != parsers.end()) {
+    if (parsers.find(id) != parsers.end() && parsers.at(id) != nullptr) {
         delete parsers.at(id);
     }
     char* response = nullptr;
@@ -102,7 +102,7 @@ char* get_ast(int id) {
 }
 
 char* get_program(int id) {
-    if (compilers.find(id) != compilers.end()) {
+    if (compilers.find(id) != compilers.end() && compilers.at(id) != nullptr) {
         delete compilers.at(id);
     }
     char* response = nullptr;
