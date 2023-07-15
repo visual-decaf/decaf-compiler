@@ -361,21 +361,55 @@ TEST_CASE("expr_stmt_json", "[ast]") {
     auto expect_json = boost::json::parse(R"(
 {
     "type": "ExpressionStmt",
-    "expr": {
-        "type": "ArithmeticBinary",
-        "operation": "PLUS",
-        "left": {
-            "type": "FloatConstant",
-            "value": 3.14,
+    "name": "ExpressionStmt",
+    "list": [
+        {
+            "type": "ArithmeticBinary",
+            "name": "PLUS",
+            "list": [
+                {
+                    "type": "FloatConstant",
+                    "value": 3.14,
+                    "resultType": "FLOAT"
+                },
+                {
+                    "type": "FloatConstant",
+                    "value": 2.72,
+                    "resultType": "FLOAT"
+                }
+            ],
             "resultType": "FLOAT"
+        }
+    ],
+    "resultType": "VOID"
+}
+)");
+    REQUIRE(expect_json == ast_root->to_json());
+}
+
+TEST_CASE("print_stmt_json", "[ast]") {
+    auto ast_root = std::make_shared<ast::PrintStmt>(
+        std::make_shared<ast::ExpressionList>(
+            std::initializer_list<std::shared_ptr<ast::Expr>>{
+                std::make_shared<ast::IntConstant>(1),
+                std::make_shared<ast::IntConstant>(2)}));
+    auto expect_json = boost::json::parse(R"(
+{
+    "type": "PrintStmt",
+    "name": "PrintStmt",
+    "list": [
+        {
+            "type": "IntConstant",
+            "value": 1,
+            "resultType": "INT"
         },
-        "right": {
-            "type": "FloatConstant",
-            "value": 2.72,
-            "resultType": "FLOAT"
-        },
-        "resultType": "FLOAT"
-    }
+        {
+            "type": "IntConstant",
+            "value": 2,
+            "resultType": "INT"
+        }
+    ],
+    "resultType": "VOID"
 }
 )");
     REQUIRE(expect_json == ast_root->to_json());
