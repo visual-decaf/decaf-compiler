@@ -49,9 +49,6 @@ public:
     bool op_SYMBOL_SET() override;
     bool op_GET_FLOAT_ZERO() override;
 
-    void set_symbol_table(std::shared_ptr<SymbolTable> ptr);
-    std::shared_ptr<SymbolTable> get_symbol_table();
-
     void run();
 
     [[nodiscard]] bool is_error() const;
@@ -68,7 +65,7 @@ protected:
 private:
     Program prog;
     stack_type stk;
-    std::shared_ptr<SymbolTable> table;
+    SymbolTable table;
     std::ostream& output;
 
     StackItem::ptr_type last_discarded;

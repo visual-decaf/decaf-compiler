@@ -219,12 +219,12 @@ bool decaf::VirtualMachine::op_PRINT(uint8_t count) {
 
 bool decaf::VirtualMachine::op_SYMBOL_ADD(uint8_t index) {
     auto l_val = std::make_shared<LValueStackItem>(pop());
-    table->set_symbol(index, l_val);
+    table.set_symbol(index, l_val);
     return true;
 }
 
 bool decaf::VirtualMachine::op_SYMBOL_GET(uint8_t index) {
-    stk.push(table->get_symbol(index));
+    push(table.get_symbol(index));
     return true;
 }
 
@@ -239,14 +239,6 @@ bool decaf::VirtualMachine::op_SYMBOL_SET() {
     l_val->value = rhs->clone();
     push(l_val);
     return true;
-}
-
-void decaf::VirtualMachine::set_symbol_table(std::shared_ptr<SymbolTable> ptr) {
-    table = std::move(ptr);
-}
-
-std::shared_ptr<decaf::SymbolTable> decaf::VirtualMachine::get_symbol_table() {
-    return table;
 }
 
 bool decaf::VirtualMachine::op_GET_FLOAT_ZERO() {

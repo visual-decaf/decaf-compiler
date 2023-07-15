@@ -19,7 +19,6 @@ public:
     using ast_ptr = std::shared_ptr<ast::Stmt>;
     using stmt_list = std::vector<ast_ptr>;
 
-    // Compiler doesn't own the root
     explicit Compiler(stmt_list _statements):
         statements{std::move(_statements)} {
     }

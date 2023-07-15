@@ -14,7 +14,6 @@ void print_result(decaf::StackItem::ptr_type result) {
 }
 
 void run_repl() {
-    auto table_ptr = std::make_shared<decaf::SymbolTable>();
     decaf::Compiler compiler;
     while (true) {
         std::cout << ">> ";
@@ -30,12 +29,10 @@ void run_repl() {
             return;
         }
 
-        compiler.set_ast_root(ast_root);
         compiler.compile();
         auto program = compiler.get_program();
 
         decaf::VirtualMachine vm{program};
-        vm.set_symbol_table(table_ptr);
         vm.run();
         auto result = vm.get_stack_top();
         print_result(result);
