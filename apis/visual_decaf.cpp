@@ -127,7 +127,7 @@ char* get_program(int id) {
     if (compilers.at(id) != nullptr) {
         delete compilers.at(id);
     }
-    auto compiler = new decaf::Compiler{parsers.at(id)->get_ast()};
+    auto compiler = new decaf::Compiler{parsers.at(id)->get_stmt_list()};
     compilers.insert_or_assign(id, compiler);
     compiler->compile();
     boost::json::value result = compiler->get_program().to_json();

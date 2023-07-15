@@ -62,6 +62,19 @@ bool decaf::ast::VariableDecl::equal(std::shared_ptr<Stmt> rhs) {
 
     return *(this->type) == *(stmt->type) && this->name == stmt->name;
 }
+boost::json::value decaf::ast::VariableDecl::to_json() {
+    boost::json::array list;
+    list.emplace_back(boost::json::object{
+        {"type", "Identifier"},
+        {"value", this->name},
+        {"resultType", this->type->to_json()}});
+    boost::json::object result{
+        {"type", "VariableDecl"},
+        {"name", "VariableDecl"},
+        {"list", list},
+        {"resultType", this->type->to_json()}};
+    return result;
+}
 
 boost::json::value decaf::ast::ExpressionList::to_json() {
     boost::json::array result;

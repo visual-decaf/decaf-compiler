@@ -271,6 +271,8 @@ struct IdentifierExpr: LValue, std::enable_shared_from_this<IdentifierExpr> {
     }
 
     bool equals(std::shared_ptr<Expr> ptr) override;
+
+    boost::json::value to_json() override;
 };
 
 struct AssignExpr: Expr, std::enable_shared_from_this<AssignExpr> {
@@ -287,6 +289,8 @@ struct AssignExpr: Expr, std::enable_shared_from_this<AssignExpr> {
     }
 
     bool equals(std::shared_ptr<Expr> ptr) override;
+
+    boost::json::value to_json() override;
 };
 
 } // namespace decaf::ast

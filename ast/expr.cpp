@@ -307,6 +307,12 @@ bool decaf::ast::IdentifierExpr::equals(std::shared_ptr<Expr> ptr) {
 
     return this->name == rhs->name;
 }
+boost::json::value decaf::ast::IdentifierExpr::to_json() {
+    return boost::json::object{
+        {"type", "IdentifierExpr"},
+        {"value", this->name},
+        {"resultType", this->type.to_json()}};
+}
 
 bool decaf::ast::AssignExpr::equals(std::shared_ptr<Expr> ptr) {
     auto rhs = std::dynamic_pointer_cast<AssignExpr>(ptr);
@@ -316,4 +322,15 @@ bool decaf::ast::AssignExpr::equals(std::shared_ptr<Expr> ptr) {
     }
 
     return this->left->equals(rhs->left) && this->right->equals(rhs->right);
+}
+boost::json::value decaf::ast::AssignExpr::to_json() {
+    boost::json::array list;
+    list.emplace_back(this->left->to_json());
+    list.emplace_back(this->right->to_json());
+    boost::json::value result{
+        {"type", "AssignExpr"},
+        {"name", "AssignExpr"},
+        {"list", list},
+        {"resultType", this->type.to_json()}};
+    return result;
 }

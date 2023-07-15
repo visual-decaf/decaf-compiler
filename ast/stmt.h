@@ -83,6 +83,8 @@ struct VariableDecl: Stmt, std::enable_shared_from_this<VariableDecl> {
     }
 
     bool equal(std::shared_ptr<Stmt> rhs) override;
+
+    boost::json::value to_json() override;
 };
 
 } // namespace decaf::ast
