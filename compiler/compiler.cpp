@@ -147,10 +147,29 @@ std::any decaf::Compiler::visitPrintStmt(std::shared_ptr<ast::PrintStmt> printSt
     return {};
 }
 
+bool decaf::Compiler::emit_code_for_default(decaf::Type type) {
+    if (type.classification == decaf::Type::Classification::INT) {
+        prog.emit_bytes(
+            ByteCode::Instruction::GET_INSTANT,
+            0);
+        return true;
+    } else if (type.classification == decaf::Type::Classification::BOOL) {
+        prog.emit(ByteCode::Instruction::GET_FALSE);
+        return true;
+    } else if (type.classification == decaf::Type::Classification::FLOAT) {
+        prog.emit(ByteCode::Instruction::GET_FLOAT_ZERO);
+        return true;
+    }
+    return false;
+}
+
 std::any decaf::Compiler::visitVariableDecl(std::shared_ptr<ast::VariableDecl> variableDecl) {
-    symbol_index_of[variableDecl->name] = table.add_symbol();
+    symbol_index_of[variableDecl->name] = index_count++;
     symbol_declaration_of[variableDecl->name] = variableDecl;
-    prog.emit(ByteCode::Instruction::SYMBOL_ADD);
+    emit_code_for_default(*variableDecl->type);
+    prog.emit_bytes(
+        ByteCode::Instruction::SYMBOL_ADD,
+        symbol_index_of[variableDecl->name]);
     return {};
 }
 
@@ -172,8 +191,6 @@ std::any decaf::Compiler::visitAssignExpr(std::shared_ptr<ast::AssignExpr> assig
         throw std::runtime_error("Assign with wrong type");
     }
 
-    prog.emit_bytes(
-        ByteCode::Instruction::SYMBOL_SET,
-        lhs->index);
+    prog.emit(ByteCode::Instruction::SYMBOL_SET);
     return {};
 }

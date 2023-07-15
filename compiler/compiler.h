@@ -47,7 +47,8 @@ public:
 
 private:
     std::shared_ptr<ast::Stmt> ast_root;
-    SymbolTable table;
+    uint8_t index_count = 0;
+    bool emit_code_for_default(Type);
     std::map<std::string, SymbolTable::index_type> symbol_index_of;
     std::map<std::string, std::shared_ptr<ast::VariableDecl>> symbol_declaration_of;
     Program prog{};
