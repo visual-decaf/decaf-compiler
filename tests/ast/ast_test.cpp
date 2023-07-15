@@ -26,26 +26,30 @@ TEST_CASE("arithmetic_binary_json", "[ast]") {
 {
     "type": "ArithmeticBinary",
     "operation": "DIVIDE",
-    "left": {
-        "type": "ArithmeticBinary",
-        "operation": "MULTIPLY",
-        "left": {
-            "type": "IntConstant",
-            "value": 1,
+    "list": [
+        {
+            "type": "ArithmeticBinary",
+            "operation": "MULTIPLY",
+            "list": [
+                {
+                    "type": "IntConstant",
+                    "value": 1,
+                    "resultType": "INT"
+                },
+                {
+                    "type": "IntConstant",
+                    "value": 2,
+                    "resultType": "INT"
+                }
+            ],
             "resultType": "INT"
         },
-        "right": {
+        {
             "type": "IntConstant",
-            "value": 2,
+            "value": 3,
             "resultType": "INT"
-        },
-        "resultType": "INT"
-    },
-    "right": {
-        "type": "IntConstant",
-        "value": 3,
-        "resultType": "INT"
-    },
+        }
+    ],
     "resultType": "INT"
 }
     )");
@@ -61,21 +65,25 @@ TEST_CASE("group_json", "[ast]") {
     boost::json::value expect_json = boost::json::parse(R"(
 {
     "type": "Group",
-    "content": {
-        "type": "ArithmeticBinary",
-        "operation": "PLUS",
-        "left": {
-            "type": "IntConstant",
-            "value": 1,
+    "list": [
+        {
+            "type": "ArithmeticBinary",
+            "operation": "PLUS",
+            "list": [
+                {
+                    "type": "IntConstant",
+                    "value": 1,
+                    "resultType": "INT"
+                },
+                {
+                    "type": "IntConstant",
+                    "value": 2,
+                    "resultType": "INT"
+                }
+            ],
             "resultType": "INT"
-        },
-        "right": {
-            "type": "IntConstant",
-            "value": 2,
-            "resultType": "INT"
-        },
-        "resultType": "INT"
-    },
+        }
+    ],
     "resultType": "INT"
 }
     )");
@@ -88,10 +96,12 @@ TEST_CASE("group_invalid_content_json", "[ast]") {
     boost::json::value expect_json = boost::json::parse(R"(
 {
     "type": "Group",
-    "content": {
-        "type": "INVALID",
-        "resultType": "INVALID"
-    },
+    "list": [
+        {
+            "type": "INVALID",
+            "resultType": "INVALID"
+        }
+    ] ,
     "resultType": "INVALID"
 }
     )");
@@ -107,19 +117,23 @@ TEST_CASE("invalid_node_json", "[ast]") {
 {
     "type": "ArithmeticBinary",
     "operation": "MOD",
-    "left": {
-        "type": "IntConstant",
-        "value": 20,
-        "resultType": "INT"
-    },
-    "right": {
-        "type": "Group",
-        "content": {
-            "type": "INVALID",
-            "resultType": "INVALID"
+    "list": [
+        {
+            "type": "IntConstant",
+            "value": 20,
+            "resultType": "INT"
         },
-        "resultType": "INVALID"
-    },
+        {
+            "type": "Group",
+            "list": [
+                {
+                    "type": "INVALID",
+                    "resultType": "INVALID"
+                }
+            ],
+            "resultType": "INVALID"
+        }
+    ],
     "resultType": "INVALID"
 }
 )");
@@ -133,11 +147,13 @@ TEST_CASE("arithmetic_unary_json", "[ast]") {
 {
     "type": "ArithmeticUnary",
     "operation": "NEGATE",
-    "right": {
-        "type": "IntConstant",
-        "value": 3,
-        "resultType": "INT"
-    },
+    "list": [
+        {
+            "type": "IntConstant",
+            "value": 3,
+            "resultType": "INT"
+        }
+    ],
     "resultType": "INT"
 }
 )");
@@ -163,11 +179,13 @@ TEST_CASE("logic_unary_json", "[ast]") {
 {
     "type": "LogicUnary",
     "operation": "LOGIC_NOT",
-    "right": {
-        "type": "BoolConstant",
-        "value": false,
-        "resultType": "BOOL"
-    },
+    "list": [
+        {
+            "type": "BoolConstant",
+            "value": false,
+            "resultType": "BOOL"
+        }
+    ],
     "resultType": "BOOL"
 }
 )");
@@ -183,16 +201,18 @@ TEST_CASE("logic_binary_json", "[ast]") {
 {
     "type": "LogicBinary",
     "operation": "LOGIC_OR",
-    "left": {
-        "type": "BoolConstant",
-        "value": false,
-        "resultType": "BOOL"
-    },
-    "right": {
-        "type": "IntConstant",
-        "value": 1,
-        "resultType": "INT"
-    },
+    "list": [
+        {
+            "type": "BoolConstant",
+            "value": false,
+            "resultType": "BOOL"
+        },
+        {
+            "type": "IntConstant",
+            "value": 1,
+            "resultType": "INT"
+        }
+    ],
     "resultType": "INVALID"
 }
 )");
@@ -208,19 +228,23 @@ TEST_CASE("rational_binary_json", "[ast]") {
 {
     "type": "RationalBinary",
     "operation": "LESS_EQUAL",
-    "left": {
-        "type": "Group",
-        "content": {
-            "type": "INVALID",
+    "list": [
+        {
+            "type": "Group",
+            "list": [
+                {
+                    "type": "INVALID",
+                    "resultType": "INVALID"
+                }
+            ],
             "resultType": "INVALID"
         },
-        "resultType": "INVALID"
-    },
-    "right": {
-        "type": "IntConstant",
-        "value": 3,
-        "resultType": "INT"
-    },
+        {
+            "type": "IntConstant",
+            "value": 3,
+            "resultType": "INT"
+        }
+    ],
     "resultType": "INVALID"
 }
 )");
@@ -236,16 +260,18 @@ TEST_CASE("equal_json", "[ast]") {
 {
     "type": "EqualityBinary",
     "operation": "EQUAL",
-    "left": {
+    "list": [
+        {
         "type": "IntConstant",
         "value": 1,
         "resultType": "INT"
-    },
-    "right": {
-        "type": "IntConstant",
-        "value": 2,
-        "resultType": "INT"
-    },
+        },
+        {
+            "type": "IntConstant",
+            "value": 2,
+            "resultType": "INT"
+        }
+    ],
     "resultType": "BOOL"
 }
 )");
@@ -261,16 +287,18 @@ TEST_CASE("not_equal_json", "[ast]") {
 {
     "type": "EqualityBinary",
     "operation": "NOT_EQUAL",
-    "left": {
-        "type": "IntConstant",
-        "value": 1,
-        "resultType": "INT"
-    },
-    "right": {
-        "type": "IntConstant",
-        "value": 2,
-        "resultType": "INT"
-    },
+    "list": [
+        {
+            "type": "IntConstant",
+            "value": 1,
+            "resultType": "INT"
+        },
+        {
+            "type": "IntConstant",
+            "value": 2,
+            "resultType": "INT"
+        }
+    ],
     "resultType": "BOOL"
 }
 )");
@@ -286,16 +314,18 @@ TEST_CASE("equality_diff_type_json", "[ast]") {
 {
     "type": "EqualityBinary",
     "operation": "EQUAL",
-    "left": {
-        "type": "IntConstant",
-        "value": 1,
-        "resultType": "INT"
-    },
-    "right": {
-        "type": "BoolConstant",
-        "value": true,
-        "resultType": "BOOL"
-    },
+    "list": [
+        {
+            "type": "IntConstant",
+            "value": 1,
+            "resultType": "INT"
+        },
+        {
+            "type": "BoolConstant",
+            "value": true,
+            "resultType": "BOOL"
+        }
+    ],
     "resultType": "INVALID"
 }
 )");

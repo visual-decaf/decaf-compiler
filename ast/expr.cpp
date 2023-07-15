@@ -39,11 +39,13 @@ bool decaf::ast::ArithmeticBinary::equals(std::shared_ptr<Expr> ptr) {
 }
 
 boost::json::value decaf::ast::ArithmeticBinary::to_json() {
+    boost::json::array list;
+    list.emplace_back(this->left->to_json());
+    list.emplace_back(this->right->to_json());
     boost::json::object result{
         {"type", "ArithmeticBinary"},
         {"operation", operation_name_of.at(this->op)},
-        {"left", this->left->to_json()},
-        {"right", this->right->to_json()},
+        {"list", list},
         {"resultType", this->type.to_json()}};
     return result;
 }
@@ -93,17 +95,18 @@ bool decaf::ast::Group::equals(std::shared_ptr<Expr> ptr) {
 }
 
 boost::json::value decaf::ast::Group::to_json() {
+    boost::json::array list;
+    if (this->content == nullptr) {
+        list.emplace_back(boost::json::object{
+            {"type", "INVALID"},
+            {"resultType", "INVALID"}});
+    } else {
+        list.emplace_back(this->content->to_json());
+    }
     boost::json::object result{
         {"type", "Group"},
-    };
-    if (this->content == nullptr) {
-        result["content"] = boost::json::object{
-            {"type", "INVALID"},
-            {"resultType", "INVALID"}};
-    } else {
-        result["content"] = this->content->to_json();
-    }
-    result["resultType"] = this->type.to_json();
+        {"list", list},
+        {"resultType", this->type.to_json()}};
     return result;
 }
 
@@ -125,11 +128,13 @@ decaf::Type::Classification decaf::ast::LogicBinary::result_type_of(decaf::Type 
     return Type::Classification::INVALID;
 }
 boost::json::value decaf::ast::LogicBinary::to_json() {
+    boost::json::array list;
+    list.emplace_back(this->left->to_json());
+    list.emplace_back(this->right->to_json());
     boost::json::object result{
         {"type", "LogicBinary"},
         {"operation", operation_name_of.at(this->op)},
-        {"left", this->left->to_json()},
-        {"right", this->right->to_json()},
+        {"list", list},
         {"resultType", this->type.to_json()}};
     return result;
 }
@@ -159,10 +164,12 @@ decaf::Type::Classification decaf::ast::ArithmeticUnary::result_type_of(decaf::T
     return Type::Classification::INVALID;
 }
 boost::json::value decaf::ast::ArithmeticUnary::to_json() {
+    boost::json::array list;
+    list.emplace_back(this->right->to_json());
     boost::json::object result{
         {"type", "ArithmeticUnary"},
         {"operation", operation_name_of.at(this->op)},
-        {"right", this->right->to_json()},
+        {"list", list},
         {"resultType", this->type.to_json()}};
     return result;
 }
@@ -195,10 +202,12 @@ decaf::Type::Classification decaf::ast::LogicUnary::result_type_of(decaf::Type r
     return Type::Classification::INVALID;
 }
 boost::json::value decaf::ast::LogicUnary::to_json() {
+    boost::json::array list;
+    list.emplace_back(this->right->to_json());
     boost::json::object result{
         {"type", "LogicUnary"},
         {"operation", operation_name_of.at(this->op)},
-        {"right", this->right->to_json()},
+        {"list", list},
         {"resultType", this->type.to_json()}};
     return result;
 }
@@ -228,11 +237,13 @@ bool decaf::ast::RationalBinary::equals(std::shared_ptr<Expr> rational_bin) {
            && this->right->equals(rhs->right);
 }
 boost::json::value decaf::ast::RationalBinary::to_json() {
+    boost::json::array list;
+    list.emplace_back(this->left->to_json());
+    list.emplace_back(this->right->to_json());
     boost::json::object result{
         {"type", "RationalBinary"},
         {"operation", operation_name_of.at(this->op)},
-        {"left", this->left->to_json()},
-        {"right", this->right->to_json()},
+        {"list", list},
         {"resultType", this->type.to_json()}};
     return result;
 }
@@ -257,11 +268,13 @@ decaf::Type::Classification decaf::ast::EqualityBinary::result_type_of(decaf::Ty
     return Type::Classification::INVALID;
 }
 boost::json::value decaf::ast::EqualityBinary::to_json() {
+    boost::json::array list;
+    list.emplace_back(this->left->to_json());
+    list.emplace_back(this->right->to_json());
     boost::json::object result{
         {"type", "EqualityBinary"},
         {"operation", operation_name_of.at(this->op)},
-        {"left", this->left->to_json()},
-        {"right", this->right->to_json()},
+        {"list", list},
         {"resultType", this->type.to_json()}};
     return result;
 }
