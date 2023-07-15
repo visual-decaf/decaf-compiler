@@ -56,6 +56,8 @@
 %token COMMA ","
 %token INVALID
 %token INT "int" DOUBLE "double" BOOL "bool"
+%token IDENTIFIER
+
 
 /* Keywords */
 %token TRUE "true" FALSE "false"
