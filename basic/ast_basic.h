@@ -19,6 +19,7 @@ struct RationalBinary;
 struct EqualityBinary;
 struct FloatConstant;
 struct IdentifierExpr;
+struct AssignExpr;
 
 struct Stmt;
 struct ExpressionStmt;
