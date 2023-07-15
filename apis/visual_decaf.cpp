@@ -105,7 +105,16 @@ char* get_ast(int id) {
         write_error_msg("4", err_msg_arr, response);
         return response;
     }
-    boost::json::value result = parser->get_ast()->to_json();
+    boost::json::array list;
+    const decaf::Parser::stmt_list& stmt_list = parser->get_stmt_list();
+    for (const auto& stmt: stmt_list) {
+        list.emplace_back(stmt->to_json());
+    }
+    boost::json::value result{
+        {"type", "StmtsList"},
+        {"name", "StmtsList"},
+        {"list", list},
+        {"resultType", "VOID"}};
     write_success_result(result, response);
     return response;
 }
