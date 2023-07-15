@@ -1,3 +1,4 @@
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 add_library(parser parser.cpp
         ${BISON_DecafParser_OUTPUTS}
         )

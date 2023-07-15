@@ -1,3 +1,4 @@
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 add_library(scanner scanner.cpp
         ${FLEX_DecafScanner_OUTPUTS}
         )

@@ -1,4 +1,5 @@
 #include "expr.h"
+#include "stmt.h"
 #include <catch2/catch_test_macros.hpp>
 using namespace decaf;
 
@@ -309,6 +310,35 @@ TEST_CASE("float_constant_json", "[ast]") {
     "type": "FloatConstant",
     "value": 3.14,
     "resultType": "FLOAT"
+}
+)");
+    REQUIRE(expect_json == ast_root->to_json());
+}
+
+TEST_CASE("expr_stmt_json", "[ast]") {
+    auto ast_root = std::make_shared<ast::ExpressionStmt>(
+        std::make_shared<ast::ArithmeticBinary>(
+            std::make_shared<ast::FloatConstant>(3.14),
+            ast::ArithmeticBinary::Operation::PLUS,
+            std::make_shared<ast::FloatConstant>(2.72)));
+    auto expect_json = boost::json::parse(R"(
+{
+    "type": "ExpressionStmt",
+    "expr": {
+        "type": "ArithmeticBinary",
+        "operation": "PLUS",
+        "left": {
+            "type": "FloatConstant",
+            "value": 3.14,
+            "resultType": "FLOAT"
+        },
+        "right": {
+            "type": "FloatConstant",
+            "value": 2.72,
+            "resultType": "FLOAT"
+        },
+        "resultType": "FLOAT"
+    }
 }
 )");
     REQUIRE(expect_json == ast_root->to_json());
