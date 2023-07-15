@@ -229,7 +229,6 @@ bool decaf::VirtualMachine::op_SYMBOL_GET(uint8_t index) {
 
 bool decaf::VirtualMachine::op_SYMBOL_SET(uint8_t index) {
     table->set_symbol(index, stk.top());
-    stk.pop();
     return true;
 }
 
