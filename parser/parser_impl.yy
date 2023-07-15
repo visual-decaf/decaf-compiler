@@ -17,6 +17,7 @@
 %code top {
     #include "expr.h"
     #include "parser.h"
+    #include "type.h"
     using namespace std;
     using namespace decaf::ast;
 }
@@ -37,6 +38,7 @@
 %nterm <std::shared_ptr<decaf::ast::Stmt>> expressionStmt
 %nterm <std::shared_ptr<decaf::ast::ExpressionList>> expressionList
 %nterm <std::shared_ptr<decaf::ast::Stmt>> printStmt
+%nterm <decaf::ast::TypePtr> type
 
 %token <int> INTEGER
 %token <int> HEX_INTEGER
@@ -260,6 +262,23 @@ floatConstant:
         $$ = std::make_shared<FloatConstant>($1);
     }
 
+type:
+    "int" {
+        $$ = std::make_shared<decaf::Type> (
+            decaf::Type::Classification::INT
+        );
+    }
+    | "bool" {
+        $$ = std::make_shared<decaf::Type> (
+            decaf::Type::Classification::BOOL
+        );
+    }
+    | "double" {
+        $$ = std::make_shared<decaf::Type> (
+            decaf::Type::Classification::FLOAT
+        );
+    }
+    ;
 %%
 
 void yy::parser::error(const std::string& msg) {

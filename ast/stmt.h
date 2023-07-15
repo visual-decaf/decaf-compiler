@@ -61,4 +61,6 @@ struct PrintStmt: Stmt, std::enable_shared_from_this<PrintStmt> {
     bool equal(std::shared_ptr<Stmt> rhs) override;
 };
 
+using TypePtr = std::shared_ptr<decaf::Type>;
+
 } // namespace decaf::ast
