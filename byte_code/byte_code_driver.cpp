@@ -55,6 +55,8 @@ bool decaf::ByteCodeDriver::produce_instruction() {
             return visitor.op_DISCARD();
         case Instruction ::SYMBOL_SET:
             return visitor.op_SYMBOL_SET();
+        case Instruction ::GET_FLOAT_ZERO:
+            return visitor.op_GET_FLOAT_ZERO();
 
             // 1 Operand
         case Instruction ::GET_INSTANT:

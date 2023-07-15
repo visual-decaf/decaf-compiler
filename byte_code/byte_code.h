@@ -52,7 +52,8 @@ public:
             PRINT,
             SYMBOL_ADD,
             SYMBOL_GET,
-            SYMBOL_SET
+            SYMBOL_SET,
+            GET_FLOAT_ZERO,
         };
     };
 

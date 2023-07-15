@@ -129,3 +129,8 @@ bool Disassembler::op_SYMBOL_SET() {
     this->assembly_code.emplace_back("SYMBOL_SET");
     return true;
 }
+
+bool Disassembler::op_GET_FLOAT_ZERO() {
+    this->assembly_code.emplace_back("GET_FLOAT_ZERO");
+    return true;
+}
