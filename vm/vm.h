@@ -3,6 +3,7 @@
 #include "byte_code_visitor.h"
 #include "program.h"
 #include "stack_items.h"
+#include "symbol_table.h"
 #include <any>
 #include <optional>
 #include <stack>
@@ -17,7 +18,8 @@ public:
     using stack_type = std::stack<StackItem::ptr_type>;
 
     explicit VirtualMachine(Program _prog, std::ostream& os = std::cout):
-        prog{std::move(_prog)}, output{os} {
+        prog{std::move(_prog)},
+        output{os} {
     }
     bool op_NEGATE() override;
     bool op_PLUS() override;
@@ -42,6 +44,10 @@ public:
 
     bool op_DISCARD() override;
     bool op_PRINT(uint8_t count) override;
+    bool op_SYMBOL_ADD(uint8_t index) override;
+    bool op_SYMBOL_GET(uint8_t index) override;
+    bool op_SYMBOL_SET() override;
+    bool op_GET_FLOAT_ZERO() override;
 
     void run();
 
@@ -59,6 +65,7 @@ protected:
 private:
     Program prog;
     stack_type stk;
+    SymbolTable table;
     std::ostream& output;
 
     StackItem::ptr_type last_discarded;

@@ -17,6 +17,7 @@
 %code top {
     #include "expr.h"
     #include "parser.h"
+    #include "type.h"
     using namespace std;
     using namespace decaf::ast;
 }
@@ -32,11 +33,15 @@
 %nterm <std::shared_ptr<decaf::ast::Expr>> rationalBinary
 %nterm <std::shared_ptr<decaf::ast::Expr>> equalityBinary
 %nterm <std::shared_ptr<decaf::ast::Expr>> floatConstant
+%nterm <std::shared_ptr<decaf::ast::Expr>> identifierExpr
+%nterm <std::shared_ptr<decaf::ast::Expr>> assignExpr
 
 %nterm <std::shared_ptr<decaf::ast::Stmt>> statement
 %nterm <std::shared_ptr<decaf::ast::Stmt>> expressionStmt
 %nterm <std::shared_ptr<decaf::ast::ExpressionList>> expressionList
 %nterm <std::shared_ptr<decaf::ast::Stmt>> printStmt
+%nterm <decaf::ast::TypePtr> type
+%nterm <std::shared_ptr<decaf::ast::Stmt>> variableDecl
 
 %token <int> INTEGER
 %token <int> HEX_INTEGER
@@ -52,13 +57,18 @@
 %token EOL
 %token SEMICOLON ";"
 %token COMMA ","
+%token ASSIGN "="
 %token INVALID
+%token INT "int" DOUBLE "double" BOOL "bool"
+%token <std::string> IDENTIFIER
+
 
 /* Keywords */
 %token TRUE "true" FALSE "false"
 %token PRINT "Print"
 
 /* Expressions */
+%right ASSIGN
 %left LOGIC_OR
 %left LOGIC_AND
 %left EQUAL NOT_EQUAL
@@ -73,12 +83,14 @@ input:
     %empty
     | input statement {
         driver.ast_root = $2;
+        driver.statements.push_back(driver.ast_root);
     }
     ;
 
 statement:
     expressionStmt
     | printStmt
+    | variableDecl
     ;
 
 expressionStmt:
@@ -102,6 +114,14 @@ printStmt:
         $$ = std::make_shared<PrintStmt>($3);
     }
 
+variableDecl:
+    type IDENTIFIER ";" {
+        $$ = std::make_shared<VariableDecl>(
+            $1,
+            $2
+        );
+    }
+
 expression:
     arithmeticBinaryExpr
     | arithmeticUnaryExpr
@@ -113,6 +133,8 @@ expression:
     | intConstant
     | boolConstant
     | floatConstant
+    | identifierExpr
+    | assignExpr
     ;
 
 arithmeticBinaryExpr: 
@@ -257,6 +279,37 @@ boolConstant:
 floatConstant:
     FLOAT {
         $$ = std::make_shared<FloatConstant>($1);
+    }
+
+identifierExpr:
+    IDENTIFIER {
+        $$ = std::make_shared<IdentifierExpr>($1);
+    }
+
+type:
+    "int" {
+        $$ = std::make_shared<decaf::Type> (
+            decaf::Type::Classification::INT
+        );
+    }
+    | "bool" {
+        $$ = std::make_shared<decaf::Type> (
+            decaf::Type::Classification::BOOL
+        );
+    }
+    | "double" {
+        $$ = std::make_shared<decaf::Type> (
+            decaf::Type::Classification::FLOAT
+        );
+    }
+    ;
+
+assignExpr:
+    expression "=" expression {
+        $$ = std::make_shared<AssignExpr>(
+            $1,
+            $3
+        );
     }
 
 %%

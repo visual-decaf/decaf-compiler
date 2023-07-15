@@ -34,6 +34,8 @@ struct BoolStackItem: StackItem {
     void print(std::ostream& os) const {
         os << std::boolalpha << value;
     }
+
+    ptr_type clone() override;
 };
 
 } // namespace decaf

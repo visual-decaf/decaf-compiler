@@ -1,0 +1,11 @@
+int i;
+i = 1;
+Print(i);
+
+double d;
+d = 2.3;
+Print(d);
+
+bool b;
+b = true;
+Print(b);

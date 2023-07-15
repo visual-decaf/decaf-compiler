@@ -707,3 +707,39 @@ TEST_CASE("parser_print_stmt_multi", "[parser]") {
                 std::make_shared<ast::IntConstant>(2)}));
     REQUIRE(expect->equal(result));
 }
+
+TEST_CASE("parser_variable_decl", "[parser]") {
+    TokenStream tokenStream{
+        {token_type ::INT, "int"},
+        {token_type ::IDENTIFIER, "ident"},
+        {token_type ::SEMICOLON, ";"}};
+
+    decaf::Parser parser{tokenStream};
+    parser.parse();
+
+    REQUIRE(!parser.is_error());
+    auto result = parser.get_ast();
+    auto expect = std::make_shared<ast::VariableDecl>(
+        std::make_shared<Type>(Type::Classification::INT),
+        "ident");
+    REQUIRE(expect->equal(result));
+}
+
+TEST_CASE("parser_variable_assign", "[parser]") {
+    TokenStream tokenStream{
+        {token_type ::IDENTIFIER, "ident"},
+        {token_type ::ASSIGN, "="},
+        {token_type ::INTEGER, "1"},
+        {token_type ::SEMICOLON, ";"}};
+
+    decaf::Parser parser{tokenStream};
+    parser.parse();
+
+    REQUIRE(!parser.is_error());
+    auto result = parser.get_ast();
+    auto expect = std::make_shared<ast::ExpressionStmt>(
+        std::make_shared<ast::AssignExpr>(
+            std::make_shared<ast::IdentifierExpr>("ident"),
+            std::make_shared<ast::IntConstant>(1)));
+    REQUIRE(expect->equal(result));
+}

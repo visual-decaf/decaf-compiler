@@ -115,3 +115,7 @@ decaf::StackItem::ptr_type decaf::IntStackItem::perform_NEGATE() {
     auto result = std::make_shared<IntStackItem>(-value);
     return result;
 }
+
+decaf::StackItem::ptr_type decaf::IntStackItem::clone() {
+    return std::make_shared<IntStackItem>(value);
+}

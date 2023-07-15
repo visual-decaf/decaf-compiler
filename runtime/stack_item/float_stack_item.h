@@ -34,6 +34,8 @@ struct FloatStackItem: StackItem {
     void print(std::ostream& os) const override {
         os << value;
     }
+
+    ptr_type clone() override;
 };
 
 } // namespace decaf

@@ -755,3 +755,31 @@ TEST_CASE("vm_print_stmt_multi", "[vm]") {
     REQUIRE(!vm.is_error());
     REQUIRE(os.str() == "1 2\n");
 }
+
+TEST_CASE("vm_variable_define_use", "[vm]") {
+    auto input_prog = Program{
+        ByteCode{
+            Instruction ::GET_INSTANT,
+            0,
+            Instruction ::SYMBOL_ADD,
+            0,
+            Instruction ::SYMBOL_GET,
+            0,
+            Instruction ::GET_INSTANT,
+            1,
+            Instruction ::SYMBOL_SET,
+            Instruction ::DISCARD,
+            Instruction ::SYMBOL_GET,
+            0,
+            Instruction ::PRINT,
+            1,
+        }};
+    input_prog.set_result_type_classification(Type::Classification::VOID);
+
+    std::ostringstream os;
+    decaf::VirtualMachine vm{input_prog, os};
+    vm.run();
+
+    REQUIRE(!vm.is_error());
+    REQUIRE(os.str() == "1\n");
+}

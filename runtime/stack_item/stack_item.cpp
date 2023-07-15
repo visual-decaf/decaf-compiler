@@ -1,4 +1,5 @@
 #include "stack_item.h"
+#include "stack_items.h"
 
 decaf::StackItem::ptr_type decaf::StackItem::perform_PLUS_with(decaf::StackItem::ptr_type rhs) {
     throw OperationNotImplemented(type.name(), "PLUS");
@@ -58,6 +59,20 @@ decaf::StackItem::ptr_type decaf::StackItem::perform_NEGATE() {
 
 decaf::StackItem::ptr_type decaf::StackItem::perform_LOGIC_NOT() {
     throw OperationNotImplemented(type.name(), "LOGIC_NOT");
+}
+
+decaf::StackItem::ptr_type decaf::StackItem::get_default_lvalue(decaf::Type type) {
+    if (type.classification == Type::Classification::INT) {
+        return std::make_shared<LValueStackItem>(
+            std::make_shared<IntStackItem>(0));
+    } else if (type.classification == Type::Classification::FLOAT) {
+        return std::make_shared<LValueStackItem>(
+            std::make_shared<FloatStackItem>(0.0));
+    } else if (type.classification == Type::Classification::BOOL) {
+        return std::make_shared<LValueStackItem>(
+            std::make_shared<BoolStackItem>(false));
+    }
+    return std::make_shared<LValueStackItem>(nullptr);
 }
 
 std::ostream& operator<<(std::ostream& os, const decaf::StackItem& stackItem) {

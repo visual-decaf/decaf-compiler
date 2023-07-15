@@ -33,3 +33,13 @@ bool decaf::ast::ExpressionList::equal(const decaf::ast::ExpressionList& rhs) {
 
     return true;
 }
+
+bool decaf::ast::VariableDecl::equal(std::shared_ptr<Stmt> rhs) {
+    auto stmt = std::dynamic_pointer_cast<VariableDecl>(rhs);
+
+    if (!stmt) {
+        return false;
+    }
+
+    return *(this->type) == *(stmt->type) && this->name == stmt->name;
+}

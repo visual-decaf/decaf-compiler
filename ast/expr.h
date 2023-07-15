@@ -21,6 +21,8 @@ struct ExprVisitor {
     virtual std::any visitRationalBinary(std::shared_ptr<ast::RationalBinary>) = 0;
     virtual std::any visitEqualityBinary(std::shared_ptr<ast::EqualityBinary>) = 0;
     virtual std::any visitFloatConstant(std::shared_ptr<ast::FloatConstant>) = 0;
+    virtual std::any visitIdentifierExpr(std::shared_ptr<ast::IdentifierExpr>) = 0;
+    virtual std::any visitAssignExpr(std::shared_ptr<ast::AssignExpr>) = 0;
 };
 } // namespace decaf
 
@@ -251,6 +253,40 @@ struct FloatConstant: Expr, std::enable_shared_from_this<FloatConstant> {
 
     bool equals(std::shared_ptr<Expr> ptr) override;
     boost::json::value to_json() override;
+};
+
+struct LValue: Expr {
+    uint8_t index = 0;
+};
+
+struct IdentifierExpr: LValue, std::enable_shared_from_this<IdentifierExpr> {
+    std::string name;
+    explicit IdentifierExpr(std::string _name):
+        name{std::move(_name)} {
+        // TODO: What type should this Identifier be?
+    }
+
+    std::any accept(ExprVisitor& visitor) override {
+        return visitor.visitIdentifierExpr(shared_from_this());
+    }
+
+    bool equals(std::shared_ptr<Expr> ptr) override;
+};
+
+struct AssignExpr: Expr, std::enable_shared_from_this<AssignExpr> {
+    std::shared_ptr<Expr> left;
+    std::shared_ptr<Expr> right;
+
+    AssignExpr(std::shared_ptr<Expr> _left, std::shared_ptr<Expr> _right):
+        left{std::move(_left)}, right{std::move(_right)} {
+        this->type = right->type;
+    }
+
+    std::any accept(ExprVisitor& visitor) override {
+        return visitor.visitAssignExpr(shared_from_this());
+    }
+
+    bool equals(std::shared_ptr<Expr> ptr) override;
 };
 
 } // namespace decaf::ast
