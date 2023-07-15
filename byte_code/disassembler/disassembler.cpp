@@ -115,8 +115,8 @@ bool Disassembler::op_PRINT(uint8_t count) {
     return true;
 }
 
-bool Disassembler::op_SYMBOL_ADD() {
-    this->assembly_code.emplace_back("SYMBOL_ADD");
+bool Disassembler::op_SYMBOL_ADD(uint8_t index) {
+    this->assembly_code.emplace_back("SYMBOL_ADD " + std::to_string(static_cast<int>(index)));
     return true;
 }
 
@@ -125,7 +125,7 @@ bool Disassembler::op_SYMBOL_GET(uint8_t index) {
     return true;
 }
 
-bool Disassembler::op_SYMBOL_SET(uint8_t index) {
-    this->assembly_code.emplace_back("SYMBOL_SET " + std::to_string(static_cast<int>(index)));
+bool Disassembler::op_SYMBOL_SET() {
+    this->assembly_code.emplace_back("SYMBOL_SET");
     return true;
 }
