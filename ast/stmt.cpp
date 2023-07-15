@@ -11,9 +11,13 @@ bool decaf::ast::ExpressionStmt::equal(std::shared_ptr<Stmt> rhs) {
 }
 
 boost::json::value decaf::ast::ExpressionStmt::to_json() {
+    boost::json::array list;
+    list.emplace_back(this->expr->to_json());
     boost::json::object result{
         {"type", "ExpressionStmt"},
-        {"expr", this->expr->to_json()}};
+        {"name", "ExpressionStmt"},
+        {"list", list},
+        {"resultType", "VOID"}};
     return result;
 }
 
@@ -25,6 +29,14 @@ bool decaf::ast::PrintStmt::equal(std::shared_ptr<Stmt> rhs) {
     }
 
     return list->equal(*stmt->list);
+}
+boost::json::value decaf::ast::PrintStmt::to_json() {
+    boost::json::object result{
+        {"type", "PrintStmt"},
+        {"name", "PrintStmt"},
+        {"list", this->list->to_json()},
+        {"resultType", "VOID"}};
+    return result;
 }
 
 bool decaf::ast::ExpressionList::equal(const decaf::ast::ExpressionList& rhs) {
@@ -39,4 +51,12 @@ bool decaf::ast::ExpressionList::equal(const decaf::ast::ExpressionList& rhs) {
     }
 
     return true;
+}
+
+boost::json::value decaf::ast::ExpressionList::to_json() {
+    boost::json::array result;
+    for (const auto& expr: this->expressions) {
+        result.emplace_back(expr->to_json());
+    }
+    return result;
 }
