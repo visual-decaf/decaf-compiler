@@ -33,6 +33,9 @@ std::map<decaf::token_type, std::string> decaf::token_name_of{
     {token_type ::SEMICOLON, "SEMICOLON"},
     {token_type ::COMMA, "COMMA"},
     {token_type ::ASSIGN, "ASSIGN"},
+    {token_type ::INT, "INT"},
+    {token_type ::DOUBLE, "DOUBLE"},
+    {token_type ::BOOL, "BOOL"},
     {token_type ::IDENTIFIER, "IDENTIFIER"},
     {token_type ::INVALID, "INVALID"},
     {token_type ::YYEOF, "YYEOF"}};

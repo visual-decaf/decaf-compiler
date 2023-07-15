@@ -65,6 +65,10 @@ bool decaf::ast::VariableDecl::equal(std::shared_ptr<Stmt> rhs) {
 boost::json::value decaf::ast::VariableDecl::to_json() {
     boost::json::array list;
     list.emplace_back(boost::json::object{
+        {"type", "Type"},
+        {"value", this->type->to_json()},
+        {"resultType", this->type->to_json()}});
+    list.emplace_back(boost::json::object{
         {"type", "Identifier"},
         {"value", this->name},
         {"resultType", this->type->to_json()}});
