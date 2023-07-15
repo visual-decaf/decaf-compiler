@@ -56,7 +56,7 @@
 %token COMMA ","
 %token INVALID
 %token INT "int" DOUBLE "double" BOOL "bool"
-%token IDENTIFIER
+%token <std::string> IDENTIFIER
 
 
 /* Keywords */
