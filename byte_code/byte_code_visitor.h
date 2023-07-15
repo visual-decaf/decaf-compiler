@@ -29,6 +29,9 @@ public:
 
     virtual bool op_DISCARD() = 0;
     virtual bool op_PRINT(uint8_t count) = 0;
+    virtual bool op_SYMBOL_ADD() = 0;
+    virtual bool op_SYMBOL_GET(uint8_t index) = 0;
+    virtual bool op_SYMBOL_SET(uint8_t index) = 0;
 
     virtual ~ByteCodeVisitor() = default;
 };

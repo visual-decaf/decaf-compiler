@@ -49,7 +49,10 @@ public:
             GET_FALSE,
             GET_FLOAT_CONSTANT,
             DISCARD,
-            PRINT
+            PRINT,
+            SYMBOL_ADD,
+            SYMBOL_GET,
+            SYMBOL_SET
         };
     };
 

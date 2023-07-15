@@ -53,6 +53,8 @@ bool decaf::ByteCodeDriver::produce_instruction() {
             return visitor.op_NOT_EQUAL();
         case Instruction ::DISCARD:
             return visitor.op_DISCARD();
+        case Instruction ::SYMBOL_ADD:
+            return visitor.op_SYMBOL_ADD();
 
             // 1 Operand
         case Instruction ::GET_INSTANT:
@@ -67,6 +69,12 @@ bool decaf::ByteCodeDriver::produce_instruction() {
         case Instruction ::PRINT:
             check_expected_byte(1);
             return visitor.op_PRINT(*(++current_byte));
+        case Instruction ::SYMBOL_GET:
+            check_expected_byte(1);
+            return visitor.op_SYMBOL_GET(*(++current_byte));
+        case Instruction ::SYMBOL_SET:
+            check_expected_byte(1);
+            return visitor.op_SYMBOL_SET(*(++current_byte));
     }
 
     // No such Instruction
