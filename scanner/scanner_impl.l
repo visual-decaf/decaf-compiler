@@ -52,6 +52,9 @@ FLOAT {NORMAL_FLOAT}{EXPONENT}?
 "true" { emit({token_type::TRUE, YYText()}); }
 "false" { emit({token_type::FALSE, YYText()}); }
 "Print" { emit({token_type::PRINT, YYText()}); }
+"int" { emit({token_type::INT, YYText()}); }
+"double" { emit({token_type::DOUBLE, YYText()}); }
+"bool" { emit({token_type::BOOL, YYText()}); }
 
 [ \t] {}
 
