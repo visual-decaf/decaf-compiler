@@ -36,6 +36,9 @@ public:
 
     bool op_DISCARD() override;
     bool op_PRINT(uint8_t count) override;
+    bool op_SYMBOL_ADD() override;
+    bool op_SYMBOL_GET(uint8_t index) override;
+    bool op_SYMBOL_SET(uint8_t index) override;
 
     assembly_code_type get_code();
 
