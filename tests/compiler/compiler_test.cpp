@@ -610,3 +610,92 @@ TEST_CASE("compiler_print_stmt_multi", "[compiler]") {
         }};
     REQUIRE(expect == result);
 }
+
+TEST_CASE("compiler_define_variable", "[compiler]") {
+    auto input_prog = Compiler::stmt_list{
+        std::make_shared<ast::VariableDecl>(
+            std::make_shared<Type>(Type::Classification::INT),
+            "ident"),
+    };
+
+    decaf::Compiler compiler{input_prog};
+    compiler.compile();
+
+    auto result = compiler.get_program();
+    REQUIRE(result.get_result_type_classification() == decaf::Type::Classification::VOID);
+    auto expect = Program{
+        ByteCode{
+            Instruction ::GET_INSTANT,
+            0,
+            Instruction ::SYMBOL_ADD,
+            0}};
+    REQUIRE(expect == result);
+}
+
+TEST_CASE("compiler_define_variable_assign", "[compiler]") {
+    auto input_prog = Compiler::stmt_list{
+        std::make_shared<ast::VariableDecl>(
+            std::make_shared<Type>(Type::Classification::INT),
+            "ident"),
+        std::make_shared<ast::ExpressionStmt>(std::make_shared<ast::AssignExpr>(
+            std::make_shared<ast::IdentifierExpr>("ident"),
+            std::make_shared<ast::IntConstant>(1))),
+    };
+
+    decaf::Compiler compiler{input_prog};
+    compiler.compile();
+
+    auto result = compiler.get_program();
+    REQUIRE(result.get_result_type_classification() == decaf::Type::Classification::VOID);
+    auto expect = Program{
+        ByteCode{
+            Instruction ::GET_INSTANT,
+            0,
+            Instruction ::SYMBOL_ADD,
+            0,
+            Instruction ::SYMBOL_GET,
+            0,
+            Instruction ::GET_INSTANT,
+            1,
+            Instruction ::SYMBOL_SET,
+            Instruction ::DISCARD,
+        }};
+    REQUIRE(expect == result);
+}
+
+TEST_CASE("compiler_define_variable_assign_use", "[compiler]") {
+    auto input_prog = Compiler::stmt_list{
+        std::make_shared<ast::VariableDecl>(
+            std::make_shared<Type>(Type::Classification::INT),
+            "ident"),
+        std::make_shared<ast::ExpressionStmt>(std::make_shared<ast::AssignExpr>(
+            std::make_shared<ast::IdentifierExpr>("ident"),
+            std::make_shared<ast::IntConstant>(1))),
+        std::make_shared<ast::PrintStmt>(
+            std::make_shared<ast::ExpressionList>(
+                std::initializer_list<std::shared_ptr<ast::Expr>>{
+                    std::make_shared<ast::IdentifierExpr>("ident")}))};
+
+    decaf::Compiler compiler{input_prog};
+    compiler.compile();
+
+    auto result = compiler.get_program();
+    REQUIRE(result.get_result_type_classification() == decaf::Type::Classification::VOID);
+    auto expect = Program{
+        ByteCode{
+            Instruction ::GET_INSTANT,
+            0,
+            Instruction ::SYMBOL_ADD,
+            0,
+            Instruction ::SYMBOL_GET,
+            0,
+            Instruction ::GET_INSTANT,
+            1,
+            Instruction ::SYMBOL_SET,
+            Instruction ::DISCARD,
+            Instruction ::SYMBOL_GET,
+            0,
+            Instruction ::PRINT,
+            1}};
+    REQUIRE(expect == result);
+}
