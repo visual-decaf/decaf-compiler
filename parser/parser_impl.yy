@@ -34,6 +34,7 @@
 %nterm <std::shared_ptr<decaf::ast::Expr>> equalityBinary
 %nterm <std::shared_ptr<decaf::ast::Expr>> floatConstant
 %nterm <std::shared_ptr<decaf::ast::Expr>> identifierExpr
+%nterm <std::shared_ptr<decaf::ast::Expr>> assignExpr
 
 %nterm <std::shared_ptr<decaf::ast::Stmt>> statement
 %nterm <std::shared_ptr<decaf::ast::Stmt>> expressionStmt
@@ -67,6 +68,7 @@
 %token PRINT "Print"
 
 /* Expressions */
+%left ASSIGN
 %left LOGIC_OR
 %left LOGIC_AND
 %left EQUAL NOT_EQUAL
@@ -131,6 +133,7 @@ expression:
     | boolConstant
     | floatConstant
     | identifierExpr
+    | assignExpr
     ;
 
 arithmeticBinaryExpr: 
@@ -299,6 +302,15 @@ type:
         );
     }
     ;
+
+assignExpr:
+    expression "=" expression {
+        $$ = std::make_shared<AssignExpr>(
+            $1,
+            $3
+        );
+    }
+
 %%
 
 void yy::parser::error(const std::string& msg) {
