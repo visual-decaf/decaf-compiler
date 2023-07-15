@@ -22,6 +22,9 @@ int yylex(yy::parser::value_type* yylval, decaf::Parser& driver) {
         case token_type::FLOAT:
             yylval->emplace<double>(std::stod(next_token->lexeme));
             break;
+        case token_type::IDENTIFIER:
+            yylval->emplace<std::string>(next_token->lexeme);
+            break;
         default:
             // No semantic value for other types
             // leave yylval unchanged
