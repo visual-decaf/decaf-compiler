@@ -282,3 +282,13 @@ boost::json::value decaf::ast::FloatConstant::to_json() {
         {"resultType", this->type.to_json()}};
     return result;
 }
+
+bool decaf::ast::IdentifierExpr::equals(std::shared_ptr<Expr> ptr) {
+    auto rhs = std::dynamic_pointer_cast<IdentifierExpr>(ptr);
+
+    if (rhs == nullptr) {
+        return false;
+    }
+
+    return this->name == rhs->name;
+}

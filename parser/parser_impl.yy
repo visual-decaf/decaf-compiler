@@ -33,6 +33,7 @@
 %nterm <std::shared_ptr<decaf::ast::Expr>> rationalBinary
 %nterm <std::shared_ptr<decaf::ast::Expr>> equalityBinary
 %nterm <std::shared_ptr<decaf::ast::Expr>> floatConstant
+%nterm <std::shared_ptr<decaf::ast::Expr>> identifierExpr
 
 %nterm <std::shared_ptr<decaf::ast::Stmt>> statement
 %nterm <std::shared_ptr<decaf::ast::Stmt>> expressionStmt
@@ -128,6 +129,7 @@ expression:
     | intConstant
     | boolConstant
     | floatConstant
+    | identifierExpr
     ;
 
 arithmeticBinaryExpr: 
@@ -272,6 +274,11 @@ boolConstant:
 floatConstant:
     FLOAT {
         $$ = std::make_shared<FloatConstant>($1);
+    }
+
+identifierExpr:
+    IDENTIFIER {
+        $$ = std::make_shared<IdentifierExpr>($1);
     }
 
 type:
