@@ -255,7 +255,9 @@ struct FloatConstant: Expr, std::enable_shared_from_this<FloatConstant> {
     boost::json::value to_json() override;
 };
 
-struct LValue: Expr {};
+struct LValue: Expr {
+    uint8_t index = 0;
+};
 
 struct IdentifierExpr: LValue, std::enable_shared_from_this<IdentifierExpr> {
     std::string name;

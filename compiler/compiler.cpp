@@ -153,3 +153,24 @@ std::any decaf::Compiler::visitVariableDecl(std::shared_ptr<ast::VariableDecl> v
     prog.emit(ByteCode::Instruction::SYMBOL_ADD);
     return {};
 }
+
+std::any decaf::Compiler::visitIdentifierExpr(std::shared_ptr<ast::IdentifierExpr> identifierExpr) {
+    prog.emit_bytes(
+        ByteCode::Instruction::SYMBOL_GET,
+        symbol_index_of[identifierExpr->name]);
+    return {};
+}
+
+std::any decaf::Compiler::visitAssignExpr(std::shared_ptr<ast::AssignExpr> assignExpr) {
+    auto lhs = std::dynamic_pointer_cast<ast::IdentifierExpr>(assignExpr->left);
+    assignExpr->right->accept(*this);
+
+    if (assignExpr->right->type != *symbol_declaration_of[lhs->name]->type) {
+        throw std::runtime_error("Assign with wrong type");
+    }
+
+    prog.emit_bytes(
+        ByteCode::Instruction::SYMBOL_SET,
+        symbol_index_of[lhs->name]);
+    return {};
+}
