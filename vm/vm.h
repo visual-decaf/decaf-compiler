@@ -3,6 +3,7 @@
 #include "byte_code_visitor.h"
 #include "program.h"
 #include "stack_items.h"
+#include "symbol_table.h"
 #include <any>
 #include <optional>
 #include <stack>
@@ -42,6 +43,9 @@ public:
 
     bool op_DISCARD() override;
     bool op_PRINT(uint8_t count) override;
+    bool op_SYMBOL_ADD() override;
+    bool op_SYMBOL_GET(uint8_t index) override;
+    bool op_SYMBOL_SET(uint8_t index) override;
 
     void run();
 
@@ -59,6 +63,7 @@ protected:
 private:
     Program prog;
     stack_type stk;
+    SymbolTable table;
     std::ostream& output;
 
     StackItem::ptr_type last_discarded;
