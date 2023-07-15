@@ -56,6 +56,7 @@
 %token EOL
 %token SEMICOLON ";"
 %token COMMA ","
+%token ASSIGN "="
 %token INVALID
 %token INT "int" DOUBLE "double" BOOL "bool"
 %token <std::string> IDENTIFIER
