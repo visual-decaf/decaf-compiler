@@ -68,7 +68,7 @@
 %token PRINT "Print"
 
 /* Expressions */
-%left ASSIGN
+%right ASSIGN
 %left LOGIC_OR
 %left LOGIC_AND
 %left EQUAL NOT_EQUAL
