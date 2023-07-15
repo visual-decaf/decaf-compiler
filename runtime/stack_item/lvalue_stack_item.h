@@ -12,6 +12,7 @@ struct LValueStackItem: StackItem {
     }
 
     StackItem::ptr_type value{nullptr};
+    ptr_type clone() override;
 };
 
 } // namespace decaf

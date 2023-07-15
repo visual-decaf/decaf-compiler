@@ -55,6 +55,8 @@ struct StackItem {
         return false;
     }
 
+    virtual ptr_type clone() = 0;
+
     Type type;
 
     virtual ~StackItem() = default;

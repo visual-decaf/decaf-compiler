@@ -44,3 +44,7 @@ decaf::StackItem::ptr_type decaf::BoolStackItem::perform_LOGIC_NOT() {
     auto result = std::make_shared<BoolStackItem>(!value);
     return result;
 }
+
+decaf::StackItem::ptr_type decaf::BoolStackItem::clone() {
+    return std::make_shared<BoolStackItem>(value);
+}
