@@ -16,10 +16,12 @@ class Compiler:
     public StmtVisitor {
 public:
     Compiler() = default;
+    using ast_ptr = std::shared_ptr<ast::Stmt>;
+    using stmt_list = std::vector<ast_ptr>;
 
     // Compiler doesn't own the root
-    explicit Compiler(std::shared_ptr<ast::Stmt> root):
-        ast_root{std::move(root)} {
+    explicit Compiler(stmt_list _statements):
+        statements{std::move(_statements)} {
     }
 
     void compile();
@@ -41,12 +43,8 @@ public:
     std::any visitIdentifierExpr(std::shared_ptr<ast::IdentifierExpr> ptr) override;
     std::any visitAssignExpr(std::shared_ptr<ast::AssignExpr> ptr) override;
 
-    void set_ast_root(std::shared_ptr<ast::Stmt> stmt) {
-        ast_root = std::move(stmt);
-    }
-
 private:
-    std::shared_ptr<ast::Stmt> ast_root;
+    stmt_list statements;
     uint8_t index_count = 0;
     bool emit_code_for_default(Type);
     std::map<std::string, SymbolTable::index_type> symbol_index_of;
