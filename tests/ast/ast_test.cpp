@@ -101,6 +101,7 @@ TEST_CASE("group_invalid_content_json", "[ast]") {
     "list": [
         {
             "type": "INVALID",
+            "value": "INVALID",
             "resultType": "INVALID"
         }
     ] ,
@@ -131,6 +132,7 @@ TEST_CASE("invalid_node_json", "[ast]") {
             "list": [
                 {
                     "type": "INVALID",
+                    "value": "INVALID",
                     "resultType": "INVALID"
                 }
             ],
@@ -238,6 +240,7 @@ TEST_CASE("rational_binary_json", "[ast]") {
             "list": [
                 {
                     "type": "INVALID",
+                    "value": "INVALID",
                     "resultType": "INVALID"
                 }
             ],

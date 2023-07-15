@@ -99,6 +99,7 @@ boost::json::value decaf::ast::Group::to_json() {
     if (this->content == nullptr) {
         list.emplace_back(boost::json::object{
             {"type", "INVALID"},
+            {"value", "INVALID"},
             {"resultType", "INVALID"}});
     } else {
         list.emplace_back(this->content->to_json());
