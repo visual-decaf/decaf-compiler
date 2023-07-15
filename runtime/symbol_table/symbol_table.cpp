@@ -1,15 +1,14 @@
 #include "symbol_table.h"
 #include <utility>
 
-decaf::SymbolTable::index_type decaf::SymbolTable::add_symbol(decaf::StackItem::ptr_type ptr) {
-    table.push_back(std::move(ptr));
-    return table.size() - 1;
+decaf::SymbolTable::index_type decaf::SymbolTable::add_symbol() {
+    return count++;
 }
 
-bool decaf::SymbolTable::set_symbol(index_type index, decaf::StackItem::ptr_type ptr) {
-    if (table.size() <= index) {
-        return false;
-    }
+void decaf::SymbolTable::set_symbol(index_type index, decaf::StackItem::ptr_type ptr) {
     table[index] = std::move(ptr);
-    return true;
+}
+
+decaf::StackItem::ptr_type decaf::SymbolTable::get_symbol(decaf::SymbolTable::index_type index) {
+    return table[index];
 }
