@@ -218,10 +218,65 @@ TEST_CASE("scanner_comma", "[scanner]") {
     }
 }
 
-TEST_CASE("scanner_keyword_print", "[scanner]") {
-    auto result_token = scan_for("Print");
+TEST_CASE("scanner_keyword_int", "[scanner]") {
+    auto result_token = scan_for("int ");
     decaf::TokenStream expected_token{
-        {token_type ::PRINT, "Print"},
+        {token_type ::INT, "int"},
+        {token_type ::YYEOF},
+    };
+
+    REQUIRE(result_token.size() == expected_token.size());
+    for (int i = 0; i < result_token.size(); i++) {
+        REQUIRE(result_token[i] == expected_token[i]);
+    }
+}
+
+TEST_CASE("scanner_keyword_double", "[scanner]") {
+    auto result_token = scan_for("double ");
+    decaf::TokenStream expected_token{
+        {token_type ::DOUBLE, "double"},
+        {token_type ::YYEOF},
+    };
+
+    REQUIRE(result_token.size() == expected_token.size());
+    for (int i = 0; i < result_token.size(); i++) {
+        REQUIRE(result_token[i] == expected_token[i]);
+    }
+}
+
+TEST_CASE("scanner_keyword_bool", "[scanner]") {
+    auto result_token = scan_for("bool ");
+    decaf::TokenStream expected_token{
+        {token_type ::BOOL, "bool"},
+        {token_type ::YYEOF},
+    };
+
+    REQUIRE(result_token.size() == expected_token.size());
+    for (int i = 0; i < result_token.size(); i++) {
+        REQUIRE(result_token[i] == expected_token[i]);
+    }
+}
+
+TEST_CASE("scanner_identifier", "[scanner]") {
+    auto result_token = scan_for("IF ident test ");
+    decaf::TokenStream expected_token{
+        {token_type ::IDENTIFIER, "IF"},
+        {token_type ::IDENTIFIER, "ident"},
+        {token_type ::IDENTIFIER, "test"},
+        {token_type ::YYEOF},
+    };
+
+    REQUIRE(result_token.size() == expected_token.size());
+    for (int i = 0; i < result_token.size(); i++) {
+        REQUIRE(result_token[i] == expected_token[i]);
+    }
+}
+
+TEST_CASE("scanner_assign_equal", "[scanner]") {
+    auto result_token = scan_for("= ==");
+    decaf::TokenStream expected_token{
+        {token_type ::ASSIGN, "="},
+        {token_type ::EQUAL, "=="},
         {token_type ::YYEOF},
     };
 

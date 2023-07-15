@@ -11,6 +11,8 @@ namespace decaf {
 struct StackItem: public Serializable {
     using ptr_type = std::shared_ptr<StackItem>;
 
+    static ptr_type get_default_lvalue(Type type);
+
     virtual ptr_type perform_PLUS_with(ptr_type rhs);
     virtual ptr_type perform_MINUS_with(ptr_type rhs);
     virtual ptr_type perform_MULTIPLY_with(ptr_type rhs);
@@ -53,6 +55,8 @@ struct StackItem: public Serializable {
     virtual bool equal_to_bool(bool rhs) {
         return false;
     }
+
+    virtual ptr_type clone() = 0;
 
     Type type;
 

@@ -5,7 +5,7 @@
 namespace decaf {
 
 struct Type: public Serializable {
-    enum class Classification {
+    enum class Classification : uint8_t {
         INVALID,
         INT,
         FLOAT,

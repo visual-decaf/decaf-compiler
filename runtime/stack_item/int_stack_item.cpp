@@ -120,3 +120,7 @@ boost::json::value decaf::IntStackItem::to_json() {
         {"type", "INT"},
         {"value", this->value}};
 }
+
+decaf::StackItem::ptr_type decaf::IntStackItem::clone() {
+    return std::make_shared<IntStackItem>(value);
+}

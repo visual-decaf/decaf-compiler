@@ -36,6 +36,8 @@ struct BoolStackItem: StackItem {
     }
 
     boost::json::value to_json() override;
+
+    ptr_type clone() override;
 };
 
 } // namespace decaf

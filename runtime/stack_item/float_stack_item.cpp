@@ -110,3 +110,7 @@ boost::json::value decaf::FloatStackItem::to_json() {
         {"type", "FLOAT"},
         {"value", this->value}};
 }
+
+decaf::StackItem::ptr_type decaf::FloatStackItem::clone() {
+    return std::make_shared<FloatStackItem>(value);
+}

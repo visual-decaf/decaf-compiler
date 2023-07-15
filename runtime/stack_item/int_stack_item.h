@@ -28,6 +28,7 @@ struct IntStackItem: StackItem {
     bool equal_to_int(int rhs) override {
         return value == rhs;
     }
+    ptr_type clone() override;
 
     int value;
 

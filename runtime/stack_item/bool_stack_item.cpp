@@ -49,3 +49,7 @@ boost::json::value decaf::BoolStackItem::to_json() {
         {"type", "BOOL"},
         {"value", this->value}};
 }
+
+decaf::StackItem::ptr_type decaf::BoolStackItem::clone() {
+    return std::make_shared<BoolStackItem>(value);
+}

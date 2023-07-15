@@ -10,6 +10,7 @@ namespace decaf {
 struct StmtVisitor {
     virtual std::any visitExpressionStmt(std::shared_ptr<ast::ExpressionStmt>) = 0;
     virtual std::any visitPrintStmt(std::shared_ptr<ast::PrintStmt>) = 0;
+    virtual std::any visitVariableDecl(std::shared_ptr<ast::VariableDecl>) = 0;
 };
 } // namespace decaf
 
@@ -65,6 +66,23 @@ struct PrintStmt: Stmt, std::enable_shared_from_this<PrintStmt> {
 
     bool equal(std::shared_ptr<Stmt> rhs) override;
     boost::json::value to_json() override;
+};
+
+using TypePtr = std::shared_ptr<decaf::Type>;
+
+struct VariableDecl: Stmt, std::enable_shared_from_this<VariableDecl> {
+    TypePtr type;
+    std::string name;
+
+    explicit VariableDecl(TypePtr _type, std::string _name):
+        type{std::move(_type)}, name{std::move(_name)} {
+    }
+
+    std::any accept(StmtVisitor& visitor) override {
+        return visitor.visitVariableDecl(shared_from_this());
+    }
+
+    bool equal(std::shared_ptr<Stmt> rhs) override;
 };
 
 } // namespace decaf::ast

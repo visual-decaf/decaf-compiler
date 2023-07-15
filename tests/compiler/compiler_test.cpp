@@ -1,9 +1,14 @@
 #include "compiler.h"
 #include "expr.h"
 #include <catch2/catch_test_macros.hpp>
+#include <utility>
 
 using namespace decaf;
 using Instruction = ByteCode::Instruction;
+
+decaf::Compiler::stmt_list statement_list_wrapper(decaf::Compiler::ast_ptr ast) {
+    return {std::move(ast)};
+}
 
 TEST_CASE("compiler_main", "[compiler]") {
     auto input_ast = std::make_shared<ast::ArithmeticBinary>(
@@ -11,7 +16,7 @@ TEST_CASE("compiler_main", "[compiler]") {
         ast::ArithmeticBinary::Operation::PLUS,
         std::make_shared<ast::IntConstant>(2));
 
-    decaf::Compiler compiler{std::make_shared<ast::ExpressionStmt>(input_ast)};
+    decaf::Compiler compiler{statement_list_wrapper(std::make_shared<ast::ExpressionStmt>(input_ast))};
     compiler.compile();
 
     auto result = compiler.get_program();
@@ -38,7 +43,7 @@ TEST_CASE("compiler_plus_deep", "[compiler]") {
         ast::ArithmeticBinary::Operation::PLUS,
         std::make_shared<ast::IntConstant>(3));
 
-    decaf::Compiler compiler{std::make_shared<ast::ExpressionStmt>(input_ast)};
+    decaf::Compiler compiler{statement_list_wrapper(std::make_shared<ast::ExpressionStmt>(input_ast))};
     compiler.compile();
 
     auto result = compiler.get_program();
@@ -67,7 +72,7 @@ TEST_CASE("compiler_plus_multiply", "[compiler]") {
             std::make_shared<ast::IntConstant>(2),
             ast::ArithmeticBinary::Operation::MULTIPLY,
             std::make_shared<ast::IntConstant>(3)));
-    decaf::Compiler compiler{std::make_shared<ast::ExpressionStmt>(input_ast)};
+    decaf::Compiler compiler{statement_list_wrapper(std::make_shared<ast::ExpressionStmt>(input_ast))};
     compiler.compile();
 
     auto result = compiler.get_program();
@@ -97,7 +102,7 @@ TEST_CASE("compiler_plus_minus", "[compiler]") {
         ast::ArithmeticBinary::Operation::MINUS,
         std::make_shared<ast::IntConstant>(3));
 
-    decaf::Compiler compiler{std::make_shared<ast::ExpressionStmt>(input_ast)};
+    decaf::Compiler compiler{statement_list_wrapper(std::make_shared<ast::ExpressionStmt>(input_ast))};
     compiler.compile();
 
     auto result = compiler.get_program();
@@ -127,7 +132,7 @@ TEST_CASE("compiler_multiply_divide", "[compiler]") {
         ast::ArithmeticBinary::Operation::DIVIDE,
         std::make_shared<ast::IntConstant>(3));
 
-    decaf::Compiler compiler{std::make_shared<ast::ExpressionStmt>(input_ast)};
+    decaf::Compiler compiler{statement_list_wrapper(std::make_shared<ast::ExpressionStmt>(input_ast))};
     compiler.compile();
 
     auto result = compiler.get_program();
@@ -154,7 +159,7 @@ TEST_CASE("compiler_mod", "[compiler]") {
         ast::ArithmeticBinary::Operation::MOD,
         std::make_shared<ast::IntConstant>(7));
 
-    decaf::Compiler compiler{std::make_shared<ast::ExpressionStmt>(input_ast)};
+    decaf::Compiler compiler{statement_list_wrapper(std::make_shared<ast::ExpressionStmt>(input_ast))};
     compiler.compile();
 
     auto result = compiler.get_program();
@@ -176,7 +181,7 @@ TEST_CASE("compiler_int_constant_pool", "[compiler]") {
         std::make_shared<ast::IntConstant>(10000),
         ast::ArithmeticBinary::Operation::PLUS,
         std::make_shared<ast::IntConstant>(2345));
-    decaf::Compiler compiler{std::make_shared<ast::ExpressionStmt>(input_ast)};
+    decaf::Compiler compiler{statement_list_wrapper(std::make_shared<ast::ExpressionStmt>(input_ast))};
     compiler.compile();
 
     auto result = compiler.get_program();
@@ -201,7 +206,7 @@ TEST_CASE("compiler_group", "[compiler]") {
     auto input_ast = std::make_shared<ast::Group>(
         std::make_shared<ast::IntConstant>(1));
 
-    decaf::Compiler compiler{std::make_shared<ast::ExpressionStmt>(input_ast)};
+    decaf::Compiler compiler{statement_list_wrapper(std::make_shared<ast::ExpressionStmt>(input_ast))};
     compiler.compile();
 
     auto result = compiler.get_program();
@@ -221,7 +226,7 @@ TEST_CASE("compiler_logic_binary_simple_and", "[compiler]") {
         ast::LogicBinary::Operation::LOGIC_AND,
         std::make_shared<ast::BoolConstant>(false));
 
-    decaf::Compiler compiler{std::make_shared<ast::ExpressionStmt>(input_ast)};
+    decaf::Compiler compiler{statement_list_wrapper(std::make_shared<ast::ExpressionStmt>(input_ast))};
     compiler.compile();
 
     auto result = compiler.get_program();
@@ -242,7 +247,7 @@ TEST_CASE("compiler_logic_binary_simple_or", "[compiler]") {
         ast::LogicBinary::Operation::LOGIC_OR,
         std::make_shared<ast::BoolConstant>(false));
 
-    decaf::Compiler compiler{std::make_shared<ast::ExpressionStmt>(input_ast)};
+    decaf::Compiler compiler{statement_list_wrapper(std::make_shared<ast::ExpressionStmt>(input_ast))};
     compiler.compile();
 
     auto result = compiler.get_program();
@@ -266,7 +271,7 @@ TEST_CASE("compiler_logic_binary_combined", "[compiler]") {
             ast::LogicBinary::Operation::LOGIC_OR,
             std::make_shared<ast::BoolConstant>(false)));
 
-    decaf::Compiler compiler{std::make_shared<ast::ExpressionStmt>(input_ast)};
+    decaf::Compiler compiler{statement_list_wrapper(std::make_shared<ast::ExpressionStmt>(input_ast))};
     compiler.compile();
 
     auto result = compiler.get_program();
@@ -287,7 +292,7 @@ TEST_CASE("compiler_arithmetic_unary", "[compiler]") {
     auto input_ast = std::make_shared<ast::ArithmeticUnary>(
         std::make_shared<ast::IntConstant>(1));
 
-    decaf::Compiler compiler{std::make_shared<ast::ExpressionStmt>(input_ast)};
+    decaf::Compiler compiler{statement_list_wrapper(std::make_shared<ast::ExpressionStmt>(input_ast))};
     compiler.compile();
 
     auto result = compiler.get_program();
@@ -309,7 +314,7 @@ TEST_CASE("compiler_arithmetic_unary_binary_combined", "[compiler]") {
         ast::ArithmeticBinary::Operation::MINUS,
         std::make_shared<ast::IntConstant>(2));
 
-    decaf::Compiler compiler{std::make_shared<ast::ExpressionStmt>(input_ast)};
+    decaf::Compiler compiler{statement_list_wrapper(std::make_shared<ast::ExpressionStmt>(input_ast))};
     compiler.compile();
 
     auto result = compiler.get_program();
@@ -335,7 +340,7 @@ TEST_CASE("compiler_arithmetic_unary_binary_complex_combined", "[compiler]") {
         std::make_shared<ast::ArithmeticUnary>(
             std::make_shared<ast::IntConstant>(2)));
 
-    decaf::Compiler compiler{std::make_shared<ast::ExpressionStmt>(input_ast)};
+    decaf::Compiler compiler{statement_list_wrapper(std::make_shared<ast::ExpressionStmt>(input_ast))};
     compiler.compile();
 
     auto result = compiler.get_program();
@@ -358,7 +363,7 @@ TEST_CASE("compiler_logic_not", "[compiler]") {
     auto input_ast = std::make_shared<ast::LogicUnary>(
         std::make_shared<ast::BoolConstant>(true));
 
-    decaf::Compiler compiler{std::make_shared<ast::ExpressionStmt>(input_ast)};
+    decaf::Compiler compiler{statement_list_wrapper(std::make_shared<ast::ExpressionStmt>(input_ast))};
     compiler.compile();
 
     auto result = compiler.get_program();
@@ -379,7 +384,7 @@ TEST_CASE("compiler_logic_not_combined", "[compiler]") {
         std::make_shared<ast::LogicUnary>(
             std::make_shared<ast::BoolConstant>(true)));
 
-    decaf::Compiler compiler{std::make_shared<ast::ExpressionStmt>(input_ast)};
+    decaf::Compiler compiler{statement_list_wrapper(std::make_shared<ast::ExpressionStmt>(input_ast))};
     compiler.compile();
 
     auto result = compiler.get_program();
@@ -401,7 +406,7 @@ TEST_CASE("compiler_rational_less", "[compiler]") {
         ast::RationalBinary::Operation::LESS,
         std::make_shared<ast::IntConstant>(2));
 
-    decaf::Compiler compiler{std::make_shared<ast::ExpressionStmt>(input_ast)};
+    decaf::Compiler compiler{statement_list_wrapper(std::make_shared<ast::ExpressionStmt>(input_ast))};
     compiler.compile();
 
     auto result = compiler.get_program();
@@ -424,7 +429,7 @@ TEST_CASE("compiler_rational_less_equal", "[compiler]") {
         ast::RationalBinary::Operation::LESS_EQUAL,
         std::make_shared<ast::IntConstant>(2));
 
-    decaf::Compiler compiler{std::make_shared<ast::ExpressionStmt>(input_ast)};
+    decaf::Compiler compiler{statement_list_wrapper(std::make_shared<ast::ExpressionStmt>(input_ast))};
     compiler.compile();
 
     auto result = compiler.get_program();
@@ -447,7 +452,7 @@ TEST_CASE("compiler_rational_greater", "[compiler]") {
         ast::RationalBinary::Operation::GREATER,
         std::make_shared<ast::IntConstant>(2));
 
-    decaf::Compiler compiler{std::make_shared<ast::ExpressionStmt>(input_ast)};
+    decaf::Compiler compiler{statement_list_wrapper(std::make_shared<ast::ExpressionStmt>(input_ast))};
     compiler.compile();
 
     auto result = compiler.get_program();
@@ -470,7 +475,7 @@ TEST_CASE("compiler_rational_greater_equal", "[compiler]") {
         ast::RationalBinary::Operation::GREATER_EQUAL,
         std::make_shared<ast::IntConstant>(2));
 
-    decaf::Compiler compiler{std::make_shared<ast::ExpressionStmt>(input_ast)};
+    decaf::Compiler compiler{statement_list_wrapper(std::make_shared<ast::ExpressionStmt>(input_ast))};
     compiler.compile();
 
     auto result = compiler.get_program();
@@ -493,7 +498,7 @@ TEST_CASE("compiler_equality_equal", "[equality]") {
         ast::EqualityBinary::Operation::EQUAL,
         std::make_shared<ast::IntConstant>(2));
 
-    decaf::Compiler compiler{std::make_shared<ast::ExpressionStmt>(input_ast)};
+    decaf::Compiler compiler{statement_list_wrapper(std::make_shared<ast::ExpressionStmt>(input_ast))};
     compiler.compile();
 
     auto result = compiler.get_program();
@@ -515,7 +520,7 @@ TEST_CASE("compiler_equality_not_equal", "[equality]") {
         ast::EqualityBinary::Operation::NOT_EQUAL,
         std::make_shared<ast::IntConstant>(2));
 
-    decaf::Compiler compiler{std::make_shared<ast::ExpressionStmt>(input_ast)};
+    decaf::Compiler compiler{statement_list_wrapper(std::make_shared<ast::ExpressionStmt>(input_ast))};
     compiler.compile();
 
     auto result = compiler.get_program();
@@ -537,7 +542,7 @@ TEST_CASE("compiler_float_rational", "[compiler]") {
         ast::RationalBinary::Operation::GREATER,
         std::make_shared<ast::FloatConstant>(1.48));
 
-    decaf::Compiler compiler{std::make_shared<ast::ExpressionStmt>(input_ast)};
+    decaf::Compiler compiler{statement_list_wrapper(std::make_shared<ast::ExpressionStmt>(input_ast))};
     compiler.compile();
 
     auto result = compiler.get_program();
@@ -567,7 +572,7 @@ TEST_CASE("compiler_print_stmt", "[compiler]") {
             std::initializer_list<std::shared_ptr<ast::Expr>>{
                 std::make_shared<ast::IntConstant>(1)}));
 
-    decaf::Compiler compiler{input_prog};
+    decaf::Compiler compiler{statement_list_wrapper(input_prog)};
     compiler.compile();
 
     auto result = compiler.get_program();
@@ -589,7 +594,7 @@ TEST_CASE("compiler_print_stmt_multi", "[compiler]") {
                 std::make_shared<ast::IntConstant>(1),
                 std::make_shared<ast::IntConstant>(2)}));
 
-    decaf::Compiler compiler{input_prog};
+    decaf::Compiler compiler{statement_list_wrapper(input_prog)};
     compiler.compile();
 
     auto result = compiler.get_program();
@@ -603,5 +608,94 @@ TEST_CASE("compiler_print_stmt_multi", "[compiler]") {
             Instruction ::PRINT,
             2,
         }};
+    REQUIRE(expect == result);
+}
+
+TEST_CASE("compiler_define_variable", "[compiler]") {
+    auto input_prog = Compiler::stmt_list{
+        std::make_shared<ast::VariableDecl>(
+            std::make_shared<Type>(Type::Classification::INT),
+            "ident"),
+    };
+
+    decaf::Compiler compiler{input_prog};
+    compiler.compile();
+
+    auto result = compiler.get_program();
+    REQUIRE(result.get_result_type_classification() == decaf::Type::Classification::VOID);
+    auto expect = Program{
+        ByteCode{
+            Instruction ::GET_INSTANT,
+            0,
+            Instruction ::SYMBOL_ADD,
+            0}};
+    REQUIRE(expect == result);
+}
+
+TEST_CASE("compiler_define_variable_assign", "[compiler]") {
+    auto input_prog = Compiler::stmt_list{
+        std::make_shared<ast::VariableDecl>(
+            std::make_shared<Type>(Type::Classification::INT),
+            "ident"),
+        std::make_shared<ast::ExpressionStmt>(std::make_shared<ast::AssignExpr>(
+            std::make_shared<ast::IdentifierExpr>("ident"),
+            std::make_shared<ast::IntConstant>(1))),
+    };
+
+    decaf::Compiler compiler{input_prog};
+    compiler.compile();
+
+    auto result = compiler.get_program();
+    REQUIRE(result.get_result_type_classification() == decaf::Type::Classification::VOID);
+    auto expect = Program{
+        ByteCode{
+            Instruction ::GET_INSTANT,
+            0,
+            Instruction ::SYMBOL_ADD,
+            0,
+            Instruction ::SYMBOL_GET,
+            0,
+            Instruction ::GET_INSTANT,
+            1,
+            Instruction ::SYMBOL_SET,
+            Instruction ::DISCARD,
+        }};
+    REQUIRE(expect == result);
+}
+
+TEST_CASE("compiler_define_variable_assign_use", "[compiler]") {
+    auto input_prog = Compiler::stmt_list{
+        std::make_shared<ast::VariableDecl>(
+            std::make_shared<Type>(Type::Classification::INT),
+            "ident"),
+        std::make_shared<ast::ExpressionStmt>(std::make_shared<ast::AssignExpr>(
+            std::make_shared<ast::IdentifierExpr>("ident"),
+            std::make_shared<ast::IntConstant>(1))),
+        std::make_shared<ast::PrintStmt>(
+            std::make_shared<ast::ExpressionList>(
+                std::initializer_list<std::shared_ptr<ast::Expr>>{
+                    std::make_shared<ast::IdentifierExpr>("ident")}))};
+
+    decaf::Compiler compiler{input_prog};
+    compiler.compile();
+
+    auto result = compiler.get_program();
+    REQUIRE(result.get_result_type_classification() == decaf::Type::Classification::VOID);
+    auto expect = Program{
+        ByteCode{
+            Instruction ::GET_INSTANT,
+            0,
+            Instruction ::SYMBOL_ADD,
+            0,
+            Instruction ::SYMBOL_GET,
+            0,
+            Instruction ::GET_INSTANT,
+            1,
+            Instruction ::SYMBOL_SET,
+            Instruction ::DISCARD,
+            Instruction ::SYMBOL_GET,
+            0,
+            Instruction ::PRINT,
+            1}};
     REQUIRE(expect == result);
 }

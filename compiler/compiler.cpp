@@ -75,7 +75,9 @@ std::any decaf::Compiler::visitArithmeticUnary(std::shared_ptr<ast::ArithmeticUn
 }
 
 void decaf::Compiler::compile() {
-    ast_root->accept(*this);
+    for (auto&& stmt: statements) {
+        stmt->accept(*this);
+    }
     prog.set_result_type_classification(Type::Classification::VOID);
 }
 
@@ -144,5 +146,53 @@ std::any decaf::Compiler::visitPrintStmt(std::shared_ptr<ast::PrintStmt> printSt
     prog.emit_bytes(
         ByteCode::Instruction::PRINT,
         printStmt->list->expressions.size());
+    return {};
+}
+
+bool decaf::Compiler::emit_code_for_default(decaf::Type type) {
+    if (type.classification == decaf::Type::Classification::INT) {
+        prog.emit_bytes(
+            ByteCode::Instruction::GET_INSTANT,
+            0);
+        return true;
+    } else if (type.classification == decaf::Type::Classification::BOOL) {
+        prog.emit(ByteCode::Instruction::GET_FALSE);
+        return true;
+    } else if (type.classification == decaf::Type::Classification::FLOAT) {
+        prog.emit(ByteCode::Instruction::GET_FLOAT_ZERO);
+        return true;
+    }
+    return false;
+}
+
+std::any decaf::Compiler::visitVariableDecl(std::shared_ptr<ast::VariableDecl> variableDecl) {
+    symbol_index_of[variableDecl->name] = index_count++;
+    symbol_declaration_of[variableDecl->name] = variableDecl;
+    emit_code_for_default(*variableDecl->type);
+    prog.emit_bytes(
+        ByteCode::Instruction::SYMBOL_ADD,
+        symbol_index_of[variableDecl->name]);
+    return {};
+}
+
+std::any decaf::Compiler::visitIdentifierExpr(std::shared_ptr<ast::IdentifierExpr> identifierExpr) {
+    identifierExpr->index = symbol_index_of[identifierExpr->name];
+    identifierExpr->type = *symbol_declaration_of[identifierExpr->name]->type;
+    prog.emit_bytes(
+        ByteCode::Instruction::SYMBOL_GET,
+        symbol_index_of[identifierExpr->name]);
+    return {};
+}
+
+std::any decaf::Compiler::visitAssignExpr(std::shared_ptr<ast::AssignExpr> assignExpr) {
+    auto lhs = std::dynamic_pointer_cast<ast::LValue>(assignExpr->left);
+    assignExpr->left->accept(*this);
+    assignExpr->right->accept(*this);
+
+    if (assignExpr->right->type != lhs->type) {
+        throw std::runtime_error("Assign with wrong type");
+    }
+
+    prog.emit(ByteCode::Instruction::SYMBOL_SET);
     return {};
 }
