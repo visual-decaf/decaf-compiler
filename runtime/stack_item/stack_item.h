@@ -1,5 +1,6 @@
 #pragma once
 
+#include "serializable.h"
 #include "type.h"
 #include <memory>
 #include <stdexcept>
@@ -7,7 +8,7 @@
 
 namespace decaf {
 
-struct StackItem {
+struct StackItem: public Serializable {
     using ptr_type = std::shared_ptr<StackItem>;
 
     virtual ptr_type perform_PLUS_with(ptr_type rhs);
@@ -58,6 +59,10 @@ struct StackItem {
     virtual ~StackItem() = default;
 
     virtual void print(std::ostream& os) const {
+    }
+
+    boost::json::value to_json() override {
+        return "StackItem Serializable Not Implemented";
     }
 };
 
