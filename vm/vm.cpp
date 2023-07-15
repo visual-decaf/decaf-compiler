@@ -236,7 +236,8 @@ bool decaf::VirtualMachine::op_SYMBOL_SET() {
         report("Can't assign to non LValue");
         return false;
     }
-
+    l_val->value = rhs->clone();
+    push(l_val);
     return true;
 }
 
