@@ -61,10 +61,10 @@ char* get_token_stream(int id) {
 }
 
 char* get_ast(int id) {
+    char* response = nullptr;
     if (parsers.find(id) != parsers.end() && parsers.at(id) != nullptr) {
         delete parsers.at(id);
     }
-    char* response = nullptr;
     if (stream_scanners.at(id)->is_error()) {
         boost::json::object response_object{
             {"code", "3"},
@@ -102,10 +102,19 @@ char* get_ast(int id) {
 }
 
 char* get_program(int id) {
-    if (compilers.find(id) != compilers.end() && compilers.at(id) != nullptr) {
+    char* response = nullptr;
+    if (compilers.find(id) == compilers.end()) {
+        boost::json::object response_object{
+            {"code", "6"},
+            {"msg", "Incorrect ID"}};
+        auto response_json = boost::json::serialize(response_object);
+        response = (char*) malloc((response_json.length() + 1) * sizeof(char));
+        strcpy(response, response_json.c_str());
+        return response;
+    }
+    if (compilers.at(id) != nullptr) {
         delete compilers.at(id);
     }
-    char* response = nullptr;
     if (stream_scanners.at(id)->is_error() || parsers.at(id)->is_error()) {
         boost::json::object response_object{
             {"code", "5"},
