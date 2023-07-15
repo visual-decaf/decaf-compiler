@@ -18,6 +18,9 @@ EXPONENT ("e"|"E")("+"|"-")?{DIGIT}+
 NORMAL_FLOAT {DIGIT}+"."{DIGIT}*
 FLOAT {NORMAL_FLOAT}{EXPONENT}?
 
+LETTER [a-zA-Z]
+IDENTIFIER {LETTER}[a-zA-Z0-9_]
+
 %%
 
 {INTEGER} {
@@ -55,6 +58,8 @@ FLOAT {NORMAL_FLOAT}{EXPONENT}?
 "int" { emit({token_type::INT, YYText()}); }
 "double" { emit({token_type::DOUBLE, YYText()}); }
 "bool" { emit({token_type::BOOL, YYText()}); }
+
+{IDENTIFIER} { emit({token_type::IDENTIFIER, YYText()}); }
 
 [ \t] {}
 
