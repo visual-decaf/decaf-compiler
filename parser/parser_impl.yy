@@ -83,6 +83,7 @@ input:
     %empty
     | input statement {
         driver.ast_root = $2;
+        driver.statements.push_back(driver.ast_root);
     }
     ;
 

@@ -56,3 +56,7 @@ void decaf::Parser::clear_error() {
 std::vector<std::string> decaf::Parser::get_err_messages() const {
     return err_messages;
 }
+
+decaf::Parser::stmt_list decaf::Parser::get_stmt_list() {
+    return statements;
+}
