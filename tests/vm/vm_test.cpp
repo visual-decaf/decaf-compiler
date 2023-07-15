@@ -1,6 +1,7 @@
 #include "program.h"
 #include "vm.h"
 #include <catch2/catch_test_macros.hpp>
+#include <sstream>
 
 using namespace decaf;
 using Instruction = ByteCode::Instruction;
@@ -23,10 +24,9 @@ TEST_CASE("vm_main", "[vm]") {
     vm.run();
 
     REQUIRE(!vm.is_error());
-    auto result = vm.get_result();
-    auto result_ptr = std::get_if<int>(&result);
+    auto result_ptr = vm.get_stack_top();
     REQUIRE(result_ptr != nullptr);
-    REQUIRE(*result_ptr == 6);
+    REQUIRE(result_ptr->equal_to_int(6));
 }
 
 TEST_CASE("vm_plus_deep", "[vm]") {
@@ -47,10 +47,9 @@ TEST_CASE("vm_plus_deep", "[vm]") {
     vm.run();
 
     REQUIRE(!vm.is_error());
-    auto result = vm.get_result();
-    auto result_ptr = std::get_if<int>(&result);
+    auto result_ptr = vm.get_stack_top();
     REQUIRE(result_ptr != nullptr);
-    REQUIRE(*result_ptr == 6);
+    REQUIRE(result_ptr->equal_to_int(6));
 }
 
 TEST_CASE("vm_plus_multiply", "[vm]") {
@@ -71,10 +70,9 @@ TEST_CASE("vm_plus_multiply", "[vm]") {
     vm.run();
 
     REQUIRE(!vm.is_error());
-    auto result = vm.get_result();
-    auto result_ptr = std::get_if<int>(&result);
+    auto result_ptr = vm.get_stack_top();
     REQUIRE(result_ptr != nullptr);
-    REQUIRE(*result_ptr == 7);
+    REQUIRE(result_ptr->equal_to_int(7));
 }
 
 TEST_CASE("vm_plus_minus", "[vm]") {
@@ -95,10 +93,9 @@ TEST_CASE("vm_plus_minus", "[vm]") {
     vm.run();
 
     REQUIRE(!vm.is_error());
-    auto result = vm.get_result();
-    auto result_ptr = std::get_if<int>(&result);
+    auto result_ptr = vm.get_stack_top();
     REQUIRE(result_ptr != nullptr);
-    REQUIRE(*result_ptr == 0);
+    REQUIRE(result_ptr->equal_to_int(0));
 }
 
 TEST_CASE("vm_multiply_divide", "[vm]") {
@@ -119,10 +116,9 @@ TEST_CASE("vm_multiply_divide", "[vm]") {
     vm.run();
 
     REQUIRE(!vm.is_error());
-    auto result = vm.get_result();
-    auto result_ptr = std::get_if<int>(&result);
+    auto result_ptr = vm.get_stack_top();
     REQUIRE(result_ptr != nullptr);
-    REQUIRE(*result_ptr == 0);
+    REQUIRE(result_ptr->equal_to_int(0));
 }
 
 TEST_CASE("vm_mod", "[vm]") {
@@ -143,10 +139,9 @@ TEST_CASE("vm_mod", "[vm]") {
     vm.run();
 
     REQUIRE(!vm.is_error());
-    auto result = vm.get_result();
-    auto result_ptr = std::get_if<int>(&result);
+    auto result_ptr = vm.get_stack_top();
     REQUIRE(result_ptr != nullptr);
-    REQUIRE(*result_ptr == 0);
+    REQUIRE(result_ptr->equal_to_int(0));
 }
 
 TEST_CASE("vm_logic_binary", "[vm]") {
@@ -164,10 +159,9 @@ TEST_CASE("vm_logic_binary", "[vm]") {
     vm.run();
 
     REQUIRE(!vm.is_error());
-    auto result = vm.get_result();
-    auto result_ptr = std::get_if<bool>(&result);
+    auto result_ptr = vm.get_stack_top();
     REQUIRE(result_ptr != nullptr);
-    REQUIRE(*result_ptr == true);
+    REQUIRE(result_ptr->equal_to_bool(true));
 }
 
 TEST_CASE("vm_arithmetic_unary", "[vm]") {
@@ -183,10 +177,9 @@ TEST_CASE("vm_arithmetic_unary", "[vm]") {
     vm.run();
 
     REQUIRE(!vm.is_error());
-    auto result = vm.get_result();
-    auto result_ptr = std::get_if<int>(&result);
+    auto result_ptr = vm.get_stack_top();
     REQUIRE(result_ptr != nullptr);
-    REQUIRE(*result_ptr == -1);
+    REQUIRE(result_ptr->equal_to_int(-1));
 }
 
 TEST_CASE("vm_arithmetic_unary_binary_combined", "[vm]") {
@@ -205,10 +198,9 @@ TEST_CASE("vm_arithmetic_unary_binary_combined", "[vm]") {
     vm.run();
 
     REQUIRE(!vm.is_error());
-    auto result = vm.get_result();
-    auto result_ptr = std::get_if<int>(&result);
+    auto result_ptr = vm.get_stack_top();
     REQUIRE(result_ptr != nullptr);
-    REQUIRE(*result_ptr == -3);
+    REQUIRE(result_ptr->equal_to_int(-3));
 }
 
 TEST_CASE("vm_arithmetic_unary_binary_complex_combined", "[vm]") {
@@ -228,10 +220,9 @@ TEST_CASE("vm_arithmetic_unary_binary_complex_combined", "[vm]") {
     vm.run();
 
     REQUIRE(!vm.is_error());
-    auto result = vm.get_result();
-    auto result_ptr = std::get_if<int>(&result);
+    auto result_ptr = vm.get_stack_top();
     REQUIRE(result_ptr != nullptr);
-    REQUIRE(*result_ptr == 1);
+    REQUIRE(result_ptr->equal_to_int(1));
 }
 
 TEST_CASE("vm_logic_not", "[vm]") {
@@ -246,10 +237,9 @@ TEST_CASE("vm_logic_not", "[vm]") {
     vm.run();
 
     REQUIRE(!vm.is_error());
-    auto result = vm.get_result();
-    auto result_ptr = std::get_if<bool>(&result);
+    auto result_ptr = vm.get_stack_top();
     REQUIRE(result_ptr != nullptr);
-    REQUIRE(*result_ptr == false);
+    REQUIRE(result_ptr->equal_to_bool(false));
 }
 
 TEST_CASE("vm_logic_not_combined", "[vm]") {
@@ -266,10 +256,9 @@ TEST_CASE("vm_logic_not_combined", "[vm]") {
     vm.run();
 
     REQUIRE(!vm.is_error());
-    auto result = vm.get_result();
-    auto result_ptr = std::get_if<bool>(&result);
+    auto result_ptr = vm.get_stack_top();
     REQUIRE(result_ptr != nullptr);
-    REQUIRE(*result_ptr == false);
+    REQUIRE(result_ptr->equal_to_bool(false));
 }
 
 TEST_CASE("vm_rational_less", "[vm]") {
@@ -287,10 +276,9 @@ TEST_CASE("vm_rational_less", "[vm]") {
     vm.run();
 
     REQUIRE(!vm.is_error());
-    auto result = vm.get_result();
-    auto result_ptr = std::get_if<bool>(&result);
+    auto result_ptr = vm.get_stack_top();
     REQUIRE(result_ptr != nullptr);
-    REQUIRE(*result_ptr == true);
+    REQUIRE(result_ptr->equal_to_bool(true));
 }
 
 TEST_CASE("vm_rational_less_equal", "[vm]") {
@@ -308,10 +296,9 @@ TEST_CASE("vm_rational_less_equal", "[vm]") {
     vm.run();
 
     REQUIRE(!vm.is_error());
-    auto result = vm.get_result();
-    auto result_ptr = std::get_if<bool>(&result);
+    auto result_ptr = vm.get_stack_top();
     REQUIRE(result_ptr != nullptr);
-    REQUIRE(*result_ptr == true);
+    REQUIRE(result_ptr->equal_to_bool(true));
 }
 
 TEST_CASE("vm_rational_greater", "[vm]") {
@@ -329,10 +316,9 @@ TEST_CASE("vm_rational_greater", "[vm]") {
     vm.run();
 
     REQUIRE(!vm.is_error());
-    auto result = vm.get_result();
-    auto result_ptr = std::get_if<bool>(&result);
+    auto result_ptr = vm.get_stack_top();
     REQUIRE(result_ptr != nullptr);
-    REQUIRE(*result_ptr == false);
+    REQUIRE(result_ptr->equal_to_bool(false));
 }
 
 TEST_CASE("vm_rational_greater_equal", "[vm]") {
@@ -350,10 +336,9 @@ TEST_CASE("vm_rational_greater_equal", "[vm]") {
     vm.run();
 
     REQUIRE(!vm.is_error());
-    auto result = vm.get_result();
-    auto result_ptr = std::get_if<bool>(&result);
+    auto result_ptr = vm.get_stack_top();
     REQUIRE(result_ptr != nullptr);
-    REQUIRE(*result_ptr == true);
+    REQUIRE(result_ptr->equal_to_bool(true));
 }
 
 TEST_CASE("vm_type_mismatch_report", "[vm]") {
@@ -406,10 +391,9 @@ TEST_CASE("vm_equality_equal", "[equality]") {
     vm.run();
 
     REQUIRE(!vm.is_error());
-    auto result = vm.get_result();
-    auto result_ptr = std::get_if<bool>(&result);
+    auto result_ptr = vm.get_stack_top();
     REQUIRE(result_ptr != nullptr);
-    REQUIRE(*result_ptr == false);
+    REQUIRE(result_ptr->equal_to_bool(false));
 }
 
 TEST_CASE("vm_equality_not_equal", "[equality]") {
@@ -426,10 +410,9 @@ TEST_CASE("vm_equality_not_equal", "[equality]") {
     vm.run();
 
     REQUIRE(!vm.is_error());
-    auto result = vm.get_result();
-    auto result_ptr = std::get_if<bool>(&result);
+    auto result_ptr = vm.get_stack_top();
     REQUIRE(result_ptr != nullptr);
-    REQUIRE(*result_ptr == true);
+    REQUIRE(result_ptr->equal_to_bool(true));
 }
 
 TEST_CASE("vm_float_plus", "[vm]") {
@@ -451,10 +434,9 @@ TEST_CASE("vm_float_plus", "[vm]") {
     vm.run();
 
     REQUIRE(!vm.is_error());
-    auto result = vm.get_result();
-    auto result_ptr = std::get_if<double>(&result);
+    auto result_ptr = vm.get_stack_top();
     REQUIRE(result_ptr != nullptr);
-    REQUIRE(*result_ptr == 10.0);
+    REQUIRE(result_ptr->equal_to_double(10.0));
 }
 
 TEST_CASE("vm_float_minus", "[vm]") {
@@ -476,10 +458,9 @@ TEST_CASE("vm_float_minus", "[vm]") {
     vm.run();
 
     REQUIRE(!vm.is_error());
-    auto result = vm.get_result();
-    auto result_ptr = std::get_if<double>(&result);
+    auto result_ptr = vm.get_stack_top();
     REQUIRE(result_ptr != nullptr);
-    REQUIRE(*result_ptr == 7);
+    REQUIRE(result_ptr->equal_to_double(7));
 }
 
 TEST_CASE("vm_float_multiply", "[vm]") {
@@ -501,10 +482,9 @@ TEST_CASE("vm_float_multiply", "[vm]") {
     vm.run();
 
     REQUIRE(!vm.is_error());
-    auto result = vm.get_result();
-    auto result_ptr = std::get_if<double>(&result);
+    auto result_ptr = vm.get_stack_top();
     REQUIRE(result_ptr != nullptr);
-    REQUIRE(*result_ptr == 10);
+    REQUIRE(result_ptr->equal_to_double(10));
 }
 
 TEST_CASE("vm_float_divide", "[vm]") {
@@ -526,10 +506,9 @@ TEST_CASE("vm_float_divide", "[vm]") {
     vm.run();
 
     REQUIRE(!vm.is_error());
-    auto result = vm.get_result();
-    auto result_ptr = std::get_if<double>(&result);
+    auto result_ptr = vm.get_stack_top();
     REQUIRE(result_ptr != nullptr);
-    REQUIRE(*result_ptr == 2.5);
+    REQUIRE(result_ptr->equal_to_double(2.5));
 }
 
 TEST_CASE("vm_float_mod", "[vm]") {
@@ -570,10 +549,9 @@ TEST_CASE("vm_float_negate", "[vm]") {
     vm.run();
 
     REQUIRE(!vm.is_error());
-    auto result = vm.get_result();
-    auto result_ptr = std::get_if<double>(&result);
+    auto result_ptr = vm.get_stack_top();
     REQUIRE(result_ptr != nullptr);
-    REQUIRE(*result_ptr == -2.5);
+    REQUIRE(result_ptr->equal_to_double(-2.5));
 }
 
 TEST_CASE("vm_float_less", "[vm]") {
@@ -595,10 +573,9 @@ TEST_CASE("vm_float_less", "[vm]") {
     vm.run();
 
     REQUIRE(!vm.is_error());
-    auto result = vm.get_result();
-    auto result_ptr = std::get_if<bool>(&result);
+    auto result_ptr = vm.get_stack_top();
     REQUIRE(result_ptr != nullptr);
-    REQUIRE(*result_ptr == false);
+    REQUIRE(result_ptr->equal_to_bool(false));
 }
 
 TEST_CASE("vm_float_less_equal", "[vm]") {
@@ -620,10 +597,9 @@ TEST_CASE("vm_float_less_equal", "[vm]") {
     vm.run();
 
     REQUIRE(!vm.is_error());
-    auto result = vm.get_result();
-    auto result_ptr = std::get_if<bool>(&result);
+    auto result_ptr = vm.get_stack_top();
     REQUIRE(result_ptr != nullptr);
-    REQUIRE(*result_ptr == true);
+    REQUIRE(result_ptr->equal_to_bool(true));
 }
 
 TEST_CASE("vm_float_greater", "[vm]") {
@@ -645,10 +621,9 @@ TEST_CASE("vm_float_greater", "[vm]") {
     vm.run();
 
     REQUIRE(!vm.is_error());
-    auto result = vm.get_result();
-    auto result_ptr = std::get_if<bool>(&result);
+    auto result_ptr = vm.get_stack_top();
     REQUIRE(result_ptr != nullptr);
-    REQUIRE(*result_ptr == true);
+    REQUIRE(result_ptr->equal_to_bool(true));
 }
 
 TEST_CASE("vm_float_greater_equal", "[vm]") {
@@ -670,10 +645,9 @@ TEST_CASE("vm_float_greater_equal", "[vm]") {
     vm.run();
 
     REQUIRE(!vm.is_error());
-    auto result = vm.get_result();
-    auto result_ptr = std::get_if<bool>(&result);
+    auto result_ptr = vm.get_stack_top();
     REQUIRE(result_ptr != nullptr);
-    REQUIRE(*result_ptr == true);
+    REQUIRE(result_ptr->equal_to_bool(true));
 }
 
 TEST_CASE("vm_float_equal", "[vm]") {
@@ -695,10 +669,9 @@ TEST_CASE("vm_float_equal", "[vm]") {
     vm.run();
 
     REQUIRE(!vm.is_error());
-    auto result = vm.get_result();
-    auto result_ptr = std::get_if<bool>(&result);
+    auto result_ptr = vm.get_stack_top();
     REQUIRE(result_ptr != nullptr);
-    REQUIRE(*result_ptr == true);
+    REQUIRE(result_ptr->equal_to_bool(true));
 }
 
 TEST_CASE("vm_float_not_equal", "[vm]") {
@@ -720,10 +693,9 @@ TEST_CASE("vm_float_not_equal", "[vm]") {
     vm.run();
 
     REQUIRE(!vm.is_error());
-    auto result = vm.get_result();
-    auto result_ptr = std::get_if<bool>(&result);
+    auto result_ptr = vm.get_stack_top();
     REQUIRE(result_ptr != nullptr);
-    REQUIRE(*result_ptr == true);
+    REQUIRE(result_ptr->equal_to_bool(true));
 }
 
 TEST_CASE("vm_expression_stmt", "[vm]") {
@@ -742,9 +714,44 @@ TEST_CASE("vm_expression_stmt", "[vm]") {
     vm.run();
 
     REQUIRE(!vm.is_error());
-    auto discarded_result = vm.get_latest_discarded();
-    int result = std::any_cast<int>(discarded_result.first);
-    Type result_type = discarded_result.second;
-    REQUIRE(result == 3);
-    REQUIRE(result_type.classification == decaf::Type::Classification::INT);
+    auto discarded_result = vm.get_last_discarded();
+    REQUIRE(discarded_result->equal_to_int(3));
+}
+
+TEST_CASE("vm_print_stmt", "[vm]") {
+    auto input_prog = Program{
+        ByteCode{
+            Instruction ::GET_INSTANT,
+            1,
+            Instruction ::PRINT,
+            1,
+        }};
+    input_prog.set_result_type_classification(Type::Classification::VOID);
+
+    std::ostringstream os;
+    decaf::VirtualMachine vm{input_prog, os};
+    vm.run();
+
+    REQUIRE(!vm.is_error());
+    REQUIRE(os.str() == "1\n");
+}
+
+TEST_CASE("vm_print_stmt_multi", "[vm]") {
+    auto input_prog = Program{
+        ByteCode{
+            Instruction ::GET_INSTANT,
+            2,
+            Instruction ::GET_INSTANT,
+            1,
+            Instruction ::PRINT,
+            2,
+        }};
+    input_prog.set_result_type_classification(Type::Classification::VOID);
+
+    std::ostringstream os;
+    decaf::VirtualMachine vm{input_prog, os};
+    vm.run();
+
+    REQUIRE(!vm.is_error());
+    REQUIRE(os.str() == "1 2\n");
 }

@@ -43,9 +43,24 @@ struct StackItem {
         type(std::move(_type)) {
     }
 
+    virtual bool equal_to_int(int rhs) {
+        return false;
+    }
+    virtual bool equal_to_double(double rhs) {
+        return false;
+    }
+    virtual bool equal_to_bool(bool rhs) {
+        return false;
+    }
+
     Type type;
 
     virtual ~StackItem() = default;
+
+    virtual void print(std::ostream& os) const {
+    }
 };
 
 } // namespace decaf
+
+std::ostream& operator<<(std::ostream& os, const decaf::StackItem& stackItem);

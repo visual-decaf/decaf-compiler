@@ -19,13 +19,21 @@ struct BoolStackItem: StackItem {
     ptr_type perform_EQUAL_with(ptr_type rhs) override;
     ptr_type perform_NOT_EQUAL_with(ptr_type rhs) override;
     // ptr_type perform_NEGATE() override;
-    // ptr_type perform_LOGIC_NOT() override;
+    ptr_type perform_LOGIC_NOT() override;
 
     explicit BoolStackItem(bool val):
         StackItem(Type(Type::Classification::BOOL)), value(val) {
     }
 
+    bool equal_to_bool(bool rhs) {
+        return value == rhs;
+    }
+
     bool value;
+
+    void print(std::ostream& os) const {
+        os << std::boolalpha << value;
+    }
 };
 
 } // namespace decaf

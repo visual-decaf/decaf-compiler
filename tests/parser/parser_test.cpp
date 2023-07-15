@@ -28,6 +28,29 @@ TEST_CASE("parser_main", "[parser]") {
     REQUIRE(expect->equals(result_expr));
 }
 
+TEST_CASE("parser_hex_integer", "[parser]") {
+    TokenStream tokenStream{
+        {token_type ::HEX_INTEGER, "0x0"},
+        {token_type ::PLUS, "+"},
+        {token_type ::HEX_INTEGER, "0X12aE"},
+        {token_type ::SEMICOLON}};
+
+    decaf::Parser parser{tokenStream};
+    parser.parse();
+    REQUIRE(!parser.is_error());
+
+    auto result = parser.get_ast();
+    auto result_expr_stmt = std::dynamic_pointer_cast<ast::ExpressionStmt>(result);
+    auto result_expr = result_expr_stmt->expr;
+    REQUIRE(result_expr->type.classification == Type::Classification::INT);
+    auto expect = std::make_shared<ast::ArithmeticBinary>(
+        std::make_shared<ast::IntConstant>(0),
+        ast::ArithmeticBinary::Operation::PLUS,
+        std::make_shared<ast::IntConstant>(0x12ae));
+
+    REQUIRE(expect->equals(result_expr));
+}
+
 TEST_CASE("parser_plus_left_associative", "[parser]") {
     TokenStream tokenStream{
         {token_type ::INTEGER, "1"},
@@ -640,4 +663,47 @@ TEST_CASE("parser_float_rational", "[parser]") {
         ast::RationalBinary::Operation::GREATER,
         std::make_shared<ast::FloatConstant>(1.48));
     REQUIRE(expect->equals(result_expr));
+}
+
+TEST_CASE("parser_print_stmt", "[parser]") {
+    TokenStream tokenStream{
+        {token_type ::PRINT, "Print"},
+        {token_type ::LEFT_PAREN, "("},
+        {token_type ::INTEGER, "1"},
+        {token_type ::RIGHT_PAREN, ")"},
+        {token_type ::SEMICOLON, ";"}};
+
+    decaf::Parser parser{tokenStream};
+    parser.parse();
+
+    REQUIRE(!parser.is_error());
+    auto result = parser.get_ast();
+    auto expect = std::make_shared<ast::PrintStmt>(
+        std::make_shared<ast::ExpressionList>(
+            std::initializer_list<std::shared_ptr<ast::Expr>>{
+                std::make_shared<ast::IntConstant>(1)}));
+    REQUIRE(expect->equal(result));
+}
+
+TEST_CASE("parser_print_stmt_multi", "[parser]") {
+    TokenStream tokenStream{
+        {token_type ::PRINT, "Print"},
+        {token_type ::LEFT_PAREN, "("},
+        {token_type ::INTEGER, "1"},
+        {token_type ::COMMA, ","},
+        {token_type ::INTEGER, "2"},
+        {token_type ::RIGHT_PAREN, ")"},
+        {token_type ::SEMICOLON, ";"}};
+
+    decaf::Parser parser{tokenStream};
+    parser.parse();
+
+    REQUIRE(!parser.is_error());
+    auto result = parser.get_ast();
+    auto expect = std::make_shared<ast::PrintStmt>(
+        std::make_shared<ast::ExpressionList>(
+            std::initializer_list<std::shared_ptr<ast::Expr>>{
+                std::make_shared<ast::IntConstant>(1),
+                std::make_shared<ast::IntConstant>(2)}));
+    REQUIRE(expect->equal(result));
 }

@@ -39,3 +39,8 @@ decaf::StackItem::ptr_type decaf::BoolStackItem::perform_NOT_EQUAL_with(decaf::S
     auto result = std::make_shared<BoolStackItem>(value != bool_rhs->value);
     return result;
 }
+
+decaf::StackItem::ptr_type decaf::BoolStackItem::perform_LOGIC_NOT() {
+    auto result = std::make_shared<BoolStackItem>(!value);
+    return result;
+}

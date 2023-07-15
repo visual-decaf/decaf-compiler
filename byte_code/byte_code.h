@@ -49,6 +49,7 @@ public:
             GET_FALSE,
             GET_FLOAT_CONSTANT,
             DISCARD,
+            PRINT
         };
     };
 

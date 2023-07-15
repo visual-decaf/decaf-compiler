@@ -204,3 +204,29 @@ TEST_CASE("scanner_semicolon", "[scanner]") {
         REQUIRE(result_token[i] == expected_token[i]);
     }
 }
+
+TEST_CASE("scanner_comma", "[scanner]") {
+    auto result_token = scan_for(", ");
+    decaf::TokenStream expected_token{
+        {token_type ::COMMA, ","},
+        {token_type ::YYEOF},
+    };
+
+    REQUIRE(result_token.size() == expected_token.size());
+    for (int i = 0; i < result_token.size(); i++) {
+        REQUIRE(result_token[i] == expected_token[i]);
+    }
+}
+
+TEST_CASE("scanner_keyword_print", "[scanner]") {
+    auto result_token = scan_for("Print");
+    decaf::TokenStream expected_token{
+        {token_type ::PRINT, "Print"},
+        {token_type ::YYEOF},
+    };
+
+    REQUIRE(result_token.size() == expected_token.size());
+    for (int i = 0; i < result_token.size(); i++) {
+        REQUIRE(result_token[i] == expected_token[i]);
+    }
+}
