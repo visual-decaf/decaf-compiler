@@ -10,6 +10,8 @@ namespace decaf {
 struct StackItem {
     using ptr_type = std::shared_ptr<StackItem>;
 
+    static ptr_type get_default_lvalue(Type type);
+
     virtual ptr_type perform_PLUS_with(ptr_type rhs);
     virtual ptr_type perform_MINUS_with(ptr_type rhs);
     virtual ptr_type perform_MULTIPLY_with(ptr_type rhs);
