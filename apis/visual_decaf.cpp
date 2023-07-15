@@ -15,10 +15,16 @@ std::map<int, decaf::VirtualMachine*> vms;
 
 std::uniform_int_distribution<int> dist(1, 2147483647);
 
+static void write_error_msg(const char* error_code, const char* error_msg, char*& response);
+
 int get_id() {
     unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
     std::default_random_engine gen(seed);
     int id = dist(gen);
+    stream_scanners.insert_or_assign(id, nullptr);
+    parsers.insert_or_assign(id, nullptr);
+    compilers.insert_or_assign(id, nullptr);
+    vms.insert_or_assign(id, nullptr);
     return id;
 }
 
@@ -129,10 +135,10 @@ char* get_program(int id) {
     return response;
 }
 
-void write_error_msg(const char* error_code, const char* error_msg, char* response) {
+void write_error_msg(const char* error_code, const char* error_msg, char*& response) {
     boost::json::object response_object{
-        {"code", error_code},
-        {"msg", error_msg}};
+        {"code", std::string(error_code)},
+        {"msg", std::string(error_msg)}};
     auto response_json = boost::json::serialize(response_object);
     response = (char*) malloc((response_json.length() + 1) * sizeof(char));
     strcpy(response, response_json.c_str());
