@@ -47,6 +47,7 @@ public:
     bool op_SYMBOL_ADD(uint8_t index) override;
     bool op_SYMBOL_GET(uint8_t index) override;
     bool op_SYMBOL_SET() override;
+    bool op_GET_FLOAT_ZERO() override;
 
     void set_symbol_table(std::shared_ptr<SymbolTable> ptr);
     std::shared_ptr<SymbolTable> get_symbol_table();

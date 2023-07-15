@@ -248,3 +248,8 @@ void decaf::VirtualMachine::set_symbol_table(std::shared_ptr<SymbolTable> ptr) {
 std::shared_ptr<decaf::SymbolTable> decaf::VirtualMachine::get_symbol_table() {
     return table;
 }
+
+bool decaf::VirtualMachine::op_GET_FLOAT_ZERO() {
+    push(std::make_shared<FloatStackItem>(0));
+    return true;
+}
