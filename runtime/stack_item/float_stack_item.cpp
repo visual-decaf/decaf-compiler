@@ -105,3 +105,8 @@ decaf::StackItem::ptr_type decaf::FloatStackItem::perform_NEGATE() {
     auto result = std::make_shared<FloatStackItem>(-value);
     return result;
 }
+boost::json::value decaf::FloatStackItem::to_json() {
+    return boost::json::object{
+        {"type", "FLOAT"},
+        {"value", this->value}};
+}

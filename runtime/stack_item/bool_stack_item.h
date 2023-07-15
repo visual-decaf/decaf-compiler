@@ -34,6 +34,8 @@ struct BoolStackItem: StackItem {
     void print(std::ostream& os) const {
         os << std::boolalpha << value;
     }
+
+    boost::json::value to_json() override;
 };
 
 } // namespace decaf

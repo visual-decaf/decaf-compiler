@@ -34,6 +34,8 @@ struct IntStackItem: StackItem {
     void print(std::ostream& os) const override {
         os << value;
     }
+
+    boost::json::value to_json() override;
 };
 
 } // namespace decaf
