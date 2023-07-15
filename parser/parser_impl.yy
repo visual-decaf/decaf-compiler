@@ -53,6 +53,7 @@
 %token SEMICOLON ";"
 %token COMMA ","
 %token INVALID
+%token INT "int" DOUBLE "double" BOOL "bool"
 
 /* Keywords */
 %token TRUE "true" FALSE "false"
