@@ -33,6 +33,7 @@ public:
     std::any visitFloatConstant(std::shared_ptr<ast::FloatConstant> ptr) override;
     std::any visitExpressionStmt(std::shared_ptr<ast::ExpressionStmt> ptr) override;
     std::any visitPrintStmt(std::shared_ptr<ast::PrintStmt> ptr) override;
+    std::any visitVariableDecl(std::shared_ptr<ast::VariableDecl> ptr) override;
 
 private:
     std::shared_ptr<ast::Stmt> ast_root;

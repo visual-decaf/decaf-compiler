@@ -146,3 +146,7 @@ std::any decaf::Compiler::visitPrintStmt(std::shared_ptr<ast::PrintStmt> printSt
         printStmt->list->expressions.size());
     return {};
 }
+
+std::any decaf::Compiler::visitVariableDecl(std::shared_ptr<ast::VariableDecl> ptr) {
+    return {};
+}
