@@ -7,6 +7,7 @@ add_subdirectory(compiler)
 add_subdirectory(disassembler)
 add_subdirectory(byte_code)
 add_subdirectory(program)
+add_subdirectory(stack_item)
 add_subdirectory(vm)
 
 add_executable(simple_driver simple_driver.cpp)
