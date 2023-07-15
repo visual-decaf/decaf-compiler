@@ -147,6 +147,9 @@ std::any decaf::Compiler::visitPrintStmt(std::shared_ptr<ast::PrintStmt> printSt
     return {};
 }
 
-std::any decaf::Compiler::visitVariableDecl(std::shared_ptr<ast::VariableDecl> ptr) {
+std::any decaf::Compiler::visitVariableDecl(std::shared_ptr<ast::VariableDecl> variableDecl) {
+    symbol_index_of[variableDecl->name] = table.add_symbol();
+    symbol_declaration_of[variableDecl->name] = variableDecl;
+    prog.emit(ByteCode::Instruction::SYMBOL_ADD);
     return {};
 }

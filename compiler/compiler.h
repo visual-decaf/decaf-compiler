@@ -6,6 +6,8 @@
 #include "expr.h"
 #include "program.h"
 #include "stmt.h"
+#include "symbol_table.h"
+#include <map>
 
 namespace decaf {
 
@@ -37,6 +39,9 @@ public:
 
 private:
     std::shared_ptr<ast::Stmt> ast_root;
+    SymbolTable table;
+    std::map<std::string, SymbolTable::index_type> symbol_index_of;
+    std::map<std::string, std::shared_ptr<ast::VariableDecl>> symbol_declaration_of;
     Program prog{};
 };
 
