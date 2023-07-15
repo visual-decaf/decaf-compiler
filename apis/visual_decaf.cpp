@@ -15,7 +15,8 @@ std::map<int, decaf::VirtualMachine*> vms;
 
 std::uniform_int_distribution<int> dist(1, 2147483647);
 
-static void write_error_msg(const char* error_code, const char* error_msg, char*& response);
+static void write_error_msg(const char* error_code, boost::json::array& error_msg, char*& response);
+static void write_success_result(boost::json::value& result, char*& response);
 
 int get_id() {
     unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
@@ -31,7 +32,9 @@ int get_id() {
 char* upload_code(const char* code, int id) {
     char* response = nullptr;
     if (stream_scanners.find(id) == stream_scanners.end()) {
-        write_error_msg("6", "Invalid ID", response);
+        boost::json::array error_msg;
+        error_msg.emplace_back("Invalid ID");
+        write_error_msg("6", error_msg, response);
         return response;
     }
     if (stream_scanners.at(id) != nullptr) {
@@ -50,13 +53,17 @@ char* upload_code(const char* code, int id) {
 char* get_token_stream(int id) {
     char* response = nullptr;
     if (stream_scanners.find(id) == stream_scanners.end()) {
-        write_error_msg("6", "Invalid ID", response);
+        boost::json::array error_msg;
+        error_msg.emplace_back("Invalid ID");
+        write_error_msg("6", error_msg, response);
         return response;
     }
     auto stream_scanner = stream_scanners.at(id);
     stream_scanner->scan();
     if (stream_scanner->is_error()) {
-        write_error_msg("2", "Unrecognized token", response);
+        boost::json::array error_msg;
+        error_msg.emplace_back("Unrecognized token");
+        write_error_msg("2", error_msg, response);
         return response;
     }
     boost::json::object response_object{
@@ -72,11 +79,15 @@ char* get_token_stream(int id) {
 char* get_ast(int id) {
     char* response = nullptr;
     if (parsers.find(id) == parsers.end()) {
-        write_error_msg("6", "Invalid ID", response);
+        boost::json::array error_msg;
+        error_msg.emplace_back("Invalid ID");
+        write_error_msg("6", error_msg, response);
         return response;
     }
     if (stream_scanners.at(id)->is_error()) {
-        write_error_msg("3", "There are some wrongs at scan phase", response);
+        boost::json::array error_msg;
+        error_msg.emplace_back("There are some wrongs at scan phase");
+        write_error_msg("3", error_msg, response);
         return response;
     }
     if (parsers.at(id) != nullptr) {
@@ -86,37 +97,31 @@ char* get_ast(int id) {
     parsers.insert_or_assign(id, parser);
     parser->parse();
     if (parser->is_error()) {
-        boost::json::array err_msg_arr{};
+        boost::json::array err_msg_arr;
         auto err_msgs = parser->get_err_messages();
         for (const auto& err_msg: err_msgs) {
             err_msg_arr.emplace_back(err_msg);
         }
-        boost::json::object response_object{
-            {"code", "4"},
-            {"msg", err_msg_arr}};
-        std::string response_json = boost::json::serialize(response_object);
-        response = (char*) malloc((response_json.length() + 1) * sizeof(char));
-        strcpy(response, response_json.c_str());
+        write_error_msg("4", err_msg_arr, response);
         return response;
     }
-    boost::json::object response_object{
-        {"code", "1"},
-        {"msg", "Success"},
-        {"result", parser->get_ast()->to_json()}};
-    std::string response_json = boost::json::serialize(response_object);
-    response = (char*) malloc((response_json.length() + 1) * sizeof(char));
-    strcpy(response, response_json.c_str());
+    boost::json::value result = parser->get_ast()->to_json();
+    write_success_result(result, response);
     return response;
 }
 
 char* get_program(int id) {
     char* response = nullptr;
     if (compilers.find(id) == compilers.end()) {
-        write_error_msg("6", "Invalid ID", response);
+        boost::json::array error_msg;
+        error_msg.emplace_back("Invalid ID");
+        write_error_msg("6", error_msg, response);
         return response;
     }
     if (stream_scanners.at(id)->is_error() || parsers.at(id)->is_error()) {
-        write_error_msg("5", "There are some wrongs at parse phase", response);
+        boost::json::array error_msg;
+        error_msg.emplace_back("There are some wrongs at parse phase");
+        write_error_msg("5", error_msg, response);
         return response;
     }
     if (compilers.at(id) != nullptr) {
@@ -125,20 +130,25 @@ char* get_program(int id) {
     auto compiler = new decaf::Compiler{parsers.at(id)->get_ast()};
     compilers.insert_or_assign(id, compiler);
     compiler->compile();
-    boost::json::object response_object{
-        {"code", "1"},
-        {"msg", "Success"},
-        {"result", compiler->get_program().to_json()}};
-    std::string response_json = boost::json::serialize(response_object);
-    response = (char*) malloc((response_json.length() + 1) * sizeof(char));
-    strcpy(response, response_json.c_str());
+    boost::json::value result = compiler->get_program().to_json();
+    write_success_result(result, response);
     return response;
 }
 
-void write_error_msg(const char* error_code, const char* error_msg, char*& response) {
+void write_error_msg(const char* error_code, boost::json::array& error_msg, char*& response) {
     boost::json::object response_object{
-        {"code", std::string(error_code)},
-        {"msg", std::string(error_msg)}};
+        {"code", error_code},
+        {"msg", error_msg}};
+    auto response_json = boost::json::serialize(response_object);
+    response = (char*) malloc((response_json.length() + 1) * sizeof(char));
+    strcpy(response, response_json.c_str());
+}
+
+void write_success_result(boost::json::value& result, char*& response) {
+    boost::json::object response_object{
+        {"code", "1"},
+        {"msg", "Success"},
+        {"result", result}};
     auto response_json = boost::json::serialize(response_object);
     response = (char*) malloc((response_json.length() + 1) * sizeof(char));
     strcpy(response, response_json.c_str());
