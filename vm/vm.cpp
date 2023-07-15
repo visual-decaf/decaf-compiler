@@ -217,8 +217,9 @@ bool decaf::VirtualMachine::op_PRINT(uint8_t count) {
     return true;
 }
 
-bool decaf::VirtualMachine::op_SYMBOL_ADD() {
-    table->add_symbol();
+bool decaf::VirtualMachine::op_SYMBOL_ADD(uint8_t index) {
+    auto l_val = std::make_shared<LValueStackItem>(pop());
+    table->set_symbol(index, l_val);
     return true;
 }
 
@@ -227,8 +228,15 @@ bool decaf::VirtualMachine::op_SYMBOL_GET(uint8_t index) {
     return true;
 }
 
-bool decaf::VirtualMachine::op_SYMBOL_SET(uint8_t index) {
-    table->set_symbol(index, stk.top());
+bool decaf::VirtualMachine::op_SYMBOL_SET() {
+    auto rhs = pop();
+    auto lhs = pop();
+    auto l_val = std::dynamic_pointer_cast<LValueStackItem>(lhs);
+    if (!l_val) {
+        report("Can't assign to non LValue");
+        return false;
+    }
+
     return true;
 }
 
