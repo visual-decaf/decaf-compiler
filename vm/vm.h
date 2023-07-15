@@ -18,7 +18,8 @@ public:
     using stack_type = std::stack<StackItem::ptr_type>;
 
     explicit VirtualMachine(Program _prog, std::ostream& os = std::cout):
-        prog{std::move(_prog)}, output{os} {
+        prog{std::move(_prog)},
+        output{os} {
     }
     bool op_NEGATE() override;
     bool op_PLUS() override;
@@ -47,6 +48,9 @@ public:
     bool op_SYMBOL_GET(uint8_t index) override;
     bool op_SYMBOL_SET(uint8_t index) override;
 
+    void set_symbol_table(std::shared_ptr<SymbolTable> ptr);
+    std::shared_ptr<SymbolTable> get_symbol_table();
+
     void run();
 
     [[nodiscard]] bool is_error() const;
@@ -63,7 +67,7 @@ protected:
 private:
     Program prog;
     stack_type stk;
-    SymbolTable table;
+    std::shared_ptr<SymbolTable> table;
     std::ostream& output;
 
     StackItem::ptr_type last_discarded;

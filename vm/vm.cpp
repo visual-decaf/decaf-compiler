@@ -218,17 +218,25 @@ bool decaf::VirtualMachine::op_PRINT(uint8_t count) {
 }
 
 bool decaf::VirtualMachine::op_SYMBOL_ADD() {
-    table.add_symbol();
+    table->add_symbol();
     return true;
 }
 
 bool decaf::VirtualMachine::op_SYMBOL_GET(uint8_t index) {
-    stk.push(table.get_symbol(index));
+    stk.push(table->get_symbol(index));
     return true;
 }
 
 bool decaf::VirtualMachine::op_SYMBOL_SET(uint8_t index) {
-    table.set_symbol(index, stk.top());
+    table->set_symbol(index, stk.top());
     stk.pop();
     return true;
+}
+
+void decaf::VirtualMachine::set_symbol_table(std::shared_ptr<SymbolTable> ptr) {
+    table = std::move(ptr);
+}
+
+std::shared_ptr<decaf::SymbolTable> decaf::VirtualMachine::get_symbol_table() {
+    return table;
 }
