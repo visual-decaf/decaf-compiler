@@ -39,6 +39,7 @@
 %nterm <std::shared_ptr<decaf::ast::ExpressionList>> expressionList
 %nterm <std::shared_ptr<decaf::ast::Stmt>> printStmt
 %nterm <decaf::ast::TypePtr> type
+%nterm <std::shared_ptr<decaf::ast::Stmt>> variableDecl
 
 %token <int> INTEGER
 %token <int> HEX_INTEGER
@@ -84,6 +85,7 @@ input:
 statement:
     expressionStmt
     | printStmt
+    | variableDecl
     ;
 
 expressionStmt:
@@ -105,6 +107,14 @@ expressionList:
 printStmt:
     "Print" "(" expressionList ")" ";" {
         $$ = std::make_shared<PrintStmt>($3);
+    }
+
+variableDecl:
+    type IDENTIFIER ";" {
+        $$ = std::make_shared<VariableDecl>(
+            $1,
+            $2
+        );
     }
 
 expression:
