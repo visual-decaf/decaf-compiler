@@ -112,7 +112,7 @@ char* get_ast(int id) {
     }
     boost::json::value result{
         {"type", "StmtsList"},
-        {"name", "StmtsList"},
+        {"name", "Program"},
         {"list", list},
         {"resultType", "VOID"}};
     write_success_result(result, response);
