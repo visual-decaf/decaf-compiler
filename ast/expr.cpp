@@ -317,3 +317,13 @@ bool decaf::ast::AssignExpr::equals(std::shared_ptr<Expr> ptr) {
 
     return this->left->equals(rhs->left) && this->right->equals(rhs->right);
 }
+
+bool decaf::ast::StringConstant::equals(std::shared_ptr<Expr> ptr) {
+    auto rhs = std::dynamic_pointer_cast<StringConstant>(ptr);
+
+    if (rhs == nullptr) {
+        return false;
+    }
+
+    return this->value == rhs->value;
+}

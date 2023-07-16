@@ -10,6 +10,7 @@ struct Type: public Serializable {
         INT,
         FLOAT,
         BOOL,
+        STRING,
         VOID
     };
 

@@ -61,6 +61,7 @@ IDENTIFIER {LETTER}[a-zA-Z0-9_]*
 "bool" { emit({token_type::BOOL, YYText()}); }
 
 {IDENTIFIER} { emit({token_type::IDENTIFIER, YYText()}); }
+"\"".*"\"" { emit({token_type::STRING, YYText()}); }
 
 [ \t] {}
 
