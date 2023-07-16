@@ -27,6 +27,13 @@ public:
         i_pool(i_list),
         f_pool(l_list) {
     }
+    ConstantPool(std::initializer_list<int> i_list,
+                 std::initializer_list<double> l_list,
+                 std::initializer_list<std::string> s_list):
+        i_pool(i_list),
+        f_pool(l_list),
+        s_pool(s_list) {
+    }
 
     index_type add_constant(const int& val);
     int get_int_constant(index_type index);
