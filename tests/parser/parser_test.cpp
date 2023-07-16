@@ -744,6 +744,26 @@ TEST_CASE("parser_variable_assign", "[parser]") {
     REQUIRE(expect->equal(result));
 }
 
+TEST_CASE("parser_variable_decl_init", "[parser]") {
+    TokenStream tokenStream{
+        {token_type ::INT, "int"},
+        {token_type ::IDENTIFIER, "ident"},
+        {token_type ::ASSIGN, "="},
+        {token_type ::INTEGER, "1"},
+        {token_type ::SEMICOLON, ";"}};
+
+    decaf::Parser parser{tokenStream};
+    parser.parse();
+
+    REQUIRE(!parser.is_error());
+    auto result = parser.get_ast();
+    auto expect = std::make_shared<ast::VariableDecl>(
+        std::make_shared<Type>(Type::Classification::INT),
+        "ident",
+        std::make_shared<ast::IntConstant>(1));
+    REQUIRE(expect->equal(result));
+}
+
 TEST_CASE("parser_string_constant", "[parser]") {
     TokenStream tokenStream{
         {token_type ::STRING, R"==("abc")=="},

@@ -130,6 +130,13 @@ variableDecl:
             $2
         );
     }
+    | type IDENTIFIER "=" expression ";" {
+        $$ = std::make_shared<VariableDecl>(
+            $1,
+            $2,
+            $4
+        );
+    }
 
 ifStmt:
     "if" "(" expression ")" statement {

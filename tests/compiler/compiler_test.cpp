@@ -700,6 +700,28 @@ TEST_CASE("compiler_define_variable_assign_use", "[compiler]") {
     REQUIRE(expect == result);
 }
 
+TEST_CASE("compiler_define_variable_init", "[compiler]") {
+    auto input_prog = Compiler::stmt_list{
+        std::make_shared<ast::VariableDecl>(
+            std::make_shared<Type>(Type::Classification::INT),
+            "ident",
+            std::make_shared<ast::IntConstant>(1))};
+
+    decaf::Compiler compiler{input_prog};
+    compiler.compile();
+
+    auto result = compiler.get_program();
+    REQUIRE(result.get_result_type_classification() == decaf::Type::Classification::VOID);
+    auto expect = Program{
+        ByteCode{
+            Instruction ::GET_INSTANT,
+            1,
+            Instruction ::SYMBOL_ADD,
+            0,
+        }};
+    REQUIRE(expect == result);
+}
+
 TEST_CASE("compiler_if_stmt", "[compiler]") {
     auto input_prog = Compiler::stmt_list{std::make_shared<ast::IfStmt>(
         std::make_shared<ast::BoolConstant>(true),
