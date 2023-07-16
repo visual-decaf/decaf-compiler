@@ -43,6 +43,7 @@
 %nterm <std::shared_ptr<decaf::ast::Stmt>> printStmt
 %nterm <decaf::ast::TypePtr> type
 %nterm <std::shared_ptr<decaf::ast::Stmt>> variableDecl
+%nterm <std::shared_ptr<decaf::ast::Stmt>> ifStmt
 
 %token <int> INTEGER
 %token <int> HEX_INTEGER
@@ -69,6 +70,7 @@
 /* Keywords */
 %token TRUE "true" FALSE "false"
 %token PRINT "Print"
+%token IF "if" ELSE "else"
 
 /* Expressions */
 %right ASSIGN
@@ -79,6 +81,9 @@
 %left PLUS MINUS
 %left STAR SLASH PERCENT
 %left UNARY_MINUS LOGIC_NOT
+
+%precedence RIGHT_PAREN
+%precedence ELSE
 
 %%
 
@@ -94,6 +99,7 @@ statement:
     expressionStmt
     | printStmt
     | variableDecl
+    | ifStmt
     ;
 
 expressionStmt:
@@ -129,6 +135,21 @@ variableDecl:
             $1,
             $2,
             $4
+        );
+    }
+
+ifStmt:
+    "if" "(" expression ")" statement {
+        $$ = std::make_shared<IfStmt>(
+            $3,
+            $5
+        );
+    }
+    | "if" "(" expression ")" statement "else" statement {
+        $$ = std::make_shared<IfStmt>(
+            $3,
+            $5,
+            $7
         );
     }
 

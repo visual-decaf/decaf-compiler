@@ -1,11 +1,6 @@
-int i;
-i = 1;
-Print(i);
+int x = 1 + 2 * 3;
 
-double d;
-d = 2.3;
-Print(d);
-
-bool b;
-b = true;
-Print(b);
+if (x == 7)
+    Print("Yes");
+else
+    Print("No");

@@ -4,6 +4,8 @@
 
 namespace decaf {
 
+class ByteCodeDriver;
+
 class ByteCodeVisitor {
 public:
     virtual bool op_PLUS() = 0;
@@ -34,6 +36,9 @@ public:
     virtual bool op_SYMBOL_SET() = 0;
     virtual bool op_GET_FLOAT_ZERO() = 0;
     virtual bool op_GET_STRING_CONSTANT(uint8_t index) = 0;
+
+    virtual bool op_GOTO(ByteCodeDriver& driver, uint8_t index) = 0;
+    virtual bool op_GOTO_IF_FALSE(ByteCodeDriver& driver, uint8_t index) = 0;
 
     virtual ~ByteCodeVisitor() = default;
 };

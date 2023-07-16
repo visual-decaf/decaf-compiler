@@ -28,4 +28,5 @@ struct ExpressionList;
 struct PrintStmt;
 using TypePtr = std::shared_ptr<decaf::Type>;
 struct VariableDecl;
+struct IfStmt;
 } // namespace decaf::ast

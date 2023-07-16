@@ -780,3 +780,85 @@ TEST_CASE("parser_string_constant", "[parser]") {
     auto expect = std::make_shared<ast::StringConstant>("abc");
     REQUIRE(expect->equals(result_expr));
 }
+
+TEST_CASE("parser_if_stmt", "[parser]") {
+    TokenStream tokenStream{
+        {token_type ::IF, "if"},
+        {token_type ::LEFT_PAREN, "("},
+        {token_type ::TRUE, "true"},
+        {token_type ::RIGHT_PAREN, ")"},
+        {token_type ::INTEGER, "1"},
+        {token_type ::SEMICOLON, ";"},
+    };
+
+    decaf::Parser parser{tokenStream};
+    parser.parse();
+
+    REQUIRE(!parser.is_error());
+    auto result = parser.get_ast();
+    auto expect = std::make_shared<ast::IfStmt>(
+        std::make_shared<ast::BoolConstant>(true),
+        std::make_shared<ast::ExpressionStmt>(
+            std::make_shared<ast::IntConstant>(1)));
+    REQUIRE(expect->equal(result));
+}
+
+TEST_CASE("parser_if_else_stmt", "[parser]") {
+    TokenStream tokenStream{
+        {token_type ::IF, "if"},
+        {token_type ::LEFT_PAREN, "("},
+        {token_type ::TRUE, "true"},
+        {token_type ::RIGHT_PAREN, ")"},
+        {token_type ::INTEGER, "1"},
+        {token_type ::SEMICOLON, ";"},
+        {token_type ::ELSE, "else"},
+        {token_type ::INTEGER, "2"},
+        {token_type ::SEMICOLON, ";"},
+    };
+
+    decaf::Parser parser{tokenStream};
+    parser.parse();
+
+    REQUIRE(!parser.is_error());
+    auto result = parser.get_ast();
+    auto expect = std::make_shared<ast::IfStmt>(
+        std::make_shared<ast::BoolConstant>(true),
+        std::make_shared<ast::ExpressionStmt>(
+            std::make_shared<ast::IntConstant>(1)),
+        std::make_shared<ast::ExpressionStmt>(
+            std::make_shared<ast::IntConstant>(2)));
+    REQUIRE(expect->equal(result));
+}
+
+TEST_CASE("parser_if_dangling_else_stmt", "[parser]") {
+    TokenStream tokenStream{
+        {token_type ::IF, "if"},
+        {token_type ::LEFT_PAREN, "("},
+        {token_type ::TRUE, "true"},
+        {token_type ::RIGHT_PAREN, ")"},
+        {token_type ::IF, "if"},
+        {token_type ::LEFT_PAREN, "("},
+        {token_type ::FALSE, "false"},
+        {token_type ::RIGHT_PAREN, ")"},
+        {token_type ::INTEGER, "1"},
+        {token_type ::SEMICOLON, ";"},
+        {token_type ::ELSE, "else"},
+        {token_type ::INTEGER, "2"},
+        {token_type ::SEMICOLON, ";"},
+    };
+
+    decaf::Parser parser{tokenStream};
+    parser.parse();
+
+    REQUIRE(!parser.is_error());
+    auto result = parser.get_ast();
+    auto expect = std::make_shared<ast::IfStmt>(
+        std::make_shared<ast::BoolConstant>(true),
+        std::make_shared<ast::IfStmt>(
+            std::make_shared<ast::BoolConstant>(false),
+            std::make_shared<ast::ExpressionStmt>(
+                std::make_shared<ast::IntConstant>(1)),
+            std::make_shared<ast::ExpressionStmt>(
+                std::make_shared<ast::IntConstant>(2))));
+    REQUIRE(expect->equal(result));
+}
