@@ -28,7 +28,8 @@ public:
     // to code_type, thus not using enum class
     struct Instruction {
         enum : code_type {
-            PLUS = 0,
+            UNKNOWN = 0,
+            PLUS,
             MINUS,
             MULTIPLY,
             DIVIDE,
