@@ -66,6 +66,7 @@
 /* Keywords */
 %token TRUE "true" FALSE "false"
 %token PRINT "Print"
+%token IF "if" ELSE "else"
 
 /* Expressions */
 %right ASSIGN
@@ -76,6 +77,9 @@
 %left PLUS MINUS
 %left STAR SLASH PERCENT
 %left UNARY_MINUS LOGIC_NOT
+
+%precedence RIGHT_PAREN
+%precedence ELSE
 
 %%
 
@@ -91,6 +95,7 @@ statement:
     expressionStmt
     | printStmt
     | variableDecl
+    | ifStmt
     ;
 
 expressionStmt:
@@ -121,6 +126,10 @@ variableDecl:
             $2
         );
     }
+
+ifStmt:
+    "if" "(" expression ")" statement
+    | "if" "(" expression ")" statement "else" statement
 
 expression:
     arithmeticBinaryExpr
