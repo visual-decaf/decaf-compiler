@@ -26,3 +26,7 @@ decaf::StackItem::ptr_type decaf::StringStackItem::perform_NOT_EQUAL_with(decaf:
 void decaf::StringStackItem::print(std::ostream& os) const {
     os << value;
 }
+
+bool decaf::StringStackItem::equal_to_string(std::string rhs) {
+    return value == rhs;
+}

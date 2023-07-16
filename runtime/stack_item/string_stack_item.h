@@ -14,6 +14,7 @@ struct StringStackItem: StackItem {
     void print(std::ostream& os) const override;
 
     ptr_type clone() override;
+    bool equal_to_string(std::string rhs) override;
 
     std::string value;
 };
