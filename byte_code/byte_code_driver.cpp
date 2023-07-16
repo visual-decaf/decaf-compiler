@@ -92,3 +92,11 @@ bool decaf::ByteCodeDriver::produce_instruction() {
 bool decaf::ByteCodeDriver::check_expected_byte(int count) {
     return count <= std::distance(current_byte, code_stream.end());
 }
+
+uint8_t decaf::ByteCodeDriver::get_program_counter() {
+    return std::distance(current_byte, code_stream.begin());
+}
+
+void decaf::ByteCodeDriver::set_program_counter(uint8_t counter) {
+    current_byte = code_stream.begin() + counter;
+}
