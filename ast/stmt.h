@@ -67,9 +67,10 @@ using TypePtr = std::shared_ptr<decaf::Type>;
 struct VariableDecl: Stmt, std::enable_shared_from_this<VariableDecl> {
     TypePtr type;
     std::string name;
+    std::shared_ptr<Expr> init;
 
-    explicit VariableDecl(TypePtr _type, std::string _name):
-        type{std::move(_type)}, name{std::move(_name)} {
+    explicit VariableDecl(TypePtr _type, std::string _name, std::shared_ptr<Expr> _init = nullptr):
+        type{std::move(_type)}, name{std::move(_name)}, init{std::move(_init)} {
     }
 
     std::any accept(StmtVisitor& visitor) override {
