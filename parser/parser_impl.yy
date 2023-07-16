@@ -138,6 +138,7 @@ expression:
     | floatConstant
     | identifierExpr
     | assignExpr
+    | stringConstant
     ;
 
 arithmeticBinaryExpr: 
