@@ -43,3 +43,16 @@ bool decaf::ast::VariableDecl::equal(std::shared_ptr<Stmt> rhs) {
 
     return *(this->type) == *(stmt->type) && this->name == stmt->name;
 }
+
+
+bool decaf::ast::IfStmt::equal(std::shared_ptr<Stmt> rhs) {
+    auto stmt = std::dynamic_pointer_cast<IfStmt>(rhs);
+
+    if (!stmt) {
+        return false;
+    }
+
+    return this->condition->equals(stmt->condition)
+           && this->then_stmt->equal(stmt->then_stmt)
+           && this->else_stmt->equal(stmt->else_stmt);
+}
