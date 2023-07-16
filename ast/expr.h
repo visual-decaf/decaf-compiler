@@ -23,6 +23,7 @@ struct ExprVisitor {
     virtual std::any visitFloatConstant(std::shared_ptr<ast::FloatConstant>) = 0;
     virtual std::any visitIdentifierExpr(std::shared_ptr<ast::IdentifierExpr>) = 0;
     virtual std::any visitAssignExpr(std::shared_ptr<ast::AssignExpr>) = 0;
+    virtual std::any visitStringConstant(std::shared_ptr<ast::StringConstant>) = 0;
 };
 } // namespace decaf
 
@@ -287,6 +288,15 @@ struct AssignExpr: Expr, std::enable_shared_from_this<AssignExpr> {
     }
 
     bool equals(std::shared_ptr<Expr> ptr) override;
+};
+
+struct StringConstant: Expr, std::enable_shared_from_this<StringConstant> {
+    std::string value;
+
+    explicit StringConstant(std::string value):
+        value{std::move(value)} {
+        type.classification = Type::Classification::STRING;
+    }
 };
 
 } // namespace decaf::ast
