@@ -52,7 +52,6 @@ IDENTIFIER {LETTER}[a-zA-Z0-9_]*
 ";" { emit({token_type::SEMICOLON, YYText()}); }
 "," { emit({token_type::COMMA, YYText()}); }
 "=" { emit({token_type::ASSIGN, YYText()}); }
-"\"" { emit({token_type::QUOTE, YYText()}); }
 
 "true" { emit({token_type::TRUE, YYText()}); }
 "false" { emit({token_type::FALSE, YYText()}); }
