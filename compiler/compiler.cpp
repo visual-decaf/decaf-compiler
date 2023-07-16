@@ -168,7 +168,11 @@ bool decaf::Compiler::emit_code_for_default(decaf::Type type) {
 std::any decaf::Compiler::visitVariableDecl(std::shared_ptr<ast::VariableDecl> variableDecl) {
     symbol_index_of[variableDecl->name] = index_count++;
     symbol_declaration_of[variableDecl->name] = variableDecl;
-    emit_code_for_default(*variableDecl->type);
+    if (variableDecl->init == nullptr) {
+        emit_code_for_default(*variableDecl->type);
+    } else {
+        variableDecl->init->accept(*this);
+    }
     prog.emit_bytes(
         ByteCode::Instruction::SYMBOL_ADD,
         symbol_index_of[variableDecl->name]);
