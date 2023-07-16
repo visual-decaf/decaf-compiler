@@ -307,6 +307,8 @@ struct StringConstant: Expr, std::enable_shared_from_this<StringConstant> {
     }
 
     bool equals(std::shared_ptr<Expr> ptr) override;
+
+    boost::json::value to_json() override;
 };
 
 } // namespace decaf::ast

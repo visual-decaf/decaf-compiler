@@ -76,7 +76,7 @@ boost::json::value decaf::ast::IntConstant::to_json() {
     boost::json::value result = {
         {"type", "IntConstant"},
         {"value", this->value},
-        {"resultType", this->type.to_json()}};
+        {"resultType", "INT"}};
     return result;
 }
 
@@ -154,7 +154,7 @@ boost::json::value decaf::ast::BoolConstant::to_json() {
     boost::json::value result{
         {"type", "BoolConstant"},
         {"value", this->value},
-        {"resultType", this->type.to_json()}};
+        {"resultType", "BOOL"}};
     return result;
 }
 
@@ -294,7 +294,7 @@ boost::json::value decaf::ast::FloatConstant::to_json() {
     boost::json::object result{
         {"type", "FloatConstant"},
         {"value", this->value},
-        {"resultType", this->type.to_json()}};
+        {"resultType", "FLOAT"}};
     return result;
 }
 
@@ -323,6 +323,7 @@ bool decaf::ast::AssignExpr::equals(std::shared_ptr<Expr> ptr) {
 
     return this->left->equals(rhs->left) && this->right->equals(rhs->right);
 }
+
 boost::json::value decaf::ast::AssignExpr::to_json() {
     boost::json::array list;
     list.emplace_back(this->left->to_json());
@@ -343,4 +344,10 @@ bool decaf::ast::StringConstant::equals(std::shared_ptr<Expr> ptr) {
     }
 
     return this->value == rhs->value;
+}
+boost::json::value decaf::ast::StringConstant::to_json() {
+    return boost::json::object{
+        {"type", "StringConstant"},
+        {"value", this->value},
+        {"resultType", "STRING"}};
 }
