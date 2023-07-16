@@ -297,6 +297,12 @@ struct StringConstant: Expr, std::enable_shared_from_this<StringConstant> {
         value{std::move(value)} {
         type.classification = Type::Classification::STRING;
     }
+
+    std::any accept(ExprVisitor& visitor) override {
+        return visitor.visitStringConstant(shared_from_this());
+    }
+
+    bool equals(std::shared_ptr<Expr> ptr) override;
 };
 
 } // namespace decaf::ast
