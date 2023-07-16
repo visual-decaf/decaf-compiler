@@ -1,6 +1,4 @@
-#include "bool_stack_item.h"
-#include "float_stack_item.h"
-#include "int_stack_item.h"
+#include "stack_items.h"
 #include <catch2/catch_test_macros.hpp>
 
 TEST_CASE("int_stack_item_json", "[stack_item]") {
@@ -34,4 +32,18 @@ TEST_CASE("bool_stack_item_json", "[stack_item]") {
 }
 )");
     REQUIRE(expect_json == bool_stack_item.to_json());
+}
+
+TEST_CASE("lval_stack_item_json", "[stack_item]") {
+    decaf::LValueStackItem lval_stack_item(std::make_shared<decaf::BoolStackItem>(true));
+    auto expect_json = boost::json::parse(R"(
+{
+    "type": "LVALUE",
+    "value": {
+        "type": "BOOL",
+        "value": true
+    }
+}
+)");
+    REQUIRE(expect_json == lval_stack_item.to_json());
 }

@@ -75,3 +75,8 @@ bool decaf::LValueStackItem::equal_to_double(double rhs) {
 bool decaf::LValueStackItem::equal_to_bool(bool rhs) {
     return value->equal_to_bool(rhs);
 }
+boost::json::value decaf::LValueStackItem::to_json() {
+    return boost::json::object{
+        {"type", "LVALUE"},
+        {"value", this->value->to_json()}};
+}
