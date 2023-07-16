@@ -71,6 +71,10 @@ public:
 
     void emit(code_type b);
 
+    size_t emit_marked(code_type b);
+    void set_byte(size_t index, code_type b);
+    size_t get_current_index();
+
     bool operator==(const ByteCode& rhs) {
         return this->code_stream == rhs.code_stream;
     }
