@@ -258,6 +258,14 @@ bool decaf::DebugVirtualMachine::op_GET_FLOAT_ZERO() {
     return result;
 }
 
+bool decaf::DebugVirtualMachine::op_GOTO(decaf::ByteCodeDriver& driver, uint8_t index) {
+    return false;
+}
+
+bool decaf::DebugVirtualMachine::op_GOTO_IF_FALSE(decaf::ByteCodeDriver& driver, uint8_t index) {
+    return false;
+}
+
 void decaf::DebugVirtualMachine::one_pop_one_push() {
     std::vector<decaf::Step> steps;
     steps.emplace_back("POP");
@@ -300,4 +308,7 @@ void decaf::DebugVirtualMachine::one_pop() {
     ExeResult exe_result{
         steps, vm.get_symbol_table().to_json()};
     exe_results.emplace_back(exe_result);
+}
+bool decaf::DebugVirtualMachine::op_GET_STRING_CONSTANT(uint8_t index) {
+    return false;
 }
