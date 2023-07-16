@@ -9,9 +9,11 @@ decaf::StackItem::ptr_type decaf::SymbolTable::get_symbol(decaf::SymbolTable::in
     return table[index];
 }
 boost::json::value decaf::SymbolTable::to_json() {
-    boost::json::object result;
+    boost::json::array list;
     for (const auto& entry: this->table) {
-        result[std::to_string(static_cast<int>(entry.first))] = entry.second->to_json();
+        list.emplace_back(boost::json::object{
+            {"index", entry.first},
+            {"value", entry.second->to_json()}});
     }
-    return result;
+    return list;
 }
