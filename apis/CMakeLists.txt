@@ -1,4 +1,5 @@
 add_subdirectory(stream_scanner)
+add_subdirectory(debug_vm)
 
 add_library(serializable INTERFACE serializable.h)
 target_include_directories(serializable INTERFACE .)
