@@ -214,3 +214,11 @@ std::any decaf::Compiler::visitIfStmt(std::shared_ptr<ast::IfStmt> ifStmt) {
     }
     return {};
 }
+
+std::any decaf::Compiler::visitStringConstant(std::shared_ptr<ast::StringConstant> stringConstant) {
+    ConstantPool::index_type index = prog.add_string_constant(stringConstant->value);
+    prog.emit_bytes(
+        ByteCode::Instruction::GET_STRING_CONSTANT,
+        index);
+    return {};
+}

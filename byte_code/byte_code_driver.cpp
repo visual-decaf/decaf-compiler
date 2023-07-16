@@ -77,6 +77,9 @@ bool decaf::ByteCodeDriver::produce_instruction() {
         case Instruction ::SYMBOL_GET:
             check_expected_byte(1);
             return visitor.op_SYMBOL_GET(*(++current_byte));
+        case Instruction ::GET_STRING_CONSTANT:
+            check_expected_byte(1);
+            return visitor.op_GET_STRING_CONSTANT(*(++current_byte));
         case Instruction ::GOTO:
             check_expected_byte(1);
             return visitor.op_GOTO(*this, *(++current_byte));

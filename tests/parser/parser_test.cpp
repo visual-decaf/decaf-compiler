@@ -744,6 +744,23 @@ TEST_CASE("parser_variable_assign", "[parser]") {
     REQUIRE(expect->equal(result));
 }
 
+TEST_CASE("parser_string_constant", "[parser]") {
+    TokenStream tokenStream{
+        {token_type ::STRING, R"==("abc")=="},
+        {token_type ::SEMICOLON},
+    };
+
+    decaf::Parser parser{tokenStream};
+    parser.parse();
+
+    REQUIRE(!parser.is_error());
+    auto result = parser.get_ast();
+    auto result_expr_stmt = std::dynamic_pointer_cast<ast::ExpressionStmt>(result);
+    auto result_expr = result_expr_stmt->expr;
+    auto expect = std::make_shared<ast::StringConstant>("abc");
+    REQUIRE(expect->equals(result_expr));
+}
+
 TEST_CASE("parser_if_stmt", "[parser]") {
     TokenStream tokenStream{
         {token_type ::IF, "if"},

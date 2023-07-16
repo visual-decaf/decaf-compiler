@@ -784,6 +784,28 @@ TEST_CASE("vm_variable_define_use", "[vm]") {
     REQUIRE(os.str() == "1\n");
 }
 
+TEST_CASE("vm_print_stmt_string_literal", "[vm]") {
+    auto input_prog = Program{
+        ByteCode{
+            Instruction ::GET_STRING_CONSTANT,
+            0,
+            Instruction ::PRINT,
+            1,
+        },
+        ConstantPool{
+            {},
+            {},
+            {"a string"}}};
+    input_prog.set_result_type_classification(Type::Classification::VOID);
+
+    std::ostringstream os;
+    decaf::VirtualMachine vm{input_prog, os};
+    vm.run();
+
+    REQUIRE(!vm.is_error());
+    REQUIRE(os.str() == "a string\n");
+}
+
 TEST_CASE("vm_goto", "[vm]") {
     auto input_prog = Program(
         ByteCode{

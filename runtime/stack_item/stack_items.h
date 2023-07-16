@@ -5,3 +5,4 @@
 #include "int_stack_item.h"
 #include "lvalue_stack_item.h"
 #include "stack_item.h"
+#include "string_stack_item.h"

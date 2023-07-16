@@ -57,6 +57,7 @@ public:
             GET_FLOAT_ZERO,
             GOTO,
             GOTO_IF_FALSE,
+            GET_STRING_CONSTANT,
         };
     };
 

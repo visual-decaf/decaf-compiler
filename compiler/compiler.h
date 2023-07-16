@@ -42,6 +42,7 @@ public:
     std::any visitIdentifierExpr(std::shared_ptr<ast::IdentifierExpr> ptr) override;
     std::any visitAssignExpr(std::shared_ptr<ast::AssignExpr> ptr) override;
     std::any visitIfStmt(std::shared_ptr<ast::IfStmt> ptr) override;
+    std::any visitStringConstant(std::shared_ptr<ast::StringConstant> ptr) override;
 
 private:
     stmt_list statements;

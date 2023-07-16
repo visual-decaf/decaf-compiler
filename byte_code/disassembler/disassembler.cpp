@@ -144,3 +144,8 @@ bool Disassembler::op_GOTO_IF_FALSE(ByteCodeDriver&, uint8_t index) {
     this->assembly_code.emplace_back("GOTO_IF_FALSE " + std::to_string(static_cast<int>(index)));
     return false;
 }
+
+bool Disassembler::op_GET_STRING_CONSTANT(uint8_t index) {
+    this->assembly_code.emplace_back("GET_STRING_CONSTANT " + std::to_string(static_cast<int>(index)));
+    return true;
+}

@@ -699,3 +699,25 @@ TEST_CASE("compiler_define_variable_assign_use", "[compiler]") {
             1}};
     REQUIRE(expect == result);
 }
+
+TEST_CASE("compiler_string_literal", "[compiler]") {
+    auto input_prog = Compiler::stmt_list{
+        std::make_shared<ast::ExpressionStmt>(
+            std::make_shared<ast::StringConstant>("one string"))};
+
+    decaf::Compiler compiler{input_prog};
+    compiler.compile();
+
+    auto result = compiler.get_program();
+    REQUIRE(result.get_result_type_classification() == decaf::Type::Classification::VOID);
+    auto expect = Program{
+        ByteCode{
+            Instruction ::GET_STRING_CONSTANT,
+            0,
+            Instruction ::DISCARD},
+        ConstantPool{
+            {},
+            {},
+            {"one string"}}};
+    REQUIRE(expect == result);
+}

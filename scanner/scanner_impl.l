@@ -63,6 +63,7 @@ IDENTIFIER {LETTER}[a-zA-Z0-9_]*
 "else" { emit({token_type::ELSE, YYText()}); }
 
 {IDENTIFIER} { emit({token_type::IDENTIFIER, YYText()}); }
+"\"".*"\"" { emit({token_type::STRING, YYText()}); }
 
 [ \t] {}
 
