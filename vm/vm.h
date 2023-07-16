@@ -18,7 +18,7 @@ class VirtualMachine:
 public:
     using stack_type = std::stack<StackItem::ptr_type>;
 
-    explicit VirtualMachine(Program _prog, std::ostream& os = std::cout):
+    explicit VirtualMachine(Program& _prog, std::ostream& os = std::cout):
         prog{std::move(_prog)},
         output{os} {
     }
@@ -58,6 +58,7 @@ public:
 
     StackItem::ptr_type get_last_discarded();
     StackItem::ptr_type get_stack_top();
+    SymbolTable get_symbol_table();
 
 protected:
     StackItem::ptr_type pop();

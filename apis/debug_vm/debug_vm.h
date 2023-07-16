@@ -1,3 +1,5 @@
+#pragma once
+
 #include "exe_result.h"
 #include "vm.h"
 #include <utility>

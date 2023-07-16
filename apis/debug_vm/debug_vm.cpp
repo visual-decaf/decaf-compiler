@@ -11,7 +11,7 @@ bool decaf::DebugVirtualMachine::op_PLUS() {
     steps.emplace_back("POP");
     steps.emplace_back("PUSH", vm.get_stack_top());
     ExeResult exe_result{
-        steps, std::shared_ptr<decaf::SymbolTable>()};
+        steps, vm.get_symbol_table()};
     exe_results.emplace_back(exe_result);
     return result;
 }
@@ -20,7 +20,7 @@ bool decaf::DebugVirtualMachine::op_GET_INSTANT(uint8_t instant) {
     std::vector<decaf::Step> steps;
     steps.emplace_back("PUSH", vm.get_stack_top());
     ExeResult exe_result{
-        steps, std::shared_ptr<decaf::SymbolTable>()};
+        steps, vm.get_symbol_table()};
     exe_results.emplace_back(exe_result);
     return result;
 }
