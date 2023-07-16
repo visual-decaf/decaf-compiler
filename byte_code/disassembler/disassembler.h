@@ -41,6 +41,7 @@ public:
     bool op_SYMBOL_SET() override;
     bool op_GET_FLOAT_ZERO() override;
 
+
     assembly_code_type get_code();
 
 private:

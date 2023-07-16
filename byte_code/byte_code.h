@@ -54,6 +54,8 @@ public:
             SYMBOL_GET,
             SYMBOL_SET,
             GET_FLOAT_ZERO,
+            GOTO,
+            GOTO_IF_FALSE,
         };
     };
 
