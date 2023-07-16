@@ -42,6 +42,7 @@
 %nterm <std::shared_ptr<decaf::ast::Stmt>> printStmt
 %nterm <decaf::ast::TypePtr> type
 %nterm <std::shared_ptr<decaf::ast::Stmt>> variableDecl
+%nterm <std::shared_ptr<decaf::ast::Stmt>> ifStmt
 
 %token <int> INTEGER
 %token <int> HEX_INTEGER
@@ -128,8 +129,19 @@ variableDecl:
     }
 
 ifStmt:
-    "if" "(" expression ")" statement
-    | "if" "(" expression ")" statement "else" statement
+    "if" "(" expression ")" statement {
+        $$ = std::make_shared<IfStmt>(
+            $3,
+            $5
+        );
+    }
+    | "if" "(" expression ")" statement "else" statement {
+        $$ = std::make_shared<IfStmt>(
+            $3,
+            $5,
+            $7
+        );
+    }
 
 expression:
     arithmeticBinaryExpr
