@@ -41,6 +41,8 @@ public:
     bool op_SYMBOL_SET() override;
     bool op_GET_FLOAT_ZERO() override;
 
+    bool op_GOTO(ByteCodeDriver&, uint8_t index) override;
+    bool op_GOTO_IF_FALSE(ByteCodeDriver&, uint8_t index) override;
 
     assembly_code_type get_code();
 

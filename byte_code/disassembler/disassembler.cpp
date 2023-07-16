@@ -134,3 +134,13 @@ bool Disassembler::op_GET_FLOAT_ZERO() {
     this->assembly_code.emplace_back("GET_FLOAT_ZERO");
     return true;
 }
+
+bool Disassembler::op_GOTO(ByteCodeDriver&, uint8_t index) {
+    this->assembly_code.emplace_back("GOTO " + std::to_string(static_cast<int>(index)));
+    return true;
+}
+
+bool Disassembler::op_GOTO_IF_FALSE(ByteCodeDriver&, uint8_t index) {
+    this->assembly_code.emplace_back("GOTO_IF_FALSE " + std::to_string(static_cast<int>(index)));
+    return false;
+}
