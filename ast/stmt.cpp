@@ -52,7 +52,14 @@ bool decaf::ast::IfStmt::equal(std::shared_ptr<Stmt> rhs) {
         return false;
     }
 
-    return this->condition->equals(stmt->condition)
-           && this->then_stmt->equal(stmt->then_stmt)
-           && this->else_stmt->equal(stmt->else_stmt);
+    if (this->else_stmt == nullptr) {
+        return this->condition->equals(stmt->condition)
+               && this->then_stmt->equal(stmt->then_stmt)
+               && stmt->else_stmt == nullptr;
+    } else {
+        return this->condition->equals(stmt->condition)
+               && this->then_stmt->equal(stmt->then_stmt)
+               && stmt->else_stmt != nullptr
+               && this->else_stmt->equal(stmt->else_stmt);
+    }
 }
