@@ -20,6 +20,7 @@ struct EqualityBinary;
 struct FloatConstant;
 struct IdentifierExpr;
 struct AssignExpr;
+struct StringConstant;
 
 struct Stmt;
 struct ExpressionStmt;

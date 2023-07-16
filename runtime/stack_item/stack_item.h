@@ -54,6 +54,9 @@ struct StackItem {
     virtual bool equal_to_bool(bool rhs) {
         return false;
     }
+    virtual bool equal_to_string(std::string rhs) {
+        return false;
+    }
 
     virtual ptr_type clone() = 0;
 

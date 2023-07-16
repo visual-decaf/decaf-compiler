@@ -48,6 +48,7 @@ public:
     bool op_SYMBOL_GET(uint8_t index) override;
     bool op_SYMBOL_SET() override;
     bool op_GET_FLOAT_ZERO() override;
+    bool op_GET_STRING_CONSTANT(uint8_t index) override;
 
     void run();
 

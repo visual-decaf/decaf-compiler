@@ -9,6 +9,7 @@ int yylex(yy::parser::value_type* yylval, decaf::Parser& driver) {
     if (next_token == token_stream.end()) {
         return token_type::YYEOF;
     }
+    unsigned long long size = next_token->lexeme.size();
 
     // Must use big switch-case here, because no
     // polymorphism is available for token type.
@@ -24,6 +25,9 @@ int yylex(yy::parser::value_type* yylval, decaf::Parser& driver) {
             break;
         case token_type::IDENTIFIER:
             yylval->emplace<std::string>(next_token->lexeme);
+            break;
+        case token_type::STRING:
+            yylval->emplace<std::string>(next_token->lexeme.substr(1, size - 2));
             break;
         default:
             // No semantic value for other types

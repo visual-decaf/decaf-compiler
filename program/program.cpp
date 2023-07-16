@@ -37,3 +37,7 @@ boost::json::value decaf::Program::to_json() {
 decaf::ConstantPool::index_type decaf::Program::add_double_constant(const double& val) {
     return pool.add_constant(val);
 }
+
+decaf::ConstantPool::index_type decaf::Program::add_string_constant(const std::string& val) {
+    return pool.add_constant(val);
+}

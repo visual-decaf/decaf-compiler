@@ -134,3 +134,8 @@ bool Disassembler::op_GET_FLOAT_ZERO() {
     this->assembly_code.emplace_back("GET_FLOAT_ZERO");
     return true;
 }
+
+bool Disassembler::op_GET_STRING_CONSTANT(uint8_t index) {
+    this->assembly_code.emplace_back("GET_STRING_CONSTANT " + std::to_string(static_cast<int>(index)));
+    return true;
+}

@@ -35,6 +35,7 @@
 %nterm <std::shared_ptr<decaf::ast::Expr>> floatConstant
 %nterm <std::shared_ptr<decaf::ast::Expr>> identifierExpr
 %nterm <std::shared_ptr<decaf::ast::Expr>> assignExpr
+%nterm <std::shared_ptr<decaf::ast::Expr>> stringConstant
 
 %nterm <std::shared_ptr<decaf::ast::Stmt>> statement
 %nterm <std::shared_ptr<decaf::ast::Stmt>> expressionStmt
@@ -46,6 +47,7 @@
 %token <int> INTEGER
 %token <int> HEX_INTEGER
 %token <double> FLOAT
+%token <std::string> STRING
 %token PLUS "+" MINUS "-"
 %token STAR "*" SLASH "/" PERCENT "%"
 %token LEFT_PAREN "(" RIGHT_PAREN ")"
@@ -58,6 +60,7 @@
 %token SEMICOLON ";"
 %token COMMA ","
 %token ASSIGN "="
+%token QUOTE "\""
 %token INVALID
 %token INT "int" DOUBLE "double" BOOL "bool"
 %token <std::string> IDENTIFIER
@@ -135,6 +138,7 @@ expression:
     | floatConstant
     | identifierExpr
     | assignExpr
+    | stringConstant
     ;
 
 arithmeticBinaryExpr: 
@@ -310,6 +314,11 @@ assignExpr:
             $1,
             $3
         );
+    }
+
+stringConstant:
+    STRING {
+        $$ = std::make_shared<StringConstant>($1);
     }
 
 %%

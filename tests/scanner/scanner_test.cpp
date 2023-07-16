@@ -285,3 +285,16 @@ TEST_CASE("scanner_assign_equal", "[scanner]") {
         REQUIRE(result_token[i] == expected_token[i]);
     }
 }
+
+TEST_CASE("scanner_string_literal", "[scanner]") {
+    auto result_token = scan_for(R"==("abc")==");
+    decaf::TokenStream expected_token{
+        {token_type ::STRING, R"==("abc")=="},
+        {token_type ::YYEOF},
+    };
+
+    REQUIRE(result_token.size() == expected_token.size());
+    for (int i = 0; i < result_token.size(); i++) {
+        REQUIRE(result_token[i] == expected_token[i]);
+    }
+}
