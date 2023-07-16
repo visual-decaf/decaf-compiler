@@ -8,7 +8,7 @@ namespace decaf {
 
 class Step: Serializable {
 public:
-    Step(std::string _operation, std::shared_ptr<decaf::StackItem> _item):
+    explicit Step(std::string _operation, std::shared_ptr<decaf::StackItem> _item = nullptr):
         operation(std::move(_operation)), item(std::move(_item)) {
     }
 

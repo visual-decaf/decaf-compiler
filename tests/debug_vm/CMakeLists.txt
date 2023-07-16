@@ -1,0 +1,3 @@
+add_executable(debug_vm_test debug_vm_test.cpp)
+target_link_libraries(debug_vm_test PRIVATE debug_vm Catch2::Catch2WithMain)
+catch_discover_tests(debug_vm_test)
