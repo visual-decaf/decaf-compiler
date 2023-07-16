@@ -196,3 +196,11 @@ std::any decaf::Compiler::visitAssignExpr(std::shared_ptr<ast::AssignExpr> assig
     prog.emit(ByteCode::Instruction::SYMBOL_SET);
     return {};
 }
+
+std::any decaf::Compiler::visitStringConstant(std::shared_ptr<ast::StringConstant> stringConstant) {
+    ConstantPool::index_type index = prog.add_string_constant(stringConstant->value);
+    prog.emit_bytes(
+        ByteCode::Instruction::GET_STRING_CONSTANT,
+        index);
+    return {};
+}
