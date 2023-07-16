@@ -783,3 +783,22 @@ TEST_CASE("vm_variable_define_use", "[vm]") {
     REQUIRE(!vm.is_error());
     REQUIRE(os.str() == "1\n");
 }
+
+TEST_CASE("vm_goto", "[vm]") {
+    auto input_prog = Program(
+        ByteCode{
+            Instruction ::GOTO,
+            2, // jump to GET_FALSE
+            Instruction ::GET_TRUE,
+            Instruction ::GET_FALSE,
+            Instruction ::PRINT,
+            1});
+    input_prog.set_result_type_classification(Type::Classification::VOID);
+
+    std::ostringstream os;
+    decaf::VirtualMachine vm{input_prog, os};
+    vm.run();
+
+    REQUIRE(!vm.is_error());
+    REQUIRE(os.str() == "false\n");
+}
