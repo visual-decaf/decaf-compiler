@@ -8,8 +8,8 @@ namespace decaf {
 
 class Step: Serializable {
 public:
-    explicit Step(std::string _operation, std::shared_ptr<decaf::StackItem> _item = nullptr):
-        operation(std::move(_operation)), item(std::move(_item)) {
+    explicit Step(std::string _operation, boost::json::value _item_object = nullptr):
+        operation(std::move(_operation)), item_object(std::move(_item_object)) {
     }
 
     void set_error_msg(std::string error_msg);
@@ -18,7 +18,7 @@ public:
 
 private:
     std::string operation;
-    std::shared_ptr<decaf::StackItem> item;
+    boost::json::value item_object;
     std::string error_msg;
 };
 

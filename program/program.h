@@ -15,11 +15,13 @@ std::ostream& operator<<(std::ostream& os, const decaf::Program&);
 namespace decaf {
 
 class VirtualMachine;
+class DebugVirtualMachine;
 
 class Program:
     public Serializable {
     friend std::ostream& ::operator<<(std::ostream& os, const decaf::Program&);
     friend class VirtualMachine;
+    friend class DebugVirtualMachine;
 
 public:
     Program() = default;
@@ -54,9 +56,8 @@ public:
 
     boost::json::value to_json() override;
 
-    ByteCode code;
-
 private:
+    ByteCode code;
     Type result_type;
     ConstantPool pool;
 };

@@ -7,6 +7,6 @@ boost::json::value decaf::ExeResult::to_json() {
     }
     boost::json::object result{
         {"steps", list},
-        {"table", this->table.to_json()}};
+        {"table", this->table}};
     return result;
 }

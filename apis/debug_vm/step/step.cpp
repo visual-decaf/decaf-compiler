@@ -13,11 +13,7 @@ boost::json::value decaf::Step::to_json() {
     } else if (operation == "ERROR") {
         result["item"] = error_msg;
     } else {
-        if (this->item == nullptr) {
-            result["item"] = nullptr;
-        } else {
-            result["item"] = this->item->to_json();
-        }
+        result["item"] = item_object;
     }
     return result;
 }

@@ -8,6 +8,10 @@ namespace decaf {
 
 class DebugVirtualMachine: ByteCodeVisitor {
 public:
+    explicit DebugVirtualMachine(Program _program):
+        program(std::move(_program)), vm{program} {
+    }
+
     bool op_PLUS() override;
     bool op_GET_INSTANT(uint8_t instant) override;
     bool op_NEGATE() override;
@@ -40,14 +44,16 @@ public:
 
     void run();
 
-    explicit DebugVirtualMachine(Program _program):
-        program(std::move(_program)), vm{program} {
-    }
-
 private:
     Program program;
     VirtualMachine vm;
     std::vector<ExeResult> exe_results;
+
+    void one_pop_one_push();
+    void two_pop_one_push();
+    void one_push();
+    void one_pop();
+    void error(std::string error_msg);
 };
 
 }; // namespace decaf

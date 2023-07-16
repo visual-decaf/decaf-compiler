@@ -10,7 +10,7 @@ namespace decaf {
 
 class ExeResult: Serializable {
 public:
-    ExeResult(std::vector<decaf::Step> _steps, decaf::SymbolTable _table):
+    ExeResult(std::vector<decaf::Step> _steps, boost::json::value _table):
         steps(std::move(_steps)), table(std::move(_table)) {
     }
 
@@ -18,7 +18,7 @@ public:
 
 private:
     std::vector<decaf::Step> steps;
-    decaf::SymbolTable table;
+    boost::json::value table;
 };
 
 } // namespace decaf
