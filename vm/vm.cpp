@@ -245,3 +245,8 @@ bool decaf::VirtualMachine::op_GET_FLOAT_ZERO() {
     push(std::make_shared<FloatStackItem>(0));
     return true;
 }
+
+bool decaf::VirtualMachine::op_GET_STRING_CONSTANT(uint8_t index) {
+    push(std::make_shared<StringStackItem>(prog.pool.get_string_constant(index)));
+    return true;
+}

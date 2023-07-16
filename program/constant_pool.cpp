@@ -62,3 +62,7 @@ decaf::ConstantPool::index_type decaf::ConstantPool::add_constant(const std::str
     s_pool.push_back(val);
     return s_pool.size() - 1;
 }
+
+std::string decaf::ConstantPool::get_string_constant(decaf::ConstantPool::index_type index) {
+    return s_pool[index];
+}
