@@ -54,8 +54,9 @@ public:
 
     boost::json::value to_json() override;
 
-private:
     ByteCode code;
+
+private:
     Type result_type;
     ConstantPool pool;
 };
