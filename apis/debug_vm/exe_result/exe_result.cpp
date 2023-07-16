@@ -6,11 +6,7 @@ boost::json::value decaf::ExeResult::to_json() {
         list.emplace_back(step.to_json());
     }
     boost::json::object result{
-        {"steps", list}};
-    if (this->table == nullptr) {
-        result["table"] = nullptr;
-    } else {
-        result["table"] = this->table->to_json();
-    }
+        {"steps", list},
+        {"table", this->table.to_json()}};
     return result;
 }
