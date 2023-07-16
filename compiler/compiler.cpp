@@ -202,13 +202,12 @@ std::any decaf::Compiler::visitIfStmt(std::shared_ptr<ast::IfStmt> ifStmt) {
     prog.emit(ByteCode::Instruction::GOTO_IF_FALSE);
     size_t mark_if_condition = prog.emit_marked(ByteCode::Instruction::UNKNOWN);
     ifStmt->then_stmt->accept(*this);
-    size_t mark_then_stmt;
-    if (ifStmt->else_stmt) {
+    if (ifStmt->else_stmt == nullptr) { // This is the end
+        prog.set_marked(mark_if_condition, prog.get_current_index());
+    } else {
         prog.emit(ByteCode::Instruction::GOTO);
-        mark_then_stmt = prog.emit_marked(ByteCode::Instruction::UNKNOWN);
-    }
-    prog.set_marked(mark_if_condition, prog.get_current_index());
-    if (ifStmt->else_stmt) {
+        size_t mark_then_stmt = prog.emit_marked(ByteCode::Instruction::UNKNOWN);
+        prog.set_marked(mark_if_condition, prog.get_current_index());
         ifStmt->else_stmt->accept(*this);
         prog.set_marked(mark_then_stmt, prog.get_current_index());
     }

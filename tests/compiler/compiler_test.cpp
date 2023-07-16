@@ -700,6 +700,58 @@ TEST_CASE("compiler_define_variable_assign_use", "[compiler]") {
     REQUIRE(expect == result);
 }
 
+TEST_CASE("compiler_if_stmt", "[compiler]") {
+    auto input_prog = Compiler::stmt_list{std::make_shared<ast::IfStmt>(
+        std::make_shared<ast::BoolConstant>(true),
+        std::make_shared<ast::ExpressionStmt>(
+            std::make_shared<ast::IntConstant>(1)))};
+
+    decaf::Compiler compiler{input_prog};
+    compiler.compile();
+
+    auto result = compiler.get_program();
+    REQUIRE(result.get_result_type_classification() == decaf::Type::Classification::VOID);
+    auto expect = Program{
+        ByteCode{
+            Instruction ::GET_TRUE,
+            Instruction ::GOTO_IF_FALSE,
+            5,
+            Instruction ::GET_INSTANT,
+            1,
+            Instruction ::DISCARD}};
+    REQUIRE(expect == result);
+}
+
+TEST_CASE("compiler_if_else_stmt", "[compiler]") {
+    auto input_prog = Compiler::stmt_list{std::make_shared<ast::IfStmt>(
+        std::make_shared<ast::BoolConstant>(true),
+        std::make_shared<ast::ExpressionStmt>(
+            std::make_shared<ast::IntConstant>(1)),
+        std::make_shared<ast::ExpressionStmt>(
+            std::make_shared<ast::IntConstant>(2)))};
+
+    decaf::Compiler compiler{input_prog};
+    compiler.compile();
+
+    auto result = compiler.get_program();
+    REQUIRE(result.get_result_type_classification() == decaf::Type::Classification::VOID);
+    auto expect = Program{
+        ByteCode{
+            Instruction ::GET_TRUE,
+            Instruction ::GOTO_IF_FALSE,
+            7,
+            Instruction ::GET_INSTANT,
+            1,
+            Instruction ::DISCARD,
+            Instruction ::GOTO,
+            10,
+            Instruction ::GET_INSTANT,
+            2,
+            Instruction ::DISCARD,
+        }};
+    REQUIRE(expect == result);
+}
+
 TEST_CASE("compiler_string_literal", "[compiler]") {
     auto input_prog = Compiler::stmt_list{
         std::make_shared<ast::ExpressionStmt>(
