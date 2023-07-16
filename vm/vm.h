@@ -49,6 +49,9 @@ public:
     bool op_SYMBOL_SET() override;
     bool op_GET_FLOAT_ZERO() override;
 
+    bool op_GOTO(ByteCodeDriver& driver, uint8_t index) override;
+    bool op_GOTO_IF_FALSE(ByteCodeDriver& driver, uint8_t index) override;
+
     void run();
 
     [[nodiscard]] bool is_error() const;
