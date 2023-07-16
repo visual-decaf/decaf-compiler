@@ -59,6 +59,7 @@ public:
     StackItem::ptr_type get_last_discarded();
     StackItem::ptr_type get_stack_top();
     SymbolTable get_symbol_table();
+    bool is_stack_empty();
 
 protected:
     StackItem::ptr_type pop();

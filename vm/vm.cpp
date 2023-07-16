@@ -15,8 +15,8 @@ void decaf::VirtualMachine::run() {
     if (stk.empty()) {
         if (prog.result_type.classification != Type::Classification::VOID) {
             report_unexpected_type("Input program",
-                                   prog.result_type.classification,
-                                   Type::Classification::VOID);
+                                   Type::Classification::VOID,
+                                   prog.result_type.classification);
             return;
         }
         // FINE
@@ -247,4 +247,7 @@ bool decaf::VirtualMachine::op_GET_FLOAT_ZERO() {
 }
 decaf::SymbolTable decaf::VirtualMachine::get_symbol_table() {
     return table;
+}
+bool decaf::VirtualMachine::is_stack_empty() {
+    return this->stk.empty();
 }
