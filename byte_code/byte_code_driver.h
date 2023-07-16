@@ -13,6 +13,9 @@ public:
     using code_stream_type = ByteCode::code_stream_type;
     using iterator_type = code_stream_type::iterator;
 
+    uint8_t get_program_counter();
+    void set_program_counter(uint8_t counter);
+
 private:
     bool produce_instruction();
     bool check_expected_byte(int count);

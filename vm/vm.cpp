@@ -251,3 +251,21 @@ decaf::SymbolTable decaf::VirtualMachine::get_symbol_table() {
 bool decaf::VirtualMachine::is_stack_empty() {
     return this->stk.empty();
 }
+
+bool decaf::VirtualMachine::op_GET_STRING_CONSTANT(uint8_t index) {
+    push(std::make_shared<StringStackItem>(prog.pool.get_string_constant(index)));
+    return true;
+}
+
+bool decaf::VirtualMachine::op_GOTO(decaf::ByteCodeDriver& driver, uint8_t index) {
+    driver.set_program_counter(index);
+    return true;
+}
+
+bool decaf::VirtualMachine::op_GOTO_IF_FALSE(decaf::ByteCodeDriver& driver, uint8_t index) {
+    auto top = pop();
+    if (top->equal_to_bool(false)) {
+        driver.set_program_counter(index);
+    }
+    return true;
+}

@@ -87,3 +87,23 @@ boost::json::value decaf::ast::ExpressionList::to_json() {
     }
     return result;
 }
+
+
+bool decaf::ast::IfStmt::equal(std::shared_ptr<Stmt> rhs) {
+    auto stmt = std::dynamic_pointer_cast<IfStmt>(rhs);
+
+    if (!stmt) {
+        return false;
+    }
+
+    if (this->else_stmt == nullptr) {
+        return this->condition->equals(stmt->condition)
+               && this->then_stmt->equal(stmt->then_stmt)
+               && stmt->else_stmt == nullptr;
+    } else {
+        return this->condition->equals(stmt->condition)
+               && this->then_stmt->equal(stmt->then_stmt)
+               && stmt->else_stmt != nullptr
+               && this->else_stmt->equal(stmt->else_stmt);
+    }
+}

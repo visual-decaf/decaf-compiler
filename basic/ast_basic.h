@@ -20,6 +20,7 @@ struct EqualityBinary;
 struct FloatConstant;
 struct IdentifierExpr;
 struct AssignExpr;
+struct StringConstant;
 
 struct Stmt;
 struct ExpressionStmt;
@@ -27,4 +28,5 @@ struct ExpressionList;
 struct PrintStmt;
 using TypePtr = std::shared_ptr<decaf::Type>;
 struct VariableDecl;
+struct IfStmt;
 } // namespace decaf::ast

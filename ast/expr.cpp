@@ -334,3 +334,13 @@ boost::json::value decaf::ast::AssignExpr::to_json() {
         {"resultType", this->type.to_json()}};
     return result;
 }
+
+bool decaf::ast::StringConstant::equals(std::shared_ptr<Expr> ptr) {
+    auto rhs = std::dynamic_pointer_cast<StringConstant>(ptr);
+
+    if (rhs == nullptr) {
+        return false;
+    }
+
+    return this->value == rhs->value;
+}

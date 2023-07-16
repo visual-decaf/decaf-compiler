@@ -35,6 +35,7 @@
 %nterm <std::shared_ptr<decaf::ast::Expr>> floatConstant
 %nterm <std::shared_ptr<decaf::ast::Expr>> identifierExpr
 %nterm <std::shared_ptr<decaf::ast::Expr>> assignExpr
+%nterm <std::shared_ptr<decaf::ast::Expr>> stringConstant
 
 %nterm <std::shared_ptr<decaf::ast::Stmt>> statement
 %nterm <std::shared_ptr<decaf::ast::Stmt>> expressionStmt
@@ -42,10 +43,12 @@
 %nterm <std::shared_ptr<decaf::ast::Stmt>> printStmt
 %nterm <decaf::ast::TypePtr> type
 %nterm <std::shared_ptr<decaf::ast::Stmt>> variableDecl
+%nterm <std::shared_ptr<decaf::ast::Stmt>> ifStmt
 
 %token <int> INTEGER
 %token <int> HEX_INTEGER
 %token <double> FLOAT
+%token <std::string> STRING
 %token PLUS "+" MINUS "-"
 %token STAR "*" SLASH "/" PERCENT "%"
 %token LEFT_PAREN "(" RIGHT_PAREN ")"
@@ -58,6 +61,7 @@
 %token SEMICOLON ";"
 %token COMMA ","
 %token ASSIGN "="
+%token QUOTE "\""
 %token INVALID
 %token INT "int" DOUBLE "double" BOOL "bool"
 %token <std::string> IDENTIFIER
@@ -66,6 +70,7 @@
 /* Keywords */
 %token TRUE "true" FALSE "false"
 %token PRINT "Print"
+%token IF "if" ELSE "else"
 
 /* Expressions */
 %right ASSIGN
@@ -76,6 +81,9 @@
 %left PLUS MINUS
 %left STAR SLASH PERCENT
 %left UNARY_MINUS LOGIC_NOT
+
+%precedence RIGHT_PAREN
+%precedence ELSE
 
 %%
 
@@ -91,6 +99,7 @@ statement:
     expressionStmt
     | printStmt
     | variableDecl
+    | ifStmt
     ;
 
 expressionStmt:
@@ -121,6 +130,28 @@ variableDecl:
             $2
         );
     }
+    | type IDENTIFIER "=" expression ";" {
+        $$ = std::make_shared<VariableDecl>(
+            $1,
+            $2,
+            $4
+        );
+    }
+
+ifStmt:
+    "if" "(" expression ")" statement {
+        $$ = std::make_shared<IfStmt>(
+            $3,
+            $5
+        );
+    }
+    | "if" "(" expression ")" statement "else" statement {
+        $$ = std::make_shared<IfStmt>(
+            $3,
+            $5,
+            $7
+        );
+    }
 
 expression:
     arithmeticBinaryExpr
@@ -135,6 +166,7 @@ expression:
     | floatConstant
     | identifierExpr
     | assignExpr
+    | stringConstant
     ;
 
 arithmeticBinaryExpr: 
@@ -310,6 +342,11 @@ assignExpr:
             $1,
             $3
         );
+    }
+
+stringConstant:
+    STRING {
+        $$ = std::make_shared<StringConstant>($1);
     }
 
 %%

@@ -27,11 +27,20 @@ public:
         i_pool(i_list),
         f_pool(l_list) {
     }
+    ConstantPool(std::initializer_list<int> i_list,
+                 std::initializer_list<double> l_list,
+                 std::initializer_list<std::string> s_list):
+        i_pool(i_list),
+        f_pool(l_list),
+        s_pool(s_list) {
+    }
 
     index_type add_constant(const int& val);
     int get_int_constant(index_type index);
     index_type add_constant(const double& val);
     double get_double_constant(index_type index);
+    index_type add_constant(const std::string& val);
+    std::string get_string_constant(index_type index);
 
     bool operator==(const ConstantPool& rhs) {
         return i_pool == rhs.i_pool && f_pool == rhs.f_pool;
@@ -42,6 +51,7 @@ public:
 private:
     std::vector<int> i_pool;
     std::vector<double> f_pool;
+    std::vector<std::string> s_pool;
 };
 
 } // namespace decaf

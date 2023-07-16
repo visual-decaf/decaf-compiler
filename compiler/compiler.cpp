@@ -168,7 +168,11 @@ bool decaf::Compiler::emit_code_for_default(decaf::Type type) {
 std::any decaf::Compiler::visitVariableDecl(std::shared_ptr<ast::VariableDecl> variableDecl) {
     symbol_index_of[variableDecl->name] = index_count++;
     symbol_declaration_of[variableDecl->name] = variableDecl;
-    emit_code_for_default(*variableDecl->type);
+    if (variableDecl->init == nullptr) {
+        emit_code_for_default(*variableDecl->type);
+    } else {
+        variableDecl->init->accept(*this);
+    }
     prog.emit_bytes(
         ByteCode::Instruction::SYMBOL_ADD,
         symbol_index_of[variableDecl->name]);
@@ -194,5 +198,30 @@ std::any decaf::Compiler::visitAssignExpr(std::shared_ptr<ast::AssignExpr> assig
     }
 
     prog.emit(ByteCode::Instruction::SYMBOL_SET);
+    return {};
+}
+
+std::any decaf::Compiler::visitIfStmt(std::shared_ptr<ast::IfStmt> ifStmt) {
+    ifStmt->condition->accept(*this);
+    prog.emit(ByteCode::Instruction::GOTO_IF_FALSE);
+    size_t mark_if_condition = prog.emit_marked(ByteCode::Instruction::UNKNOWN);
+    ifStmt->then_stmt->accept(*this);
+    if (ifStmt->else_stmt == nullptr) { // This is the end
+        prog.set_marked(mark_if_condition, prog.get_current_index());
+    } else {
+        prog.emit(ByteCode::Instruction::GOTO);
+        size_t mark_then_stmt = prog.emit_marked(ByteCode::Instruction::UNKNOWN);
+        prog.set_marked(mark_if_condition, prog.get_current_index());
+        ifStmt->else_stmt->accept(*this);
+        prog.set_marked(mark_then_stmt, prog.get_current_index());
+    }
+    return {};
+}
+
+std::any decaf::Compiler::visitStringConstant(std::shared_ptr<ast::StringConstant> stringConstant) {
+    ConstantPool::index_type index = prog.add_string_constant(stringConstant->value);
+    prog.emit_bytes(
+        ByteCode::Instruction::GET_STRING_CONSTANT,
+        index);
     return {};
 }

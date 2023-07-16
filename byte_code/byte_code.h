@@ -28,7 +28,8 @@ public:
     // to code_type, thus not using enum class
     struct Instruction {
         enum : code_type {
-            PLUS = 0,
+            UNKNOWN = 0,
+            PLUS,
             MINUS,
             MULTIPLY,
             DIVIDE,
@@ -54,6 +55,9 @@ public:
             SYMBOL_GET,
             SYMBOL_SET,
             GET_FLOAT_ZERO,
+            GOTO,
+            GOTO_IF_FALSE,
+            GET_STRING_CONSTANT,
         };
     };
 
@@ -68,6 +72,10 @@ public:
     }
 
     void emit(code_type b);
+
+    size_t emit_marked(code_type b);
+    void set_byte(size_t index, code_type b);
+    size_t get_current_index();
 
     bool operator==(const ByteCode& rhs) {
         return this->code_stream == rhs.code_stream;

@@ -11,6 +11,7 @@ struct StmtVisitor {
     virtual std::any visitExpressionStmt(std::shared_ptr<ast::ExpressionStmt>) = 0;
     virtual std::any visitPrintStmt(std::shared_ptr<ast::PrintStmt>) = 0;
     virtual std::any visitVariableDecl(std::shared_ptr<ast::VariableDecl>) = 0;
+    virtual std::any visitIfStmt(std::shared_ptr<ast::IfStmt>) = 0;
 };
 } // namespace decaf
 
@@ -73,9 +74,10 @@ using TypePtr = std::shared_ptr<decaf::Type>;
 struct VariableDecl: Stmt, std::enable_shared_from_this<VariableDecl> {
     TypePtr type;
     std::string name;
+    std::shared_ptr<Expr> init;
 
-    explicit VariableDecl(TypePtr _type, std::string _name):
-        type{std::move(_type)}, name{std::move(_name)} {
+    explicit VariableDecl(TypePtr _type, std::string _name, std::shared_ptr<Expr> _init = nullptr):
+        type{std::move(_type)}, name{std::move(_name)}, init{std::move(_init)} {
     }
 
     std::any accept(StmtVisitor& visitor) override {
@@ -85,6 +87,25 @@ struct VariableDecl: Stmt, std::enable_shared_from_this<VariableDecl> {
     bool equal(std::shared_ptr<Stmt> rhs) override;
 
     boost::json::value to_json() override;
+};
+
+struct IfStmt: Stmt, std::enable_shared_from_this<IfStmt> {
+    std::shared_ptr<Expr> condition;
+    std::shared_ptr<Stmt> then_stmt;
+    std::shared_ptr<Stmt> else_stmt;
+
+    explicit IfStmt(std::shared_ptr<Expr> condition, std::shared_ptr<Stmt> then_stmt,
+                    std::shared_ptr<Stmt> else_stmt = nullptr):
+        condition(std::move(condition)),
+        then_stmt(std::move(then_stmt)),
+        else_stmt(std::move(else_stmt)) {
+    }
+
+    std::any accept(StmtVisitor& visitor) override {
+        return visitor.visitIfStmt(shared_from_this());
+    }
+
+    bool equal(std::shared_ptr<Stmt> rhs) override;
 };
 
 } // namespace decaf::ast
