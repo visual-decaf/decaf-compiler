@@ -51,3 +51,14 @@ decaf::ConstantPool::index_type decaf::ConstantPool::add_constant(const double& 
 double decaf::ConstantPool::get_double_constant(decaf::ConstantPool::index_type index) {
     return f_pool[index];
 }
+
+decaf::ConstantPool::index_type decaf::ConstantPool::add_constant(const std::string& val) {
+    for (index_type i = 0; i < s_pool.size(); i++) {
+        if (s_pool[i] == val) {
+            return i;
+        }
+    }
+
+    s_pool.push_back(val);
+    return s_pool.size() - 1;
+}
