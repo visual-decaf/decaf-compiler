@@ -5,6 +5,7 @@ using namespace decaf;
 void Disassembler::run() {
     ByteCodeDriver driver{byte_code, *this};
     driver.produce();
+    byte_to_line.insert_or_assign(curr_byte, curr_line);
 }
 
 bool Disassembler::op_PLUS() {
