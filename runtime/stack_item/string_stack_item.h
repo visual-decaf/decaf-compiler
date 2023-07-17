@@ -16,6 +16,8 @@ struct StringStackItem: StackItem {
     ptr_type clone() override;
     bool equal_to_string(std::string rhs) override;
 
+    boost::json::value to_json() override;
+
     std::string value;
 };
 
