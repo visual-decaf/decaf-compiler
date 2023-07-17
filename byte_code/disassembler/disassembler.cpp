@@ -192,7 +192,7 @@ void Disassembler::one_byte() {
 }
 
 void Disassembler::two_byte() {
-    byte_to_line.insert_or_assign(curr_line, curr_line);
+    byte_to_line.insert_or_assign(curr_byte, curr_line);
     curr_byte += 2;
     curr_line++;
 }

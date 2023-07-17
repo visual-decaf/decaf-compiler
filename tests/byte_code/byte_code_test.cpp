@@ -27,12 +27,21 @@ TEST_CASE("get_int_constant_json", "[byte_code]") {
         ByteCode::Instruction::GET_INSTANT,
         2,
         ByteCode::Instruction::PLUS,
-    };
+        ByteCode::Instruction::GET_FALSE,
+        ByteCode::Instruction::GOTO_IF_FALSE,
+        8,
+        ByteCode::Instruction::GET_TRUE,
+        ByteCode::Instruction::PRINT,
+        1};
     boost::json::value expect_json = boost::json::parse(R"(
 [
     "GET_INT_CONSTANT 1",
     "GET_INSTANT 2",
-    "PLUS"
+    "PLUS",
+    "GET_FALSE",
+    "GOTO_IF_FALSE 8",
+    "GET_TRUE",
+    "PRINT 1"
 ]
 )");
     REQUIRE(expect_json == byte_code.to_json());

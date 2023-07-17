@@ -1,3 +1,5 @@
+#pragma once
+
 #include "byte_code.h"
 #include "byte_code_visitor.h"
 
