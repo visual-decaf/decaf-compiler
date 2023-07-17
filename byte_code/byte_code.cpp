@@ -8,10 +8,8 @@ void decaf::ByteCode::emit(decaf::ByteCode::code_type b) {
 }
 
 boost::json::value decaf::ByteCode::to_json() {
-    decaf::Disassembler disassembler;
-    decaf::ByteCodeDriver byte_code_driver{
-        *this, disassembler};
-    byte_code_driver.produce();
+    decaf::Disassembler disassembler{*this};
+    disassembler.run();
     std::vector<std::string> assembly_code = disassembler.get_code();
     boost::json::array result;
     for (auto& code: assembly_code) {

@@ -2,6 +2,11 @@
 
 using namespace decaf;
 
+void Disassembler::run() {
+    ByteCodeDriver driver{byte_code, *this};
+    driver.produce();
+}
+
 bool Disassembler::op_PLUS() {
     this->assembly_code.emplace_back("PLUS");
     one_byte();
