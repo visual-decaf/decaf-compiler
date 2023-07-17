@@ -1,6 +1,7 @@
 #pragma once
 
 #include "byte_code_visitor.h"
+#include <map>
 #include <string>
 #include <vector>
 
@@ -46,9 +47,16 @@ public:
     bool op_GOTO_IF_FALSE(ByteCodeDriver&, uint8_t index) override;
 
     assembly_code_type get_code();
+    int get_line(uint8_t index);
 
 private:
     assembly_code_type assembly_code;
+    std::map<uint8_t, int> byte_to_line;
+    uint8_t curr_byte = 0;
+    int curr_line = 0;
+
+    void one_byte();
+    void two_byte();
 };
 
 } // namespace decaf
