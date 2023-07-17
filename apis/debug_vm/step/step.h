@@ -12,7 +12,8 @@ public:
         operation(std::move(_operation)), item_object(std::move(_item_object)) {
     }
 
-    void set_error_msg(std::string error_msg);
+    void set_error_msg(std::string _error_msg);
+    void set_output(std::string _output);
 
     boost::json::value to_json() override;
 
@@ -20,6 +21,7 @@ private:
     std::string operation;
     boost::json::value item_object;
     std::string error_msg;
+    std::string output;
 };
 
 } // namespace decaf

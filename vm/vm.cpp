@@ -207,7 +207,7 @@ decaf::StackItem::ptr_type decaf::VirtualMachine::get_stack_top() {
 bool decaf::VirtualMachine::op_PRINT(uint8_t count) {
     for (int wait_to_print = count; wait_to_print >= 1; wait_to_print--) {
         if (stk.empty()) {
-            report("Not Enough StackItem to Print");
+            report("No Enough StackItem to Print");
             return false;
         }
         output << *stk.top() << (wait_to_print > 1 ? " " : "");
@@ -263,8 +263,8 @@ bool decaf::VirtualMachine::op_GOTO(decaf::ByteCodeDriver& driver, uint8_t index
 }
 
 bool decaf::VirtualMachine::op_GOTO_IF_FALSE(decaf::ByteCodeDriver& driver, uint8_t index) {
-    auto top = pop();
-    if (top->equal_to_bool(false)) {
+    last_discarded = pop();
+    if (last_discarded->equal_to_bool(false)) {
         driver.set_program_counter(index);
     }
     return true;
