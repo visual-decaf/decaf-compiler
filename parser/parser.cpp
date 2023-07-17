@@ -1,6 +1,7 @@
 #include "parser.h"
 #include "token.h"
 #include <string>
+#include <utility>
 
 int yylex(yy::parser::value_type* yylval, decaf::Parser& driver) {
     using decaf::token_type;

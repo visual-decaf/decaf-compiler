@@ -115,6 +115,11 @@ decaf::StackItem::ptr_type decaf::IntStackItem::perform_NEGATE() {
     auto result = std::make_shared<IntStackItem>(-value);
     return result;
 }
+boost::json::value decaf::IntStackItem::to_json() {
+    return boost::json::object{
+        {"type", "INT"},
+        {"value", this->value}};
+}
 
 decaf::StackItem::ptr_type decaf::IntStackItem::clone() {
     return std::make_shared<IntStackItem>(value);

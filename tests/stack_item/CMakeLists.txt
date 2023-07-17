@@ -1,0 +1,3 @@
+add_executable(stack_item_test stack_item_test.cpp)
+target_link_libraries(stack_item_test PRIVATE stack_item Catch2::Catch2WithMain)
+catch_discover_tests(stack_item_test)

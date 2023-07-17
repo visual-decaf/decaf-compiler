@@ -15,11 +15,13 @@ std::ostream& operator<<(std::ostream& os, const decaf::Program&);
 namespace decaf {
 
 class VirtualMachine;
+class DebugVirtualMachine;
 
 class Program:
     public Serializable {
     friend std::ostream& ::operator<<(std::ostream& os, const decaf::Program&);
     friend class VirtualMachine;
+    friend class DebugVirtualMachine;
 
 public:
     Program() = default;

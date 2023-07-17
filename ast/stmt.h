@@ -17,9 +17,12 @@ struct StmtVisitor {
 
 namespace decaf::ast {
 
-struct Stmt {
+struct Stmt: public Serializable {
     virtual std::any accept(StmtVisitor& visitor) = 0;
     virtual bool equal(std::shared_ptr<Stmt> rhs) = 0;
+    boost::json::value to_json() override {
+        return "Statement Serializable Not Implemented";
+    }
 
     virtual ~Stmt() = default;
 };
@@ -36,9 +39,10 @@ struct ExpressionStmt: Stmt, std::enable_shared_from_this<ExpressionStmt> {
     }
 
     bool equal(std::shared_ptr<Stmt> rhs) override;
+    boost::json::value to_json() override;
 };
 
-struct ExpressionList {
+struct ExpressionList: public Serializable {
     std::vector<std::shared_ptr<Expr>> expressions;
 
     ExpressionList() = default;
@@ -47,6 +51,7 @@ struct ExpressionList {
     }
 
     bool equal(const ExpressionList& list);
+    boost::json::value to_json() override;
 };
 
 struct PrintStmt: Stmt, std::enable_shared_from_this<PrintStmt> {
@@ -61,6 +66,7 @@ struct PrintStmt: Stmt, std::enable_shared_from_this<PrintStmt> {
     }
 
     bool equal(std::shared_ptr<Stmt> rhs) override;
+    boost::json::value to_json() override;
 };
 
 using TypePtr = std::shared_ptr<decaf::Type>;
@@ -79,6 +85,8 @@ struct VariableDecl: Stmt, std::enable_shared_from_this<VariableDecl> {
     }
 
     bool equal(std::shared_ptr<Stmt> rhs) override;
+
+    boost::json::value to_json() override;
 };
 
 struct IfStmt: Stmt, std::enable_shared_from_this<IfStmt> {
@@ -98,6 +106,8 @@ struct IfStmt: Stmt, std::enable_shared_from_this<IfStmt> {
     }
 
     bool equal(std::shared_ptr<Stmt> rhs) override;
+
+    boost::json::value to_json() override;
 };
 
 } // namespace decaf::ast

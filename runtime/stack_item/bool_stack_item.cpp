@@ -44,6 +44,11 @@ decaf::StackItem::ptr_type decaf::BoolStackItem::perform_LOGIC_NOT() {
     auto result = std::make_shared<BoolStackItem>(!value);
     return result;
 }
+boost::json::value decaf::BoolStackItem::to_json() {
+    return boost::json::object{
+        {"type", "BOOL"},
+        {"value", this->value}};
+}
 
 decaf::StackItem::ptr_type decaf::BoolStackItem::clone() {
     return std::make_shared<BoolStackItem>(value);

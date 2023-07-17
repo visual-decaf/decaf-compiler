@@ -1,4 +1,5 @@
 #include "expr.h"
+#include "stmt.h"
 #include <catch2/catch_test_macros.hpp>
 using namespace decaf;
 
@@ -346,6 +347,69 @@ TEST_CASE("float_constant_json", "[ast]") {
     "type": "FloatConstant",
     "value": 3.14,
     "resultType": "FLOAT"
+}
+)");
+    REQUIRE(expect_json == ast_root->to_json());
+}
+
+TEST_CASE("expr_stmt_json", "[ast]") {
+    auto ast_root = std::make_shared<ast::ExpressionStmt>(
+        std::make_shared<ast::ArithmeticBinary>(
+            std::make_shared<ast::FloatConstant>(3.14),
+            ast::ArithmeticBinary::Operation::PLUS,
+            std::make_shared<ast::FloatConstant>(2.72)));
+    auto expect_json = boost::json::parse(R"(
+{
+    "type": "ExpressionStmt",
+    "name": "ExpressionStmt",
+    "list": [
+        {
+            "type": "ArithmeticBinary",
+            "name": "PLUS",
+            "list": [
+                {
+                    "type": "FloatConstant",
+                    "value": 3.14,
+                    "resultType": "FLOAT"
+                },
+                {
+                    "type": "FloatConstant",
+                    "value": 2.72,
+                    "resultType": "FLOAT"
+                }
+            ],
+            "resultType": "FLOAT"
+        }
+    ],
+    "resultType": "VOID"
+}
+)");
+    REQUIRE(expect_json == ast_root->to_json());
+}
+
+TEST_CASE("print_stmt_json", "[ast]") {
+    auto ast_root = std::make_shared<ast::PrintStmt>(
+        std::make_shared<ast::ExpressionList>(
+            std::initializer_list<std::shared_ptr<ast::Expr>>{
+                std::make_shared<ast::IntConstant>(1),
+                std::make_shared<ast::IntConstant>(2)}));
+    auto expect_json = boost::json::parse(R"(
+{
+    "type": "PrintStmt",
+    "name": "PrintStmt",
+    "list": [
+        {
+            "type": "IntConstant",
+            "value": 1,
+            "resultType": "INT"
+        },
+        {
+            "type": "IntConstant",
+            "value": 2,
+            "resultType": "INT"
+        }
+    ],
+    "resultType": "VOID"
 }
 )");
     REQUIRE(expect_json == ast_root->to_json());

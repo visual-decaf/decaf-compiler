@@ -35,6 +35,8 @@ struct FloatStackItem: StackItem {
         os << value;
     }
 
+    boost::json::value to_json() override;
+
     ptr_type clone() override;
 };
 

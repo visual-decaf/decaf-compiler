@@ -35,6 +35,8 @@ struct BoolStackItem: StackItem {
         os << std::boolalpha << value;
     }
 
+    boost::json::value to_json() override;
+
     ptr_type clone() override;
 };
 

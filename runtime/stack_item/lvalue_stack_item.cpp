@@ -1,7 +1,7 @@
 #include "lvalue_stack_item.h"
 
 decaf::StackItem::ptr_type decaf::LValueStackItem::clone() {
-    return std::make_shared<LValueStackItem>(value->clone());
+    return value->clone();
 }
 
 decaf::StackItem::ptr_type decaf::LValueStackItem::perform_PLUS_with(decaf::StackItem::ptr_type rhs) {
@@ -74,4 +74,9 @@ bool decaf::LValueStackItem::equal_to_double(double rhs) {
 
 bool decaf::LValueStackItem::equal_to_bool(bool rhs) {
     return value->equal_to_bool(rhs);
+}
+boost::json::value decaf::LValueStackItem::to_json() {
+    return boost::json::object{
+        {"type", "LVALUE"},
+        {"value", this->value->to_json()}};
 }
