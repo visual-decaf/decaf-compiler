@@ -65,7 +65,7 @@ IDENTIFIER {LETTER}[a-zA-Z0-9_]*
 {IDENTIFIER} { emit({token_type::IDENTIFIER, YYText()}); }
 "\"".*"\"" { emit({token_type::STRING, YYText()}); }
 
-[ \t] {}
+[ \t\r] {}
 
 "\n" {
     // emit({token_type::EOL, YYText()});
