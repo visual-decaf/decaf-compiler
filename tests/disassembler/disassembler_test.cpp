@@ -21,7 +21,7 @@ TEST_CASE("disassembler_main", "[disassembler]") {
     REQUIRE(expect_code == disassembler.get_code());
 }
 
-TEST_CASE("disassembler_byte_to_line", "[disassembler]"){
+TEST_CASE("disassembler_byte_to_line", "[disassembler]") {
     ByteCode byte_code = {
         ByteCode::Instruction ::GET_INSTANT,
         1,
@@ -31,7 +31,7 @@ TEST_CASE("disassembler_byte_to_line", "[disassembler]"){
     };
     Disassembler disassembler{byte_code};
     disassembler.run();
-    REQUIRE(0 == disassembler.get_line(0));
-    REQUIRE(1 == disassembler.get_line(2));
-    REQUIRE(2 == disassembler.get_line(4));
+    REQUIRE(1 == disassembler.get_line(0));
+    REQUIRE(2 == disassembler.get_line(2));
+    REQUIRE(3 == disassembler.get_line(4));
 }

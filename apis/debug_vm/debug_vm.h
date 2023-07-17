@@ -1,5 +1,6 @@
 #pragma once
 
+#include "disassembler.h"
 #include "exe_result.h"
 #include "vm.h"
 #include <utility>
@@ -9,7 +10,8 @@ namespace decaf {
 class DebugVirtualMachine: ByteCodeVisitor {
 public:
     explicit DebugVirtualMachine(Program _program):
-        program(std::move(_program)), vm{program} {
+        program(std::move(_program)), disassembler(_program.code), vm{program} {
+        disassembler.run();
     }
 
     bool op_PLUS() override;
@@ -49,13 +51,17 @@ public:
 
 private:
     Program program;
+    Disassembler disassembler;
     VirtualMachine vm;
     std::vector<ExeResult> exe_results;
+    int curr_line = 1;
 
+    void no_action();
+    void one_pop();
+    void one_push();
     void one_pop_one_push();
     void two_pop_one_push();
-    void one_push();
-    void one_pop();
+    void multi_pop(uint8_t count);
     void error(std::string error_msg);
 };
 

@@ -61,7 +61,7 @@ private:
     assembly_code_type assembly_code;
     std::map<uint8_t, int> byte_to_line;
     uint8_t curr_byte = 0;
-    int curr_line = 0;
+    int curr_line = 1;
 
     void one_byte();
     void two_byte();
