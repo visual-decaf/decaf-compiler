@@ -47,6 +47,7 @@ public:
     bool op_GOTO_IF_FALSE(ByteCodeDriver& driver, uint8_t index) override;
 
     std::vector<ExeResult> get_exe_results();
+    boost::json::value get_exe_results_json();
 
     void run();
 

@@ -279,3 +279,10 @@ void decaf::DebugVirtualMachine::one_pop() {
     ExeResult exe_result{curr_line++, steps, vm.get_symbol_table().to_json()};
     exe_results.emplace_back(exe_result);
 }
+boost::json::value decaf::DebugVirtualMachine::get_exe_results_json() {
+    boost::json::array list;
+    for (auto exe_result: exe_results) {
+        list.emplace_back(exe_result.to_json());
+    }
+    return list;
+}

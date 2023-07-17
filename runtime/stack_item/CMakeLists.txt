@@ -1,3 +1,4 @@
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 add_library(stack_item
         stack_item.cpp
         bool_stack_item.cpp
