@@ -1,6 +1,5 @@
 #pragma once
 
-#include "../runtime/symbol_table/symbol_table.h"
 #include "byte_code_visitor.h"
 #include "program.h"
 #include "stack_items.h"
