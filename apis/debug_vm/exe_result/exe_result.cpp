@@ -6,6 +6,7 @@ boost::json::value decaf::ExeResult::to_json() {
         list.emplace_back(step.to_json());
     }
     boost::json::object result{
+        {"line", line},
         {"steps", list},
         {"table", this->table}};
     return result;

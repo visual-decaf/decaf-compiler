@@ -213,6 +213,7 @@ bool decaf::DebugVirtualMachine::op_GET_STRING_CONSTANT(uint8_t index) {
 bool decaf::DebugVirtualMachine::op_GOTO(decaf::ByteCodeDriver& driver, uint8_t index) {
     vm.op_GOTO(driver, index);
     no_action();
+    curr_line = disassembler.get_line(index + 1);
     return true;
 }
 
@@ -220,14 +221,14 @@ bool decaf::DebugVirtualMachine::op_GOTO_IF_FALSE(decaf::ByteCodeDriver& driver,
     vm.op_GOTO_IF_FALSE(driver, index);
     one_pop();
     if (index == driver.get_program_counter()) {
-        //TODO
+        curr_line = disassembler.get_line(index + 1);
     }
     return true;
 }
 
 void decaf::DebugVirtualMachine::no_action() {
     std::vector<decaf::Step> steps;
-    ExeResult exe_result{steps, vm.get_symbol_table().to_json()};
+    ExeResult exe_result{curr_line++, steps, vm.get_symbol_table().to_json()};
     exe_results.emplace_back(exe_result);
 }
 
@@ -235,8 +236,7 @@ void decaf::DebugVirtualMachine::one_pop_one_push() {
     std::vector<decaf::Step> steps;
     steps.emplace_back("POP");
     steps.emplace_back("PUSH", vm.get_stack_top()->to_json());
-    ExeResult exe_result{
-        steps, vm.get_symbol_table().to_json()};
+    ExeResult exe_result{curr_line++, steps, vm.get_symbol_table().to_json()};
     exe_results.emplace_back(exe_result);
 }
 
@@ -245,8 +245,7 @@ void decaf::DebugVirtualMachine::two_pop_one_push() {
     steps.emplace_back("POP");
     steps.emplace_back("POP");
     steps.emplace_back("PUSH", vm.get_stack_top()->to_json());
-    ExeResult exe_result{
-        steps, vm.get_symbol_table().to_json()};
+    ExeResult exe_result{curr_line++, steps, vm.get_symbol_table().to_json()};
     exe_results.emplace_back(exe_result);
 }
 
@@ -255,23 +254,21 @@ void decaf::DebugVirtualMachine::error(std::string error_msg) {
     decaf::Step step{"ERROR"};
     step.set_error_msg(std::move(error_msg));
     steps.emplace_back(step);
-    ExeResult exe_result{steps, vm.get_symbol_table().to_json()};
+    ExeResult exe_result{curr_line++, steps, vm.get_symbol_table().to_json()};
     exe_results.emplace_back(exe_result);
 }
 
 void decaf::DebugVirtualMachine::one_push() {
     std::vector<decaf::Step> steps;
     steps.emplace_back("PUSH", vm.get_stack_top()->to_json());
-    ExeResult exe_result{
-        steps, vm.get_symbol_table().to_json()};
+    ExeResult exe_result{curr_line++, steps, vm.get_symbol_table().to_json()};
     exe_results.emplace_back(exe_result);
 }
 
 void decaf::DebugVirtualMachine::one_pop() {
     std::vector<decaf::Step> steps;
     steps.emplace_back("POP");
-    ExeResult exe_result{
-        steps, vm.get_symbol_table().to_json()};
+    ExeResult exe_result{curr_line++, steps, vm.get_symbol_table().to_json()};
     exe_results.emplace_back(exe_result);
 }
 
@@ -280,7 +277,6 @@ void decaf::DebugVirtualMachine::multi_pop(uint8_t count) {
     for (int wait_to_print = count; wait_to_print >= 1; wait_to_print--) {
         steps.emplace_back("POP");
     }
-    ExeResult exe_result{
-        steps, vm.get_symbol_table().to_json()};
+    ExeResult exe_result{curr_line++, steps, vm.get_symbol_table().to_json()};
     exe_results.emplace_back(exe_result);
 }
