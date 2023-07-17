@@ -28,7 +28,8 @@ TEST_CASE("program_json", "[program]") {
     "resultType": "INT",
     "constantPool": {
         "intConstantPool": [1000, 500, 20],
-        "doubleConstantPool": []
+        "floatConstantPool": [],
+        "stringConstantPool": []
     }
 }
 )");
