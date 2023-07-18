@@ -12,7 +12,9 @@ bool decaf::ast::ExpressionStmt::equal(std::shared_ptr<Stmt> rhs) {
 
 boost::json::value decaf::ast::ExpressionStmt::to_json() {
     boost::json::array list;
-    list.emplace_back(this->expr->to_json());
+    list.emplace_back(boost::json::object{
+        {"relation", "Value"},
+        {"stmt", this->expr->to_json()}});
     boost::json::object result{
         {"type", "ExpressionStmt"},
         {"name", "ExpressionStmt"},
@@ -31,10 +33,16 @@ bool decaf::ast::PrintStmt::equal(std::shared_ptr<Stmt> rhs) {
     return list->equal(*stmt->list);
 }
 boost::json::value decaf::ast::PrintStmt::to_json() {
+    boost::json::array expression_list;
+    for (const auto& expression: this->list->expressions) {
+        expression_list.emplace_back(boost::json::object{
+            {"relation", ""},
+            {"stmt", expression->to_json()}});
+    }
     boost::json::object result{
         {"type", "PrintStmt"},
         {"name", "PrintStmt"},
-        {"list", this->list->to_json()},
+        {"expression_list", expression_list},
         {"resultType", "VOID"}};
     return result;
 }
@@ -64,15 +72,22 @@ bool decaf::ast::VariableDecl::equal(std::shared_ptr<Stmt> rhs) {
 }
 boost::json::value decaf::ast::VariableDecl::to_json() {
     boost::json::array list;
+    list.emplace_back(
+        boost::json::object{
+            {"relation", "Type"},
+            {"stmt", boost::json::object{
+                         {"type", "Type"},
+                         {"value", this->type->to_json()},
+                         {"resultType", this->type->to_json()}}}});
     list.emplace_back(boost::json::object{
-        {"type", "Type"},
-        {"value", this->type->to_json()},
-        {"resultType", this->type->to_json()}});
+        {"relation", "Identifier"},
+        {"stmt", boost::json::object{
+                     {"type", "Identifier"},
+                     {"value", this->name},
+                     {"resultType", this->type->to_json()}}}});
     list.emplace_back(boost::json::object{
-        {"type", "Identifier"},
-        {"value", this->name},
-        {"resultType", this->type->to_json()}});
-    list.emplace_back(this->init->to_json());
+        {"relation", "Init"},
+        {"stmt", this->init->to_json()}});
     boost::json::object result{
         {"type", "VariableDecl"},
         {"name", "VariableDecl"},
@@ -109,10 +124,16 @@ bool decaf::ast::IfStmt::equal(std::shared_ptr<Stmt> rhs) {
 }
 boost::json::value decaf::ast::IfStmt::to_json() {
     boost::json::array list;
-    list.emplace_back(this->condition->to_json());
-    list.emplace_back(this->then_stmt->to_json());
+    list.emplace_back(boost::json::object{
+        {"relation", "Condition"},
+        {"stmt", this->condition->to_json()}});
+    list.emplace_back(boost::json::object{
+        {"relation", "Then"},
+        {"stmt", this->then_stmt->to_json()}});
     if (this->else_stmt != nullptr) {
-        list.emplace_back(this->else_stmt->to_json());
+        list.emplace_back(boost::json::object{
+            {"relation", "Else"},
+            {"stmt", this->else_stmt->to_json()}});
     }
     boost::json::object result{
         {"type", "IfStmt"},
