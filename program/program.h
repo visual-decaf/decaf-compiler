@@ -5,6 +5,7 @@
 #include "serializable.h"
 #include "type.h"
 #include <iostream>
+#include <sstream>
 
 namespace decaf {
 class Program;

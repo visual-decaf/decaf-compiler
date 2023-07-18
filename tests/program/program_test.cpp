@@ -18,7 +18,8 @@ TEST_CASE("program_json", "[program]") {
     program.set_result_type_classification(Type::Classification::INT);
     boost::json::value expect_json = boost::json::parse(R"(
 {
-    "bytecode": [
+    "bytecode": "1001110203100305",
+    "assembly": [
         "GET_INSTANT 1",
         "GET_INT_CONSTANT 2",
         "MULTIPLY",

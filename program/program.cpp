@@ -27,8 +27,11 @@ decaf::Type::Classification decaf::Program::get_result_type_classification() con
 }
 
 boost::json::value decaf::Program::to_json() {
+    std::ostringstream ss;
+    ss << this->code;
     return boost::json::object{
-        {"bytecode", this->code.to_json()},
+        {"bytecode", ss.str()},
+        {"assembly", this->code.to_json()},
         {"resultType", this->result_type.to_json()},
         {"constantPool", this->pool.to_json()}};
 }
