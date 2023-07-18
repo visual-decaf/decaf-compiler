@@ -29,26 +29,38 @@ TEST_CASE("arithmetic_binary_json", "[ast]") {
     "name": "DIVIDE",
     "list": [
         {
-            "type": "ArithmeticBinary",
-            "name": "MULTIPLY",
-            "list": [
-                {
-                    "type": "IntConstant",
-                    "value": 1,
-                    "resultType": "INT"
-                },
-                {
-                    "type": "IntConstant",
-                    "value": 2,
-                    "resultType": "INT"
-                }
-            ],
-            "resultType": "INT"
+            "relation": "LeftOperand",
+            "stmt": {
+                "type": "ArithmeticBinary",
+                "name": "MULTIPLY",
+                "list": [
+                    {
+                        "relation": "LeftOperand",
+                        "stmt": {
+                            "type": "IntConstant",
+                            "value": 1,
+                            "resultType": "INT"
+                        }
+                    },
+                    {
+                        "relation": "RightOperand",
+                        "stmt": {
+                            "type": "IntConstant",
+                            "value": 2,
+                            "resultType": "INT"
+                        }
+                    }
+                ],
+                "resultType": "INT"
+            }
         },
         {
-            "type": "IntConstant",
-            "value": 3,
-            "resultType": "INT"
+            "relation": "RightOperand",
+            "stmt": {
+                "type": "IntConstant",
+                "value": 3,
+                "resultType": "INT"
+            }
         }
     ],
     "resultType": "INT"
@@ -69,21 +81,30 @@ TEST_CASE("group_json", "[ast]") {
     "name": "GROUP",
     "list": [
         {
-            "type": "ArithmeticBinary",
-            "name": "PLUS",
-            "list": [
-                {
-                    "type": "IntConstant",
-                    "value": 1,
-                    "resultType": "INT"
-                },
-                {
-                    "type": "IntConstant",
-                    "value": 2,
-                    "resultType": "INT"
-                }
-            ],
-            "resultType": "INT"
+            "relation": "Value",
+            "stmt": {
+                "type": "ArithmeticBinary",
+                "name": "PLUS",
+                "list": [
+                    {
+                        "relation": "LeftOperand",
+                        "stmt": {
+                            "type": "IntConstant",
+                            "value": 1,
+                            "resultType": "INT"
+                        }
+                    },
+                    {
+                        "relation": "RightOperand",
+                        "stmt": {
+                            "type": "IntConstant",
+                            "value": 2,
+                            "resultType": "INT"
+                        }
+                    }
+                ],
+                "resultType": "INT"
+            }
         }
     ],
     "resultType": "INT"
@@ -123,21 +144,27 @@ TEST_CASE("invalid_node_json", "[ast]") {
     "name": "MOD",
     "list": [
         {
-            "type": "IntConstant",
-            "value": 20,
-            "resultType": "INT"
+            "relation": "LeftOperand",
+            "stmt": {
+                "type": "IntConstant",
+                "value": 20,
+                "resultType": "INT"
+            }
         },
         {
-            "type": "Group",
-            "name": "GROUP",
-            "list": [
-                {
-                    "type": "INVALID",
-                    "value": "INVALID",
-                    "resultType": "INVALID"
-                }
-            ],
-            "resultType": "INVALID"
+            "relation": "RightOperand",
+            "stmt": {
+                "type": "Group",
+                "name": "GROUP",
+                "list": [
+                    {
+                        "type": "INVALID",
+                        "value": "INVALID",
+                        "resultType": "INVALID"
+                    }
+                ],
+                "resultType": "INVALID"
+            }
         }
     ],
     "resultType": "INVALID"
@@ -155,9 +182,12 @@ TEST_CASE("arithmetic_unary_json", "[ast]") {
     "name": "NEGATE",
     "list": [
         {
-            "type": "IntConstant",
-            "value": 3,
-            "resultType": "INT"
+            "relation": "RightOperand",
+            "stmt": {
+                "type": "IntConstant",
+                "value": 3,
+                "resultType": "INT"
+            }
         }
     ],
     "resultType": "INT"
@@ -187,9 +217,12 @@ TEST_CASE("logic_unary_json", "[ast]") {
     "name": "LOGIC_NOT",
     "list": [
         {
-            "type": "BoolConstant",
-            "value": false,
-            "resultType": "BOOL"
+            "relation": "RightOperand",
+            "stmt": {
+                "type": "BoolConstant",
+                "value": false,
+                "resultType": "BOOL"
+            }
         }
     ],
     "resultType": "BOOL"
@@ -209,14 +242,20 @@ TEST_CASE("logic_binary_json", "[ast]") {
     "name": "LOGIC_OR",
     "list": [
         {
-            "type": "BoolConstant",
-            "value": false,
-            "resultType": "BOOL"
+            "relation": "LeftOperand",
+            "stmt": {
+                "type": "BoolConstant",
+                "value": false,
+                "resultType": "BOOL"
+            }
         },
         {
-            "type": "IntConstant",
-            "value": 1,
-            "resultType": "INT"
+            "relation": "RightOperand",
+            "stmt": {
+                "type": "IntConstant",
+                "value": 1,
+                "resultType": "INT"
+            }
         }
     ],
     "resultType": "INVALID"
@@ -236,21 +275,27 @@ TEST_CASE("rational_binary_json", "[ast]") {
     "name": "LESS_EQUAL",
     "list": [
         {
-            "type": "Group",
-            "name": "GROUP",
-            "list": [
-                {
-                    "type": "INVALID",
-                    "value": "INVALID",
-                    "resultType": "INVALID"
-                }
-            ],
-            "resultType": "INVALID"
+            "relation": "LeftOperand",
+            "stmt": {
+                "type": "Group",
+                "name": "GROUP",
+                "list": [
+                    {
+                        "type": "INVALID",
+                        "value": "INVALID",
+                        "resultType": "INVALID"
+                    }
+                ],
+                "resultType": "INVALID"
+            }
         },
         {
-            "type": "IntConstant",
-            "value": 3,
-            "resultType": "INT"
+            "relation": "RightOperand",
+            "stmt": {
+                "type": "IntConstant",
+                "value": 3,
+                "resultType": "INT"
+            }
         }
     ],
     "resultType": "INVALID"
@@ -270,14 +315,20 @@ TEST_CASE("equal_json", "[ast]") {
     "name": "EQUAL",
     "list": [
         {
-        "type": "IntConstant",
-        "value": 1,
-        "resultType": "INT"
+            "relation": "LeftOperand",
+            "stmt": {
+                "type": "IntConstant",
+                "value": 1,
+                "resultType": "INT"
+            }
         },
         {
-            "type": "IntConstant",
-            "value": 2,
-            "resultType": "INT"
+            "relation": "RightOperand",
+            "stmt": {
+                "type": "IntConstant",
+                "value": 2,
+                "resultType": "INT"
+            }
         }
     ],
     "resultType": "BOOL"
@@ -297,14 +348,20 @@ TEST_CASE("not_equal_json", "[ast]") {
     "name": "NOT_EQUAL",
     "list": [
         {
-            "type": "IntConstant",
-            "value": 1,
-            "resultType": "INT"
+            "relation": "LeftOperand",
+            "stmt": {
+                "type": "IntConstant",
+                "value": 1,
+                "resultType": "INT"
+            }
         },
         {
-            "type": "IntConstant",
-            "value": 2,
-            "resultType": "INT"
+            "relation": "RightOperand",
+            "stmt": {
+                "type": "IntConstant",
+                "value": 2,
+                "resultType": "INT"
+            }
         }
     ],
     "resultType": "BOOL"
@@ -324,14 +381,20 @@ TEST_CASE("equality_diff_type_json", "[ast]") {
     "name": "EQUAL",
     "list": [
         {
-            "type": "IntConstant",
-            "value": 1,
-            "resultType": "INT"
+            "relation": "LeftOperand",
+            "stmt": {
+                "type": "IntConstant",
+                "value": 1,
+                "resultType": "INT"
+            }
         },
         {
-            "type": "BoolConstant",
-            "value": true,
-            "resultType": "BOOL"
+            "relation": "RightOperand",
+            "stmt": {
+                "type": "BoolConstant",
+                "value": true,
+                "resultType": "BOOL"
+            }
         }
     ],
     "resultType": "INVALID"
@@ -364,21 +427,30 @@ TEST_CASE("expr_stmt_json", "[ast]") {
     "name": "ExpressionStmt",
     "list": [
         {
-            "type": "ArithmeticBinary",
-            "name": "PLUS",
-            "list": [
-                {
-                    "type": "FloatConstant",
-                    "value": 3.14,
-                    "resultType": "FLOAT"
-                },
-                {
-                    "type": "FloatConstant",
-                    "value": 2.72,
-                    "resultType": "FLOAT"
-                }
-            ],
-            "resultType": "FLOAT"
+            "relation": "Value",
+            "stmt": {
+                "type": "ArithmeticBinary",
+                "name": "PLUS",
+                "list": [
+                    {
+                        "relation": "LeftOperand",
+                        "stmt": {
+                            "type": "FloatConstant",
+                            "value": 3.14E0,
+                            "resultType": "FLOAT"
+                        }
+                    },
+                    {
+                        "relation": "RightOperand",
+                        "stmt": {
+                            "type": "FloatConstant",
+                            "value": 2.72E0,
+                            "resultType": "FLOAT"
+                        }
+                    }
+                ],
+                "resultType": "FLOAT"
+            }
         }
     ],
     "resultType": "VOID"
@@ -397,16 +469,22 @@ TEST_CASE("print_stmt_json", "[ast]") {
 {
     "type": "PrintStmt",
     "name": "PrintStmt",
-    "list": [
+    "expression_list": [
         {
-            "type": "IntConstant",
-            "value": 1,
-            "resultType": "INT"
+            "relation": "",
+            "stmt": {
+                "type": "IntConstant",
+                "value": 1,
+                "resultType": "INT"
+            }
         },
         {
-            "type": "IntConstant",
-            "value": 2,
-            "resultType": "INT"
+            "relation": "",
+            "stmt": {
+                "type": "IntConstant",
+                "value": 2,
+                "resultType": "INT"
+            }
         }
     ],
     "resultType": "VOID"

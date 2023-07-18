@@ -131,6 +131,10 @@ char* get_debug_info(int id) {
         write_error_msg("6", "Invalid ID", response);
         return response;
     }
+    if (compilers.at(id) == nullptr) {
+        write_error_msg("8", "There are some wrongs at compile phase", response);
+        return response;
+    }
     if (debug_vms.at(id) != nullptr) {
         delete debug_vms.at(id);
     }

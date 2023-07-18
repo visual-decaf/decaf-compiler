@@ -40,8 +40,12 @@ bool decaf::ast::ArithmeticBinary::equals(std::shared_ptr<Expr> ptr) {
 
 boost::json::value decaf::ast::ArithmeticBinary::to_json() {
     boost::json::array list;
-    list.emplace_back(this->left->to_json());
-    list.emplace_back(this->right->to_json());
+    list.emplace_back(boost::json::object{
+        {"relation", "LeftOperand"},
+        {"stmt", this->left->to_json()}});
+    list.emplace_back(boost::json::object{
+        {"relation", "RightOperand"},
+        {"stmt", this->right->to_json()}});
     boost::json::object result{
         {"type", "ArithmeticBinary"},
         {"name", operation_name_of.at(this->op)},
@@ -102,7 +106,9 @@ boost::json::value decaf::ast::Group::to_json() {
             {"value", "INVALID"},
             {"resultType", "INVALID"}});
     } else {
-        list.emplace_back(this->content->to_json());
+        list.emplace_back(boost::json::object{
+            {"relation", "Value"},
+            {"stmt", this->content->to_json()}});
     }
     boost::json::object result{
         {"type", "Group"},
@@ -131,8 +137,12 @@ decaf::Type::Classification decaf::ast::LogicBinary::result_type_of(decaf::Type 
 }
 boost::json::value decaf::ast::LogicBinary::to_json() {
     boost::json::array list;
-    list.emplace_back(this->left->to_json());
-    list.emplace_back(this->right->to_json());
+    list.emplace_back(boost::json::object{
+        {"relation", "LeftOperand"},
+        {"stmt", this->left->to_json()}});
+    list.emplace_back(boost::json::object{
+        {"relation", "RightOperand"},
+        {"stmt", this->right->to_json()}});
     boost::json::object result{
         {"type", "LogicBinary"},
         {"name", operation_name_of.at(this->op)},
@@ -167,7 +177,9 @@ decaf::Type::Classification decaf::ast::ArithmeticUnary::result_type_of(decaf::T
 }
 boost::json::value decaf::ast::ArithmeticUnary::to_json() {
     boost::json::array list;
-    list.emplace_back(this->right->to_json());
+    list.emplace_back(boost::json::object{
+        {"relation", "RightOperand"},
+        {"stmt", this->right->to_json()}});
     boost::json::object result{
         {"type", "ArithmeticUnary"},
         {"name", operation_name_of.at(this->op)},
@@ -205,7 +217,9 @@ decaf::Type::Classification decaf::ast::LogicUnary::result_type_of(decaf::Type r
 }
 boost::json::value decaf::ast::LogicUnary::to_json() {
     boost::json::array list;
-    list.emplace_back(this->right->to_json());
+    list.emplace_back(boost::json::object{
+        {"relation", "RightOperand"},
+        {"stmt", this->right->to_json()}});
     boost::json::object result{
         {"type", "LogicUnary"},
         {"name", operation_name_of.at(this->op)},
@@ -240,8 +254,12 @@ bool decaf::ast::RationalBinary::equals(std::shared_ptr<Expr> rational_bin) {
 }
 boost::json::value decaf::ast::RationalBinary::to_json() {
     boost::json::array list;
-    list.emplace_back(this->left->to_json());
-    list.emplace_back(this->right->to_json());
+    list.emplace_back(boost::json::object{
+        {"relation", "LeftOperand"},
+        {"stmt", this->left->to_json()}});
+    list.emplace_back(boost::json::object{
+        {"relation", "RightOperand"},
+        {"stmt", this->right->to_json()}});
     boost::json::object result{
         {"type", "RationalBinary"},
         {"name", operation_name_of.at(this->op)},
@@ -271,8 +289,12 @@ decaf::Type::Classification decaf::ast::EqualityBinary::result_type_of(decaf::Ty
 }
 boost::json::value decaf::ast::EqualityBinary::to_json() {
     boost::json::array list;
-    list.emplace_back(this->left->to_json());
-    list.emplace_back(this->right->to_json());
+    list.emplace_back(boost::json::object{
+        {"relation", "LeftOperand"},
+        {"stmt", this->left->to_json()}});
+    list.emplace_back(boost::json::object{
+        {"relation", "RightOperand"},
+        {"stmt", this->right->to_json()}});
     boost::json::object result{
         {"type", "EqualityBinary"},
         {"name", operation_name_of.at(this->op)},
@@ -326,8 +348,12 @@ bool decaf::ast::AssignExpr::equals(std::shared_ptr<Expr> ptr) {
 
 boost::json::value decaf::ast::AssignExpr::to_json() {
     boost::json::array list;
-    list.emplace_back(this->left->to_json());
-    list.emplace_back(this->right->to_json());
+    list.emplace_back(boost::json::object{
+        {"relation", "LeftOperand"},
+        {"stmt", this->left->to_json()}});
+    list.emplace_back(boost::json::object{
+        {"relation", "RightOperand"},
+        {"stmt", this->right->to_json()}});
     boost::json::value result{
         {"type", "AssignExpr"},
         {"name", "AssignExpr"},
