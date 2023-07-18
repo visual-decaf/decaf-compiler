@@ -51,6 +51,12 @@ bool decaf::ByteCodeDriver::produce_instruction() {
             return visitor.op_EQUAL();
         case Instruction ::NOT_EQUAL:
             return visitor.op_NOT_EQUAL();
+        case Instruction ::DISCARD:
+            return visitor.op_DISCARD();
+        case Instruction ::SYMBOL_SET:
+            return visitor.op_SYMBOL_SET();
+        case Instruction ::GET_FLOAT_ZERO:
+            return visitor.op_GET_FLOAT_ZERO();
 
             // 1 Operand
         case Instruction ::GET_INSTANT:
@@ -62,6 +68,24 @@ bool decaf::ByteCodeDriver::produce_instruction() {
         case Instruction ::GET_FLOAT_CONSTANT:
             check_expected_byte(1);
             return visitor.op_GET_FLOAT_CONSTANT(*(++current_byte));
+        case Instruction ::PRINT:
+            check_expected_byte(1);
+            return visitor.op_PRINT(*(++current_byte));
+        case Instruction ::SYMBOL_ADD:
+            check_expected_byte(1);
+            return visitor.op_SYMBOL_ADD(*(++current_byte));
+        case Instruction ::SYMBOL_GET:
+            check_expected_byte(1);
+            return visitor.op_SYMBOL_GET(*(++current_byte));
+        case Instruction ::GET_STRING_CONSTANT:
+            check_expected_byte(1);
+            return visitor.op_GET_STRING_CONSTANT(*(++current_byte));
+        case Instruction ::GOTO:
+            check_expected_byte(1);
+            return visitor.op_GOTO(*this, *(++current_byte));
+        case Instruction ::GOTO_IF_FALSE:
+            check_expected_byte(1);
+            return visitor.op_GOTO_IF_FALSE(*this, *(++current_byte));
     }
 
     // No such Instruction
@@ -70,4 +94,12 @@ bool decaf::ByteCodeDriver::produce_instruction() {
 
 bool decaf::ByteCodeDriver::check_expected_byte(int count) {
     return count <= std::distance(current_byte, code_stream.end());
+}
+
+uint8_t decaf::ByteCodeDriver::get_program_counter() {
+    return std::distance(current_byte, code_stream.begin());
+}
+
+void decaf::ByteCodeDriver::set_program_counter(uint8_t counter) {
+    current_byte = code_stream.begin() + counter;
 }

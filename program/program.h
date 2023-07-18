@@ -5,6 +5,7 @@
 #include "serializable.h"
 #include "type.h"
 #include <iostream>
+#include <sstream>
 
 namespace decaf {
 class Program;
@@ -15,11 +16,13 @@ std::ostream& operator<<(std::ostream& os, const decaf::Program&);
 namespace decaf {
 
 class VirtualMachine;
+class DebugVirtualMachine;
 
 class Program:
     public Serializable {
     friend std::ostream& ::operator<<(std::ostream& os, const decaf::Program&);
     friend class VirtualMachine;
+    friend class DebugVirtualMachine;
 
 public:
     Program() = default;
@@ -40,8 +43,21 @@ public:
         code.emit(b2);
     }
 
+    size_t emit_marked(ByteCode::code_type b) {
+        return code.emit_marked(b);
+    }
+
+    void set_marked(size_t index, ByteCode::code_type b) {
+        code.set_byte(index, b);
+    }
+
+    size_t get_current_index() {
+        return code.get_current_index();
+    }
+
     ConstantPool::index_type add_int_constant(const int& val);
     ConstantPool::index_type add_double_constant(const double& val);
+    ConstantPool::index_type add_string_constant(const std::string& val);
 
     [[nodiscard]] Type get_result_type() const;
     [[nodiscard]] Type::Classification get_result_type_classification() const;

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.24)
-project(decaf_compiler VERSION 0.1.0)
+project(decaf_compiler VERSION 0.2.0)
 set(CMAKE_CXX_STANDARD 17)
 
 configure_file(meta/version.h.in ${CMAKE_BINARY_DIR}/version.h)
@@ -32,6 +32,7 @@ add_subdirectory(scanner)
 add_subdirectory(parser)
 add_subdirectory(byte_code)
 add_subdirectory(program)
+add_subdirectory(runtime)
 add_subdirectory(compiler)
 add_subdirectory(vm)
 

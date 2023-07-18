@@ -17,6 +17,7 @@
 %code top {
     #include "expr.h"
     #include "parser.h"
+    #include "type.h"
     using namespace std;
     using namespace decaf::ast;
 }
@@ -32,10 +33,22 @@
 %nterm <std::shared_ptr<decaf::ast::Expr>> rationalBinary
 %nterm <std::shared_ptr<decaf::ast::Expr>> equalityBinary
 %nterm <std::shared_ptr<decaf::ast::Expr>> floatConstant
+%nterm <std::shared_ptr<decaf::ast::Expr>> identifierExpr
+%nterm <std::shared_ptr<decaf::ast::Expr>> assignExpr
+%nterm <std::shared_ptr<decaf::ast::Expr>> stringConstant
+
+%nterm <std::shared_ptr<decaf::ast::Stmt>> statement
+%nterm <std::shared_ptr<decaf::ast::Stmt>> expressionStmt
+%nterm <std::shared_ptr<decaf::ast::ExpressionList>> expressionList
+%nterm <std::shared_ptr<decaf::ast::Stmt>> printStmt
+%nterm <decaf::ast::TypePtr> type
+%nterm <std::shared_ptr<decaf::ast::Stmt>> variableDecl
+%nterm <std::shared_ptr<decaf::ast::Stmt>> ifStmt
 
 %token <int> INTEGER
 %token <int> HEX_INTEGER
 %token <double> FLOAT
+%token <std::string> STRING
 %token PLUS "+" MINUS "-"
 %token STAR "*" SLASH "/" PERCENT "%"
 %token LEFT_PAREN "(" RIGHT_PAREN ")"
@@ -45,12 +58,22 @@
 %token GREATER ">" GREATER_EQUAL ">="
 %token EQUAL "==" NOT_EQUAL "!="
 %token EOL
+%token SEMICOLON ";"
+%token COMMA ","
+%token ASSIGN "="
+%token QUOTE "\""
 %token INVALID
+%token INT "int" DOUBLE "double" BOOL "bool"
+%token <std::string> IDENTIFIER
+
 
 /* Keywords */
 %token TRUE "true" FALSE "false"
+%token PRINT "Print"
+%token IF "if" ELSE "else"
 
 /* Expressions */
+%right ASSIGN
 %left LOGIC_OR
 %left LOGIC_AND
 %left EQUAL NOT_EQUAL
@@ -59,14 +82,76 @@
 %left STAR SLASH PERCENT
 %left UNARY_MINUS LOGIC_NOT
 
+%precedence RIGHT_PAREN
+%precedence ELSE
+
 %%
 
 input: 
     %empty
-    | input expression EOL {
+    | input statement {
         driver.ast_root = $2;
+        driver.statements.push_back(driver.ast_root);
     }
     ;
+
+statement:
+    expressionStmt
+    | printStmt
+    | variableDecl
+    | ifStmt
+    ;
+
+expressionStmt:
+    expression ";" {
+        $$ = std::make_shared<ExpressionStmt>($1);
+    }
+
+expressionList:
+    expression {
+        $$ = std::make_shared<ExpressionList>();
+        $$->expressions.push_back($1);
+    }
+    | expressionList "," expression {
+        $1->expressions.push_back($3);
+        $$ = $1;
+    }
+    ;
+
+printStmt:
+    "Print" "(" expressionList ")" ";" {
+        $$ = std::make_shared<PrintStmt>($3);
+    }
+
+variableDecl:
+    type IDENTIFIER ";" {
+        $$ = std::make_shared<VariableDecl>(
+            $1,
+            $2
+        );
+    }
+    | type IDENTIFIER "=" expression ";" {
+        $$ = std::make_shared<VariableDecl>(
+            $1,
+            $2,
+            $4
+        );
+    }
+
+ifStmt:
+    "if" "(" expression ")" statement {
+        $$ = std::make_shared<IfStmt>(
+            $3,
+            $5
+        );
+    }
+    | "if" "(" expression ")" statement "else" statement {
+        $$ = std::make_shared<IfStmt>(
+            $3,
+            $5,
+            $7
+        );
+    }
 
 expression:
     arithmeticBinaryExpr
@@ -79,6 +164,9 @@ expression:
     | intConstant
     | boolConstant
     | floatConstant
+    | identifierExpr
+    | assignExpr
+    | stringConstant
     ;
 
 arithmeticBinaryExpr: 
@@ -223,6 +311,42 @@ boolConstant:
 floatConstant:
     FLOAT {
         $$ = std::make_shared<FloatConstant>($1);
+    }
+
+identifierExpr:
+    IDENTIFIER {
+        $$ = std::make_shared<IdentifierExpr>($1);
+    }
+
+type:
+    "int" {
+        $$ = std::make_shared<decaf::Type> (
+            decaf::Type::Classification::INT
+        );
+    }
+    | "bool" {
+        $$ = std::make_shared<decaf::Type> (
+            decaf::Type::Classification::BOOL
+        );
+    }
+    | "double" {
+        $$ = std::make_shared<decaf::Type> (
+            decaf::Type::Classification::FLOAT
+        );
+    }
+    ;
+
+assignExpr:
+    expression "=" expression {
+        $$ = std::make_shared<AssignExpr>(
+            $1,
+            $3
+        );
+    }
+
+stringConstant:
+    STRING {
+        $$ = std::make_shared<StringConstant>($1);
     }
 
 %%

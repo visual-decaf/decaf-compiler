@@ -3,6 +3,7 @@
 #include "expr.h"
 #include "parser_impl.h"
 #include "scanner.h"
+#include "stmt.h"
 #include <memory>
 #include <string>
 #include <vector>
@@ -15,9 +16,11 @@ class Parser {
     friend class yy::parser;
 
 public:
-    using ast_ptr = std::shared_ptr<ast::Expr>;
+    using ast_ptr = std::shared_ptr<ast::Stmt>;
+    using stmt_list = std::vector<ast_ptr>;
     void parse();
     ast_ptr get_ast();
+    stmt_list get_stmt_list();
 
     [[nodiscard]] bool is_error() const;
     void clear_error();
@@ -33,6 +36,7 @@ private:
     decaf::TokenStream token_stream;
     decaf::TokenStream::iterator next_token;
     ast_ptr ast_root{nullptr};
+    stmt_list statements;
 
     bool has_error = false;
     std::vector<std::string> err_messages;

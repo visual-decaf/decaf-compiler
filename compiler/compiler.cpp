@@ -75,8 +75,10 @@ std::any decaf::Compiler::visitArithmeticUnary(std::shared_ptr<ast::ArithmeticUn
 }
 
 void decaf::Compiler::compile() {
-    ast_root->accept(*this);
-    prog.set_result_type(ast_root->type);
+    for (auto&& stmt: statements) {
+        stmt->accept(*this);
+    }
+    prog.set_result_type_classification(Type::Classification::VOID);
 }
 
 decaf::Program decaf::Compiler::get_program() {
@@ -125,6 +127,101 @@ std::any decaf::Compiler::visitFloatConstant(std::shared_ptr<ast::FloatConstant>
     ConstantPool::index_type index = prog.add_double_constant(floatConstant->value);
     prog.emit_bytes(
         ByteCode::Instruction::GET_FLOAT_CONSTANT,
+        index);
+    return {};
+}
+
+std::any decaf::Compiler::visitExpressionStmt(std::shared_ptr<ast::ExpressionStmt> expressionStmt) {
+    expressionStmt->expr->accept(*this);
+    prog.emit(ByteCode::Instruction::DISCARD);
+    return {};
+}
+
+std::any decaf::Compiler::visitPrintStmt(std::shared_ptr<ast::PrintStmt> printStmt) {
+    auto& expressions = printStmt->list->expressions;
+    for (auto it = expressions.rbegin(); it != expressions.rend(); it++) {
+        auto expr = *it;
+        expr->accept(*this);
+    }
+    prog.emit_bytes(
+        ByteCode::Instruction::PRINT,
+        printStmt->list->expressions.size());
+    return {};
+}
+
+bool decaf::Compiler::emit_code_for_default(decaf::Type type) {
+    if (type.classification == decaf::Type::Classification::INT) {
+        prog.emit_bytes(
+            ByteCode::Instruction::GET_INSTANT,
+            0);
+        return true;
+    } else if (type.classification == decaf::Type::Classification::BOOL) {
+        prog.emit(ByteCode::Instruction::GET_FALSE);
+        return true;
+    } else if (type.classification == decaf::Type::Classification::FLOAT) {
+        prog.emit(ByteCode::Instruction::GET_FLOAT_ZERO);
+        return true;
+    }
+    return false;
+}
+
+std::any decaf::Compiler::visitVariableDecl(std::shared_ptr<ast::VariableDecl> variableDecl) {
+    symbol_index_of[variableDecl->name] = index_count++;
+    symbol_declaration_of[variableDecl->name] = variableDecl;
+    if (variableDecl->init == nullptr) {
+        emit_code_for_default(*variableDecl->type);
+    } else {
+        variableDecl->init->accept(*this);
+    }
+    prog.emit_bytes(
+        ByteCode::Instruction::SYMBOL_ADD,
+        symbol_index_of[variableDecl->name]);
+    return {};
+}
+
+std::any decaf::Compiler::visitIdentifierExpr(std::shared_ptr<ast::IdentifierExpr> identifierExpr) {
+    identifierExpr->index = symbol_index_of[identifierExpr->name];
+    identifierExpr->type = *symbol_declaration_of[identifierExpr->name]->type;
+    prog.emit_bytes(
+        ByteCode::Instruction::SYMBOL_GET,
+        symbol_index_of[identifierExpr->name]);
+    return {};
+}
+
+std::any decaf::Compiler::visitAssignExpr(std::shared_ptr<ast::AssignExpr> assignExpr) {
+    auto lhs = std::dynamic_pointer_cast<ast::LValue>(assignExpr->left);
+    assignExpr->left->accept(*this);
+    assignExpr->right->accept(*this);
+
+    if (assignExpr->right->type != lhs->type) {
+        throw std::runtime_error("Assign with wrong type");
+    }
+
+    prog.emit(ByteCode::Instruction::SYMBOL_SET);
+    return {};
+}
+
+std::any decaf::Compiler::visitIfStmt(std::shared_ptr<ast::IfStmt> ifStmt) {
+    ifStmt->condition->accept(*this);
+    prog.emit(ByteCode::Instruction::GOTO_IF_FALSE);
+    size_t mark_if_condition = prog.emit_marked(ByteCode::Instruction::UNKNOWN);
+    ifStmt->then_stmt->accept(*this);
+    if (ifStmt->else_stmt == nullptr) { // This is the end
+        prog.set_marked(mark_if_condition, prog.get_current_index());
+    } else {
+        prog.emit(ByteCode::Instruction::GOTO);
+        size_t mark_then_stmt = prog.emit_marked(ByteCode::Instruction::UNKNOWN);
+        prog.set_marked(mark_if_condition, prog.get_current_index());
+        ifStmt->else_stmt->accept(*this);
+        prog.set_marked(mark_then_stmt, prog.get_current_index());
+    }
+    return {};
+}
+
+std::any decaf::Compiler::visitStringConstant(std::shared_ptr<ast::StringConstant> stringConstant) {
+    ConstantPool::index_type index = prog.add_string_constant(stringConstant->value);
+    prog.emit_bytes(
+        ByteCode::Instruction::GET_STRING_CONSTANT,
         index);
     return {};
 }

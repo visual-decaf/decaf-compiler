@@ -1,6 +1,7 @@
 #include "parser.h"
 #include "token.h"
 #include <string>
+#include <utility>
 
 int yylex(yy::parser::value_type* yylval, decaf::Parser& driver) {
     using decaf::token_type;
@@ -9,16 +10,25 @@ int yylex(yy::parser::value_type* yylval, decaf::Parser& driver) {
     if (next_token == token_stream.end()) {
         return token_type::YYEOF;
     }
+    unsigned long long size = next_token->lexeme.size();
 
     // Must use big switch-case here, because no
     // polymorphism is available for token type.
     switch (next_token->type) {
         case token_type::INTEGER:
-        case token_type::HEX_INTEGER:
             yylval->emplace<int>(std::stoi(next_token->lexeme));
+            break;
+        case token_type::HEX_INTEGER:
+            yylval->emplace<int>(std::stoi(next_token->lexeme, nullptr, 16));
             break;
         case token_type::FLOAT:
             yylval->emplace<double>(std::stod(next_token->lexeme));
+            break;
+        case token_type::IDENTIFIER:
+            yylval->emplace<std::string>(next_token->lexeme);
+            break;
+        case token_type::STRING:
+            yylval->emplace<std::string>(next_token->lexeme.substr(1, size - 2));
             break;
         default:
             // No semantic value for other types
@@ -50,4 +60,8 @@ void decaf::Parser::clear_error() {
 
 std::vector<std::string> decaf::Parser::get_err_messages() const {
     return err_messages;
+}
+
+decaf::Parser::stmt_list decaf::Parser::get_stmt_list() {
+    return statements;
 }

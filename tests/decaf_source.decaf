@@ -1,0 +1,6 @@
+int x = 1 + 2 * 3;
+
+if (x == 7)
+    Print("Yes");
+else
+    Print("No");

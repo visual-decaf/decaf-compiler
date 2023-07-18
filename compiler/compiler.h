@@ -5,15 +5,22 @@
 #include "byte_code.h"
 #include "expr.h"
 #include "program.h"
+#include "stmt.h"
+#include "symbol_table.h"
+#include <map>
 
 namespace decaf {
 
 class Compiler:
-    public ExprVisitor {
+    public ExprVisitor,
+    public StmtVisitor {
 public:
-    // Compiler doesn't own the root
-    explicit Compiler(std::shared_ptr<ast::Expr> root):
-        ast_root{std::move(root)} {
+    Compiler() = default;
+    using ast_ptr = std::shared_ptr<ast::Stmt>;
+    using stmt_list = std::vector<ast_ptr>;
+
+    explicit Compiler(stmt_list _statements):
+        statements{std::move(_statements)} {
     }
 
     void compile();
@@ -29,9 +36,20 @@ public:
     std::any visitLogicUnary(std::shared_ptr<ast::LogicUnary> log_unary) override;
     std::any visitEqualityBinary(std::shared_ptr<ast::EqualityBinary> ptr) override;
     std::any visitFloatConstant(std::shared_ptr<ast::FloatConstant> ptr) override;
+    std::any visitExpressionStmt(std::shared_ptr<ast::ExpressionStmt> ptr) override;
+    std::any visitPrintStmt(std::shared_ptr<ast::PrintStmt> ptr) override;
+    std::any visitVariableDecl(std::shared_ptr<ast::VariableDecl> ptr) override;
+    std::any visitIdentifierExpr(std::shared_ptr<ast::IdentifierExpr> ptr) override;
+    std::any visitAssignExpr(std::shared_ptr<ast::AssignExpr> ptr) override;
+    std::any visitIfStmt(std::shared_ptr<ast::IfStmt> ptr) override;
+    std::any visitStringConstant(std::shared_ptr<ast::StringConstant> ptr) override;
 
 private:
-    std::shared_ptr<ast::Expr> ast_root;
+    stmt_list statements;
+    uint8_t index_count = 0;
+    bool emit_code_for_default(Type);
+    std::map<std::string, SymbolTable::index_type> symbol_index_of;
+    std::map<std::string, std::shared_ptr<ast::VariableDecl>> symbol_declaration_of;
     Program prog{};
 };
 

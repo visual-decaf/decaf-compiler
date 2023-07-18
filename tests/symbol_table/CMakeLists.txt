@@ -1,0 +1,3 @@
+add_executable(symbol_table_test symbol_table_test.cpp)
+target_link_libraries(symbol_table_test PRIVATE symbol_table Catch2::Catch2WithMain)
+catch_discover_tests(symbol_table_test)

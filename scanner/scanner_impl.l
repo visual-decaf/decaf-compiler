@@ -18,6 +18,9 @@ EXPONENT ("e"|"E")("+"|"-")?{DIGIT}+
 NORMAL_FLOAT {DIGIT}+"."{DIGIT}*
 FLOAT {NORMAL_FLOAT}{EXPONENT}?
 
+LETTER [a-zA-Z]
+IDENTIFIER {LETTER}[a-zA-Z0-9_]*
+
 %%
 
 {INTEGER} {
@@ -46,16 +49,28 @@ FLOAT {NORMAL_FLOAT}{EXPONENT}?
 ">=" { emit({token_type::GREATER_EQUAL, YYText()}); }
 "==" { emit({token_type::EQUAL, YYText()}); }
 "!=" { emit({token_type::NOT_EQUAL, YYText()}); }
+";" { emit({token_type::SEMICOLON, YYText()}); }
+"," { emit({token_type::COMMA, YYText()}); }
+"=" { emit({token_type::ASSIGN, YYText()}); }
 
 "true" { emit({token_type::TRUE, YYText()}); }
 "false" { emit({token_type::FALSE, YYText()}); }
+"Print" { emit({token_type::PRINT, YYText()}); }
+"int" { emit({token_type::INT, YYText()}); }
+"double" { emit({token_type::DOUBLE, YYText()}); }
+"bool" { emit({token_type::BOOL, YYText()}); }
+"if" { emit({token_type::IF, YYText()}); }
+"else" { emit({token_type::ELSE, YYText()}); }
 
-[ \t] {}
+{IDENTIFIER} { emit({token_type::IDENTIFIER, YYText()}); }
+"\"".*"\"" { emit({token_type::STRING, YYText()}); }
+
+[ \t\r] {}
 
 "\n" {
-    emit({token_type::EOL, YYText()});
+    // emit({token_type::EOL, YYText()});
     return token_type::EOL;
- }
+}
 
 <<EOF>> {
     emit({token_type::YYEOF});

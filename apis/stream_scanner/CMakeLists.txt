@@ -1,0 +1,4 @@
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+add_library(stream_scanner stream_scanner.cpp)
+target_include_directories(stream_scanner PUBLIC .)
+target_link_libraries(stream_scanner PUBLIC scanner)

@@ -1,4 +1,5 @@
 #include "expr.h"
+#include "stmt.h"
 #include <catch2/catch_test_macros.hpp>
 using namespace decaf;
 
@@ -25,27 +26,43 @@ TEST_CASE("arithmetic_binary_json", "[ast]") {
     boost::json::value expect_json = boost::json::parse(R"(
 {
     "type": "ArithmeticBinary",
-    "operation": "DIVIDE",
-    "left": {
-        "type": "ArithmeticBinary",
-        "operation": "MULTIPLY",
-        "left": {
-            "type": "IntConstant",
-            "value": 1,
-            "resultType": "INT"
+    "name": "DIVIDE",
+    "list": [
+        {
+            "relation": "LeftOperand",
+            "stmt": {
+                "type": "ArithmeticBinary",
+                "name": "MULTIPLY",
+                "list": [
+                    {
+                        "relation": "LeftOperand",
+                        "stmt": {
+                            "type": "IntConstant",
+                            "value": 1,
+                            "resultType": "INT"
+                        }
+                    },
+                    {
+                        "relation": "RightOperand",
+                        "stmt": {
+                            "type": "IntConstant",
+                            "value": 2,
+                            "resultType": "INT"
+                        }
+                    }
+                ],
+                "resultType": "INT"
+            }
         },
-        "right": {
-            "type": "IntConstant",
-            "value": 2,
-            "resultType": "INT"
-        },
-        "resultType": "INT"
-    },
-    "right": {
-        "type": "IntConstant",
-        "value": 3,
-        "resultType": "INT"
-    },
+        {
+            "relation": "RightOperand",
+            "stmt": {
+                "type": "IntConstant",
+                "value": 3,
+                "resultType": "INT"
+            }
+        }
+    ],
     "resultType": "INT"
 }
     )");
@@ -61,21 +78,35 @@ TEST_CASE("group_json", "[ast]") {
     boost::json::value expect_json = boost::json::parse(R"(
 {
     "type": "Group",
-    "content": {
-        "type": "ArithmeticBinary",
-        "operation": "PLUS",
-        "left": {
-            "type": "IntConstant",
-            "value": 1,
-            "resultType": "INT"
-        },
-        "right": {
-            "type": "IntConstant",
-            "value": 2,
-            "resultType": "INT"
-        },
-        "resultType": "INT"
-    },
+    "name": "GROUP",
+    "list": [
+        {
+            "relation": "Value",
+            "stmt": {
+                "type": "ArithmeticBinary",
+                "name": "PLUS",
+                "list": [
+                    {
+                        "relation": "LeftOperand",
+                        "stmt": {
+                            "type": "IntConstant",
+                            "value": 1,
+                            "resultType": "INT"
+                        }
+                    },
+                    {
+                        "relation": "RightOperand",
+                        "stmt": {
+                            "type": "IntConstant",
+                            "value": 2,
+                            "resultType": "INT"
+                        }
+                    }
+                ],
+                "resultType": "INT"
+            }
+        }
+    ],
     "resultType": "INT"
 }
     )");
@@ -88,10 +119,14 @@ TEST_CASE("group_invalid_content_json", "[ast]") {
     boost::json::value expect_json = boost::json::parse(R"(
 {
     "type": "Group",
-    "content": {
-        "type": "INVALID",
-        "resultType": "INVALID"
-    },
+    "name": "GROUP",
+    "list": [
+        {
+            "type": "INVALID",
+            "value": "INVALID",
+            "resultType": "INVALID"
+        }
+    ] ,
     "resultType": "INVALID"
 }
     )");
@@ -106,20 +141,32 @@ TEST_CASE("invalid_node_json", "[ast]") {
     boost::json::value expect_json = boost::json::parse(R"(
 {
     "type": "ArithmeticBinary",
-    "operation": "MOD",
-    "left": {
-        "type": "IntConstant",
-        "value": 20,
-        "resultType": "INT"
-    },
-    "right": {
-        "type": "Group",
-        "content": {
-            "type": "INVALID",
-            "resultType": "INVALID"
+    "name": "MOD",
+    "list": [
+        {
+            "relation": "LeftOperand",
+            "stmt": {
+                "type": "IntConstant",
+                "value": 20,
+                "resultType": "INT"
+            }
         },
-        "resultType": "INVALID"
-    },
+        {
+            "relation": "RightOperand",
+            "stmt": {
+                "type": "Group",
+                "name": "GROUP",
+                "list": [
+                    {
+                        "type": "INVALID",
+                        "value": "INVALID",
+                        "resultType": "INVALID"
+                    }
+                ],
+                "resultType": "INVALID"
+            }
+        }
+    ],
     "resultType": "INVALID"
 }
 )");
@@ -132,12 +179,17 @@ TEST_CASE("arithmetic_unary_json", "[ast]") {
     auto expect_json = boost::json::parse(R"(
 {
     "type": "ArithmeticUnary",
-    "operation": "NEGATE",
-    "right": {
-        "type": "IntConstant",
-        "value": 3,
-        "resultType": "INT"
-    },
+    "name": "NEGATE",
+    "list": [
+        {
+            "relation": "RightOperand",
+            "stmt": {
+                "type": "IntConstant",
+                "value": 3,
+                "resultType": "INT"
+            }
+        }
+    ],
     "resultType": "INT"
 }
 )");
@@ -162,12 +214,17 @@ TEST_CASE("logic_unary_json", "[ast]") {
     auto expect_json = boost::json::parse(R"(
 {
     "type": "LogicUnary",
-    "operation": "LOGIC_NOT",
-    "right": {
-        "type": "BoolConstant",
-        "value": false,
-        "resultType": "BOOL"
-    },
+    "name": "LOGIC_NOT",
+    "list": [
+        {
+            "relation": "RightOperand",
+            "stmt": {
+                "type": "BoolConstant",
+                "value": false,
+                "resultType": "BOOL"
+            }
+        }
+    ],
     "resultType": "BOOL"
 }
 )");
@@ -182,17 +239,25 @@ TEST_CASE("logic_binary_json", "[ast]") {
     auto expect_json = boost::json::parse(R"(
 {
     "type": "LogicBinary",
-    "operation": "LOGIC_OR",
-    "left": {
-        "type": "BoolConstant",
-        "value": false,
-        "resultType": "BOOL"
-    },
-    "right": {
-        "type": "IntConstant",
-        "value": 1,
-        "resultType": "INT"
-    },
+    "name": "LOGIC_OR",
+    "list": [
+        {
+            "relation": "LeftOperand",
+            "stmt": {
+                "type": "BoolConstant",
+                "value": false,
+                "resultType": "BOOL"
+            }
+        },
+        {
+            "relation": "RightOperand",
+            "stmt": {
+                "type": "IntConstant",
+                "value": 1,
+                "resultType": "INT"
+            }
+        }
+    ],
     "resultType": "INVALID"
 }
 )");
@@ -207,20 +272,32 @@ TEST_CASE("rational_binary_json", "[ast]") {
     auto expect_json = boost::json::parse(R"(
 {
     "type": "RationalBinary",
-    "operation": "LESS_EQUAL",
-    "left": {
-        "type": "Group",
-        "content": {
-            "type": "INVALID",
-            "resultType": "INVALID"
+    "name": "LESS_EQUAL",
+    "list": [
+        {
+            "relation": "LeftOperand",
+            "stmt": {
+                "type": "Group",
+                "name": "GROUP",
+                "list": [
+                    {
+                        "type": "INVALID",
+                        "value": "INVALID",
+                        "resultType": "INVALID"
+                    }
+                ],
+                "resultType": "INVALID"
+            }
         },
-        "resultType": "INVALID"
-    },
-    "right": {
-        "type": "IntConstant",
-        "value": 3,
-        "resultType": "INT"
-    },
+        {
+            "relation": "RightOperand",
+            "stmt": {
+                "type": "IntConstant",
+                "value": 3,
+                "resultType": "INT"
+            }
+        }
+    ],
     "resultType": "INVALID"
 }
 )");
@@ -235,17 +312,25 @@ TEST_CASE("equal_json", "[ast]") {
     auto expect_json = boost::json::parse(R"(
 {
     "type": "EqualityBinary",
-    "operation": "EQUAL",
-    "left": {
-        "type": "IntConstant",
-        "value": 1,
-        "resultType": "INT"
-    },
-    "right": {
-        "type": "IntConstant",
-        "value": 2,
-        "resultType": "INT"
-    },
+    "name": "EQUAL",
+    "list": [
+        {
+            "relation": "LeftOperand",
+            "stmt": {
+                "type": "IntConstant",
+                "value": 1,
+                "resultType": "INT"
+            }
+        },
+        {
+            "relation": "RightOperand",
+            "stmt": {
+                "type": "IntConstant",
+                "value": 2,
+                "resultType": "INT"
+            }
+        }
+    ],
     "resultType": "BOOL"
 }
 )");
@@ -260,17 +345,25 @@ TEST_CASE("not_equal_json", "[ast]") {
     auto expect_json = boost::json::parse(R"(
 {
     "type": "EqualityBinary",
-    "operation": "NOT_EQUAL",
-    "left": {
-        "type": "IntConstant",
-        "value": 1,
-        "resultType": "INT"
-    },
-    "right": {
-        "type": "IntConstant",
-        "value": 2,
-        "resultType": "INT"
-    },
+    "name": "NOT_EQUAL",
+    "list": [
+        {
+            "relation": "LeftOperand",
+            "stmt": {
+                "type": "IntConstant",
+                "value": 1,
+                "resultType": "INT"
+            }
+        },
+        {
+            "relation": "RightOperand",
+            "stmt": {
+                "type": "IntConstant",
+                "value": 2,
+                "resultType": "INT"
+            }
+        }
+    ],
     "resultType": "BOOL"
 }
 )");
@@ -285,17 +378,25 @@ TEST_CASE("equality_diff_type_json", "[ast]") {
     auto expect_json = boost::json::parse(R"(
 {
     "type": "EqualityBinary",
-    "operation": "EQUAL",
-    "left": {
-        "type": "IntConstant",
-        "value": 1,
-        "resultType": "INT"
-    },
-    "right": {
-        "type": "BoolConstant",
-        "value": true,
-        "resultType": "BOOL"
-    },
+    "name": "EQUAL",
+    "list": [
+        {
+            "relation": "LeftOperand",
+            "stmt": {
+                "type": "IntConstant",
+                "value": 1,
+                "resultType": "INT"
+            }
+        },
+        {
+            "relation": "RightOperand",
+            "stmt": {
+                "type": "BoolConstant",
+                "value": true,
+                "resultType": "BOOL"
+            }
+        }
+    ],
     "resultType": "INVALID"
 }
 )");
@@ -309,6 +410,84 @@ TEST_CASE("float_constant_json", "[ast]") {
     "type": "FloatConstant",
     "value": 3.14,
     "resultType": "FLOAT"
+}
+)");
+    REQUIRE(expect_json == ast_root->to_json());
+}
+
+TEST_CASE("expr_stmt_json", "[ast]") {
+    auto ast_root = std::make_shared<ast::ExpressionStmt>(
+        std::make_shared<ast::ArithmeticBinary>(
+            std::make_shared<ast::FloatConstant>(3.14),
+            ast::ArithmeticBinary::Operation::PLUS,
+            std::make_shared<ast::FloatConstant>(2.72)));
+    auto expect_json = boost::json::parse(R"(
+{
+    "type": "ExpressionStmt",
+    "name": "ExpressionStmt",
+    "list": [
+        {
+            "relation": "Value",
+            "stmt": {
+                "type": "ArithmeticBinary",
+                "name": "PLUS",
+                "list": [
+                    {
+                        "relation": "LeftOperand",
+                        "stmt": {
+                            "type": "FloatConstant",
+                            "value": 3.14E0,
+                            "resultType": "FLOAT"
+                        }
+                    },
+                    {
+                        "relation": "RightOperand",
+                        "stmt": {
+                            "type": "FloatConstant",
+                            "value": 2.72E0,
+                            "resultType": "FLOAT"
+                        }
+                    }
+                ],
+                "resultType": "FLOAT"
+            }
+        }
+    ],
+    "resultType": "VOID"
+}
+)");
+    REQUIRE(expect_json == ast_root->to_json());
+}
+
+TEST_CASE("print_stmt_json", "[ast]") {
+    auto ast_root = std::make_shared<ast::PrintStmt>(
+        std::make_shared<ast::ExpressionList>(
+            std::initializer_list<std::shared_ptr<ast::Expr>>{
+                std::make_shared<ast::IntConstant>(1),
+                std::make_shared<ast::IntConstant>(2)}));
+    auto expect_json = boost::json::parse(R"(
+{
+    "type": "PrintStmt",
+    "name": "PrintStmt",
+    "expression_list": [
+        {
+            "relation": "",
+            "stmt": {
+                "type": "IntConstant",
+                "value": 1,
+                "resultType": "INT"
+            }
+        },
+        {
+            "relation": "",
+            "stmt": {
+                "type": "IntConstant",
+                "value": 2,
+                "resultType": "INT"
+            }
+        }
+    ],
+    "resultType": "VOID"
 }
 )");
     REQUIRE(expect_json == ast_root->to_json());
