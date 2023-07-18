@@ -47,3 +47,14 @@ TEST_CASE("lval_stack_item_json", "[stack_item]") {
 )");
     REQUIRE(expect_json == lval_stack_item.to_json());
 }
+
+TEST_CASE("string_stack_item_json", "[stack_item]") {
+    decaf::StringStackItem string_stack_item("hello");
+    auto expect_json = boost::json::parse(R"(
+{
+    "type": "STRING",
+    "value": "hello"
+}
+)");
+    REQUIRE(expect_json == string_stack_item.to_json());
+}

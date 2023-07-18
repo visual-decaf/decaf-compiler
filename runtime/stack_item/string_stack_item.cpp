@@ -30,3 +30,8 @@ void decaf::StringStackItem::print(std::ostream& os) const {
 bool decaf::StringStackItem::equal_to_string(std::string rhs) {
     return value == rhs;
 }
+boost::json::value decaf::StringStackItem::to_json() {
+    return boost::json::object{
+        {"type", "STRING"},
+        {"value", this->value}};
+}
