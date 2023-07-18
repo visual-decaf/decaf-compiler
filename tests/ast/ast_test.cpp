@@ -469,7 +469,7 @@ TEST_CASE("print_stmt_json", "[ast]") {
 {
     "type": "PrintStmt",
     "name": "PrintStmt",
-    "expression_list": [
+    "list": [
         {
             "relation": "",
             "stmt": {

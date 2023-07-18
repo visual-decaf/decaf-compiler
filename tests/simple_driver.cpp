@@ -9,19 +9,9 @@
 
 using namespace decaf;
 int main() {
-    std::string input = R"(int x = 1 + 2 * 3;
-
-if (x == 7)
-    Print("Yes");
-else
-    Print("No");)";
-    std::istringstream input_code{input};
-    Scanner scanner{input_code};
-    scanner.scan();
-    Parser parser{scanner.get_tokens()};
-    parser.parse();
-    Compiler compiler{parser.get_stmt_list()};
-    compiler.compile();
-    DebugVirtualMachine debug_vm{compiler.get_program()};
-    debug_vm.run();
+    int id = get_id();
+    std::string code = "int x;";
+    upload_code(code.c_str(), id);
+    std::string tokens = get_token_stream(id);
+    std::cout << tokens << std::endl;
 }

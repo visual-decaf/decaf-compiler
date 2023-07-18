@@ -42,7 +42,7 @@ boost::json::value decaf::ast::PrintStmt::to_json() {
     boost::json::object result{
         {"type", "PrintStmt"},
         {"name", "PrintStmt"},
-        {"expression_list", expression_list},
+        {"list", expression_list},
         {"resultType", "VOID"}};
     return result;
 }

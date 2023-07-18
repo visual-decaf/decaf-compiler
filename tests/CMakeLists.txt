@@ -12,4 +12,4 @@ add_subdirectory(symbol_table)
 add_subdirectory(vm)
 
 add_executable(simple_driver simple_driver.cpp)
-target_link_libraries(simple_driver PUBLIC token scanner parser compiler byte_code debug_vm ast visual_decaf debug_vm)
+target_link_libraries(simple_driver PUBLIC token scanner parser compiler byte_code ast visual_decaf debug_vm)
