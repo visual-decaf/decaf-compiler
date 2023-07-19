@@ -77,6 +77,7 @@ char* get_ast(int id) {
     }
     if (stream_scanners.at(id) == nullptr) {
         write_error_msg("7", "Please Get Tokens First Before Parsing", response);
+        return response;
     }
     if (stream_scanners.at(id)->is_error()) {
         write_error_msg("3", "There are some wrongs at scan phase", response);
