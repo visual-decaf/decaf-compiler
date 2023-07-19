@@ -56,7 +56,7 @@ char* get_token_stream(int id) {
     }
     auto stream_scanner = stream_scanners.at(id);
     if (stream_scanner == nullptr) {
-        write_error_msg("7", "Please Operate In Correct Order", response);
+        write_error_msg("7", "Please Unload Code First Before Scanning", response);
         return response;
     }
     stream_scanner->scan();
@@ -73,6 +73,10 @@ char* get_ast(int id) {
     char* response = nullptr;
     if (parsers.find(id) == parsers.end()) {
         write_error_msg("6", "Invalid ID", response);
+        return response;
+    }
+    if (stream_scanners.at(id) == nullptr) {
+        write_error_msg("7", "Please Get Tokens First Before Parsing", response);
         return response;
     }
     if (stream_scanners.at(id)->is_error()) {
@@ -92,13 +96,17 @@ char* get_ast(int id) {
     boost::json::array list;
     const decaf::Parser::stmt_list& stmt_list = parser->get_stmt_list();
     for (const auto& stmt: stmt_list) {
-        list.emplace_back(stmt->to_json());
+        list.emplace_back(boost::json::object{{"relation", ""},
+                                              {"stmt", stmt->to_json()}});
     }
-    boost::json::value result{
+    boost::json::object stmts_object{
         {"type", "StmtsList"},
         {"name", "Program"},
         {"list", list},
         {"resultType", "VOID"}};
+    boost::json::value result{
+        {"relation", ""},
+        {"stmt", stmts_object}};
     write_success_result(result, response);
     return response;
 }
@@ -107,6 +115,10 @@ char* get_program(int id) {
     char* response = nullptr;
     if (compilers.find(id) == compilers.end()) {
         write_error_msg("6", "Invalid ID", response);
+        return response;
+    }
+    if (parsers.at(id) == nullptr) {
+        write_error_msg("7", "Please Get AST First Before Compiling", response);
         return response;
     }
     if (parsers.at(id)->is_error()) {
@@ -132,7 +144,7 @@ char* get_debug_info(int id) {
         return response;
     }
     if (compilers.at(id) == nullptr) {
-        write_error_msg("8", "There are some wrongs at compile phase", response);
+        write_error_msg("7", "Please Get Program First Before Debug", response);
         return response;
     }
     if (debug_vms.at(id) != nullptr) {

@@ -42,7 +42,7 @@ boost::json::value decaf::ast::PrintStmt::to_json() {
     boost::json::object result{
         {"type", "PrintStmt"},
         {"name", "PrintStmt"},
-        {"expression_list", expression_list},
+        {"list", expression_list},
         {"resultType", "VOID"}};
     return result;
 }
@@ -85,9 +85,11 @@ boost::json::value decaf::ast::VariableDecl::to_json() {
                      {"type", "Identifier"},
                      {"value", this->name},
                      {"resultType", this->type->to_json()}}}});
-    list.emplace_back(boost::json::object{
-        {"relation", "Init"},
-        {"stmt", this->init->to_json()}});
+    if (this->init != nullptr) {
+        list.emplace_back(boost::json::object{
+            {"relation", "Init"},
+            {"stmt", this->init->to_json()}});
+    }
     boost::json::object result{
         {"type", "VariableDecl"},
         {"name", "VariableDecl"},
