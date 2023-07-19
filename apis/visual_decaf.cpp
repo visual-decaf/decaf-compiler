@@ -56,7 +56,7 @@ char* get_token_stream(int id) {
     }
     auto stream_scanner = stream_scanners.at(id);
     if (stream_scanner == nullptr) {
-        write_error_msg("7", "Please Operate In Correct Order", response);
+        write_error_msg("7", "Please Unload Code First Before Scanning", response);
         return response;
     }
     stream_scanner->scan();
@@ -74,6 +74,9 @@ char* get_ast(int id) {
     if (parsers.find(id) == parsers.end()) {
         write_error_msg("6", "Invalid ID", response);
         return response;
+    }
+    if (stream_scanners.at(id) == nullptr) {
+        write_error_msg("7", "Please Get Tokens First Before Parsing", response);
     }
     if (stream_scanners.at(id)->is_error()) {
         write_error_msg("3", "There are some wrongs at scan phase", response);
@@ -113,6 +116,10 @@ char* get_program(int id) {
         write_error_msg("6", "Invalid ID", response);
         return response;
     }
+    if (parsers.at(id) == nullptr) {
+        write_error_msg("7", "Please Get AST First Before Compiling", response);
+        return response;
+    }
     if (parsers.at(id)->is_error()) {
         write_error_msg("5", "There are some wrongs at parse phase", response);
         return response;
@@ -136,7 +143,7 @@ char* get_debug_info(int id) {
         return response;
     }
     if (compilers.at(id) == nullptr) {
-        write_error_msg("8", "There are some wrongs at compile phase", response);
+        write_error_msg("7", "Please Get Program First Before Debug", response);
         return response;
     }
     if (debug_vms.at(id) != nullptr) {
