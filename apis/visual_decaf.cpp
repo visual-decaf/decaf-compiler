@@ -92,13 +92,17 @@ char* get_ast(int id) {
     boost::json::array list;
     const decaf::Parser::stmt_list& stmt_list = parser->get_stmt_list();
     for (const auto& stmt: stmt_list) {
-        list.emplace_back(stmt->to_json());
+        list.emplace_back(boost::json::object{{"relation", ""},
+                                              {"stmt", stmt->to_json()}});
     }
-    boost::json::value result{
+    boost::json::object stmts_object{
         {"type", "StmtsList"},
         {"name", "Program"},
         {"list", list},
         {"resultType", "VOID"}};
+    boost::json::value result{
+        {"relation", ""},
+        {"stmt", stmts_object}};
     write_success_result(result, response);
     return response;
 }
